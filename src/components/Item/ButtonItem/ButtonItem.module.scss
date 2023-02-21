@@ -1,0 +1,30 @@
+.wrapper {
+    border-radius: 8px;
+    padding: 8px;
+    span {
+        display: flex;
+        align-items: center;
+        height: 100%;
+    }
+    &:first-child {
+        margin-top: 16px;
+    }
+    &:hover {
+        background-color: #cdd1d5;
+    }
+}
+
+.img,
+.text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background-color: antiquewhite;
+    margin-right: 8px;
+}

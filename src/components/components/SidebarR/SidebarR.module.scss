@@ -1,0 +1,14 @@
+.wrapper {
+    padding-top: 8px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 8px;
+    font-size: 20px;
+    color: #65676b;
+    .h-icon {
+        margin-right: 8px;
+    }
+}

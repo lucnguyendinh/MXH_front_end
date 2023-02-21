@@ -1,0 +1,77 @@
+.wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f2f5;
+}
+
+.container {
+    width: 25%;
+    background-color: #fff;
+    opacity: 1;
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #dddfe2;
+    color: #1d2129;
+    margin-bottom: 12px;
+    height: 40px;
+    font-size: 16px;
+    border-radius: 8px;
+    vertical-align: middle;
+}
+
+.radio {
+    margin-left: 4px;
+}
+
+.sex {
+    margin-bottom: 12px;
+    padding: 0 30px 0 30px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 18px;
+}
+
+.continue {
+    width: 100%;
+    color: #fff;
+    background-color: #1877f2;
+    margin-top: 4px;
+    margin-bottom: 12px;
+    padding: 8px;
+    height: 40px;
+    border-radius: 8px;
+    font-size: 20px;
+    position: relative;
+    cursor: pointer;
+    &::before {
+        content: '';
+        background-color: #dadde1;
+        height: 1px;
+        width: 100%;
+        position: absolute;
+        top: 60px;
+        right: 0;
+    }
+}
+
+.login {
+    color: #fff;
+    background-color: #42b72a;
+    padding: 8px;
+    height: 40px;
+    margin-top: 20px;
+    border-radius: 8px;
+    font-size: 20px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
