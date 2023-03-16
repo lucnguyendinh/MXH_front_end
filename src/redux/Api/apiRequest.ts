@@ -14,18 +14,12 @@ import {
     registerSuccess,
 } from '../Slice/authSlice'
 import {
-    commentFail,
-    commentStart,
-    commentSuccess,
     getStatusFail,
     getStatusStart,
     getStatusSuccess,
-    likeFail,
-    likeStart,
-    likeSuccess,
-    unLikeFail,
-    unLikeStart,
-    unLikeSuccess,
+    upStatusStart,
+    upStatusSuccess,
+    upStatusFail,
 } from '../Slice/statusSlice'
 
 export const loginUser = async (user: any, dispatch: any, navigate: any) => {
@@ -70,10 +64,11 @@ export const logOutUser = async (
     navigate: any,
     id: any,
     accessToken: any,
+    axiosJWT: any,
 ) => {
     dispatch(logOutStart())
     try {
-        await axios.post('/auth/logout', id, {
+        await axiosJWT.post('/auth/logout', id, {
             headers: { token: `Bearer ${accessToken}` },
         })
         dispatch(logOutSuccess())
@@ -93,32 +88,12 @@ export const getStatus = async (dispatch: any) => {
     }
 }
 
-export const comment = async (content: any, dispatch: any) => {
-    dispatch(commentStart())
+export const upStatus = async (status: any, dispatch: any) => {
+    dispatch(upStatusStart())
     try {
-        await axios.post('/status/comment', content)
-        dispatch(commentSuccess)
+        await axios.post('/status/upstatus', status)
+        dispatch(upStatusSuccess())
     } catch (err) {
-        dispatch(commentFail())
-    }
-}
-
-export const like = async (like: any, dispatch: any) => {
-    dispatch(likeStart())
-    try {
-        await axios.post('/status/like', like)
-        dispatch(likeSuccess())
-    } catch (err) {
-        dispatch(likeFail())
-    }
-}
-
-export const unLike = async (dispatch: any, id: any) => {
-    dispatch(unLikeStart())
-    try {
-        await axios.delete('/status/unlike/' + id, id)
-        dispatch(unLikeSuccess())
-    } catch (err) {
-        dispatch(unLikeFail())
+        dispatch(upStatusFail())
     }
 }

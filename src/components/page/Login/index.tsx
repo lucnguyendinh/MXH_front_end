@@ -36,7 +36,7 @@ const Login = () => {
         if (userLogin) {
             navigate('/')
         }
-    }, [])
+    }, [navigate, userLogin, userRegister])
 
     return (
         <div className={cx('wrapper')}>

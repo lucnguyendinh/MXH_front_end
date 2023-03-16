@@ -15,35 +15,33 @@ const cx = classNames.bind(styles)
 const Home = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const listStatus = useSelector((state: any) => state.status.getStatus.curenttStatus)
+    const user = useSelector((state: any) => state.auth.login.currentUser)
 
     const [newsFeed, setNewsFeed] = useState(false)
 
-    const listStatus = useSelector(
-        (state: any) => state.status.getStatus.curenttStatus,
-    )
-
-    const user = useSelector((state: any) => state.auth.login.currentUser)
     const userRegister = user?.user?._id
 
     useEffect(() => {
-        // if (!user) {
-        //     navigate('/login')
-        // }
-        // if (userRegister) {
-        //     navigate('/registerN')
-        // }
-
+        if (!user) {
+            navigate('/login')
+        }
+        if (userRegister) {
+            navigate('/registerN')
+        }
         getStatus(dispatch)
-        console.log(listStatus)
-    }, [])
+        //dùng tạm
+        // setInterval(() => {
+        //     getStatus(dispatch)
+        // }, 1000)
+    }, [dispatch, navigate, user, userRegister])
 
     return (
         <div className="wrapper">
             <NewsFeed setNewsFeed={setNewsFeed} />
             {newsFeed && <CreateStatus setNewsFeed={setNewsFeed} />}
-            {listStatus.map((status: any, i: any) => {
-                const timeSinceCreation =
-                    (Date.now() - Date.parse(status.createdAt)) / 1000
+            {listStatus?.map((status: any, i: any) => {
+                const timeSinceCreation = (Date.now() - Date.parse(status.createdAt)) / 1000
 
                 const displayTime = config.timeDefault(timeSinceCreation)
 
@@ -54,21 +52,10 @@ const Home = () => {
                             timed={displayTime}
                             avt={status.user.avatarUrl}
                             status={status.shareW}
-                            like={status.like.length}
-                            liked={status.like}
-                            comment={status.comment.length}
-                            share={status.share.length}
-                            userCmt={status.comment}
                             idStatus={status._id}
                         >
                             <h3>{status.content}</h3>
-                            {status.img && (
-                                <img
-                                    className={cx('img')}
-                                    src={status.img}
-                                    alt="Thien nhien"
-                                />
-                            )}
+                            {status.img && <img className={cx('img')} src={status.img} alt="Thien nhien" />}
                         </Status>
                     </div>
                 )

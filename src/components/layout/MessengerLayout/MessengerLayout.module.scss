@@ -1,0 +1,17 @@
+.container {
+    margin-top: 56px;
+    display: flex;
+    height: calc(100vh - 56px);
+}
+
+.side-bar {
+    width: 22%;
+}
+
+.msg {
+    flex: 1;
+}
+
+.info {
+    width: 18%;
+}

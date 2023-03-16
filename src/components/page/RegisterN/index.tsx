@@ -2,9 +2,11 @@ import classNames from 'classnames/bind'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { logOutUser, registerN } from '../../../redux/Api/apiRequest'
 
+import { logOutUser, registerN } from '../../../redux/Api/apiRequest'
 import styles from './RegisterN.module.scss'
+import config from '../../../config'
+import { logOutSuccess } from '../../../redux/Slice/authSlice'
 
 const cx = classNames.bind(styles)
 
@@ -15,7 +17,7 @@ const RegisterN = () => {
     const user = useSelector((state: any) => state.auth.login.currentUser)
 
     const idUser = user?.user?._id
-    const accessToken = user.accessToken
+    const accessToken = user?.accessToken
 
     const [name, setName] = useState<String>()
     const [favorites, setFavorites] = useState<String>()
@@ -34,8 +36,10 @@ const RegisterN = () => {
         }
         registerN(infoUser, dispatch, navigate)
     }
+
+    let axiosJWT = config.createAxios(user, dispatch, logOutSuccess, idUser)
     const handleClick = () => {
-        logOutUser(dispatch, navigate, idUser, accessToken)
+        logOutUser(dispatch, navigate, idUser, accessToken, axiosJWT)
     }
 
     useEffect(() => {

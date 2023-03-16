@@ -1,3 +1,41 @@
 .wrapper {
-    margin-top: 56px;
+    margin-top: 8px;
+    margin-left: 8px;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 50px;
+    padding: 4px;
+    position: relative;
+    .h-option {
+        display: flex;
+        .icon-option {
+            height: 37px;
+            width: 37px;
+            border-radius: 50%;
+            background-color: #ccc;
+            margin: 0 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+    }
+    &::after {
+        content: '';
+        background-color: black;
+        width: 98%;
+        height: 1px;
+        position: absolute;
+        top: 50px;
+    }
+}
+
+.container {
+    margin-top: 8px;
+    height: 80vh;
+    overflow-y: auto;
 }

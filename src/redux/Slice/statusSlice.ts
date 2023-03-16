@@ -23,38 +23,16 @@ export const statusSlice = createSlice({
             state.error = true
             state.isFetching = false
         },
-        commentStart: (state) => {
+        upStatusStart: (state) => {
             state.isFetching = true
         },
-        commentSuccess: (state) => {
+        upStatusSuccess: (state) => {
+            state.isFetching = false
             state.success = true
-            state.isFetching = false
         },
-        commentFail: (state) => {
+        upStatusFail: (state) => {
+            state.isFetching = false
             state.error = true
-            state.isFetching = false
-        },
-        likeStart: (state) => {
-            state.isFetching = true
-        },
-        likeSuccess: (state) => {
-            state.success = true
-            state.isFetching = false
-        },
-        likeFail: (state) => {
-            state.error = true
-            state.isFetching = false
-        },
-        unLikeStart: (state) => {
-            state.isFetching = true
-        },
-        unLikeSuccess: (state) => {
-            state.success = true
-            state.isFetching = false
-        },
-        unLikeFail: (state) => {
-            state.error = true
-            state.isFetching = false
         },
     },
 })
@@ -63,15 +41,9 @@ export const {
     getStatusStart,
     getStatusSuccess,
     getStatusFail,
-    commentStart,
-    commentSuccess,
-    commentFail,
-    likeStart,
-    likeSuccess,
-    likeFail,
-    unLikeStart,
-    unLikeSuccess,
-    unLikeFail,
+    upStatusStart,
+    upStatusSuccess,
+    upStatusFail,
 } = statusSlice.actions
 
 export default statusSlice.reducer
