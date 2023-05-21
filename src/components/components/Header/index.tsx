@@ -9,6 +9,7 @@ import { updateStt } from '../../../redux/Slice/otherSlice'
 import { logOutUser } from '../../../redux/Api/apiRequest'
 import config from '../../../config'
 import { logOutSuccess } from '../../../redux/Slice/authSlice'
+import noAvt from '../../../public/img/person/non-avt.jpg'
 
 interface Icons {
     icon: any
@@ -81,7 +82,7 @@ const Header = () => {
             </div>
             <div className={cx('end')}>
                 <div className={cx('element-user')} onClick={handleClick}>
-                    user
+                    <img src={user?.userInfo?.avtImg?.url || noAvt} alt="" />
                 </div>
             </div>
         </div>

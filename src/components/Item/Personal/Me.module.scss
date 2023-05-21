@@ -1,0 +1,225 @@
+.header {
+    height: 610px;
+}
+
+.cover-img {
+    width: 100%;
+    height: 410px;
+    display: flex;
+    justify-content: center;
+    background-color: antiquewhite;
+    background-image: linear-gradient(
+        to top,
+        #ffffff,
+        rgba(255, 255, 255.9),
+        rgba(255, 255, 255, 0.7),
+        rgba(255, 255, 255, 0.4),
+        rgba(255, 255, 255, 0)
+    );
+    img {
+        width: 80%;
+        height: 100%;
+        border-radius: 8px;
+        object-fit: cover;
+        object-position: top;
+    }
+}
+
+.h-content {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 12%;
+    position: relative;
+    &::after {
+        content: '';
+        background-color: #ccced2;
+        width: 100%;
+        height: 2px;
+        position: absolute;
+        bottom: 0;
+    }
+}
+
+.info {
+    display: flex;
+    justify-content: space-between;
+
+    height: 150px;
+    position: relative;
+}
+
+.avt {
+    height: 150px;
+    width: 150px;
+    position: absolute;
+    top: -20px;
+    display: flex;
+    cursor: pointer;
+    img {
+        object-fit: cover;
+        object-position: top;
+        height: 90%;
+        width: 90%;
+        border-radius: 50%;
+    }
+    &:hover {
+        opacity: 0.5;
+    }
+}
+
+.more {
+    margin-top: 8px;
+    margin-left: 155px;
+}
+
+.option {
+    display: flex;
+    padding-top: 65px;
+    .add-cover-img {
+        padding: 16px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 32px;
+        min-width: 60px;
+        background-color: #e4e6eb;
+        border-radius: 8px;
+        margin-right: 12px;
+        cursor: pointer;
+        &:hover {
+            background-color: #d8dadf;
+        }
+    }
+    .edit {
+        display: flex;
+        padding: 16px;
+        justify-content: center;
+        align-items: center;
+        height: 32px;
+        min-width: 65px;
+        background-color: #2375e1;
+        color: #fff;
+        border-radius: 8px;
+        cursor: pointer;
+        &:hover {
+            background-color: #216fd6;
+        }
+    }
+}
+
+.h-footer {
+    display: flex;
+    margin-left: 12%;
+    position: sticky;
+    top: 500px;
+    .item {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 4px;
+        height: 40px;
+        padding: 0 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        &:hover {
+            background-color: #f2f2f2;
+        }
+    }
+}
+
+.content {
+    background-color: #f0f2f5;
+    padding: 0 12%;
+    display: flex;
+    padding-top: 12px;
+}
+
+.introduct {
+    height: 300px;
+    width: 490px;
+    background-color: #fff;
+    margin-right: 8px;
+    position: sticky;
+    top: 65px;
+    border-radius: 8px;
+    .h-intro {
+        margin-left: 8px;
+        margin-top: 8px;
+    }
+
+    .otherOf {
+        height: 50px;
+        text-align: center;
+        line-height: 50px;
+        position: relative;
+    }
+    .edit-other {
+        border: #74787c solid 1px;
+        border-radius: 8px;
+        width: 80%;
+        height: 50px;
+        margin: 8px 0 8px 10%;
+        padding: 4px;
+        font-size: 16px;
+    }
+    .edit-profile {
+        background-color: #e4e6eb;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 80%;
+        padding: 8px;
+        border-radius: 8px;
+        margin-left: 10%;
+        cursor: pointer;
+        &:hover {
+            background-color: #d8dadf;
+        }
+    }
+    .option-other {
+        display: flex;
+        .luu-profile,
+        .huy-profile {
+            background-color: #e4e6eb;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 20%;
+            padding: 8px;
+            border-radius: 8px;
+            margin-left: 10%;
+            cursor: pointer;
+            &:hover {
+                background-color: #d8dadf;
+            }
+        }
+    }
+
+    .favorites {
+        margin-top: 16px;
+        margin-left: 8px;
+        display: flex;
+        .f-item {
+            padding: 8px;
+            margin-right: 4px;
+            border-radius: 16px;
+            border: #cfd1d5 solid 1px;
+        }
+    }
+}
+
+.status {
+    flex: 1;
+}
+
+.edit-profile-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    z-index: 10;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(246, 239, 231, 0.7);
+}

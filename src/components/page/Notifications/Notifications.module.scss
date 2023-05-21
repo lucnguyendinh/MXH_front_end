@@ -1,0 +1,39 @@
+.wrapper {
+    display: flex;
+    justify-content: center;
+    background-color: #f0f2f5;
+}
+
+.container {
+    background-color: #fff;
+    width: 680px;
+    margin-top: 16px;
+    border-radius: 8px;
+    height: 1000px;
+    .h {
+        padding: 16px;
+    }
+}
+
+.content {
+    .item {
+        display: flex;
+        cursor: pointer;
+        padding: 8px;
+        margin: 0 8px;
+        border-radius: 8px;
+        &:hover {
+            background-color: #f2f2f2;
+        }
+        .img {
+            height: 60px;
+            width: 60px;
+            margin-right: 16px;
+            img {
+                height: 100%;
+                width: 100%;
+                border-radius: 50%;
+            }
+        }
+    }
+}

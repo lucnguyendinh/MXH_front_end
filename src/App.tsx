@@ -4,6 +4,7 @@ import { Fragment } from 'react'
 import { publicRoutes } from './routes'
 import DefaultLayout from './components/layout/DefaultLayout'
 import MessengerLayout from './components/layout/MessengerLayout'
+import OnlyHeaderLayout from './components/layout/OnlyHeaderLayout'
 
 const App = () => {
     return (
@@ -15,6 +16,8 @@ const App = () => {
                         const Page = route.component
                         if (route.layout === null) {
                             Layout = Fragment
+                        } else if (route.layout === 'header') {
+                            Layout = OnlyHeaderLayout
                         } else if (route.layout === 'msg') {
                             Layout = MessengerLayout
                         }

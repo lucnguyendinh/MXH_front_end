@@ -27,7 +27,6 @@ export const loginUser = async (user: any, dispatch: any, navigate: any) => {
     try {
         const res = await axios.post('/auth/login', user)
         const checked = res.data.userInfo
-
         dispatch(loginSuccess(res.data))
         !checked ? navigate('/registerN') : navigate('/')
     } catch (err: any) {
@@ -59,16 +58,10 @@ export const registerN = async (user: any, dispatch: any, navigate: any) => {
     }
 }
 
-export const logOutUser = async (
-    dispatch: any,
-    navigate: any,
-    id: any,
-    accessToken: any,
-    axiosJWT: any,
-) => {
+export const logOutUser = async (dispatch: any, navigate: any, id: any, accessToken: any, axiosJWT: any) => {
     dispatch(logOutStart())
     try {
-        await axiosJWT.post('/auth/logout', id, {
+        await axios.post('/auth/logout', id, {
             headers: { token: `Bearer ${accessToken}` },
         })
         dispatch(logOutSuccess())

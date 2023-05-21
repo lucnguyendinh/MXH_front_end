@@ -2,11 +2,12 @@ import classNames from 'classnames/bind'
 import { Icon } from '@iconify/react'
 import { useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
+import axios from 'axios'
 
+import noAvt from '../../../public/img/person/non-avt.jpg'
 import styles from './Status.module.scss'
 import ButtonReact from '../ButtonReact'
 import config from '../../../config'
-import axios from 'axios'
 
 interface Props {
     children: any
@@ -117,7 +118,7 @@ const Status = (props: Props) => {
             <div className={cx('header')}>
                 <div className={cx('user')}>
                     <div className={cx('img')}>
-                        <img src={avt} alt="" />
+                        <img src={avt || noAvt} alt="" />
                     </div>
                     <div className={cx('des')}>
                         <div className={cx('name')}>{name}</div>
@@ -158,7 +159,7 @@ const Status = (props: Props) => {
                     <form onSubmit={handleSubmit}>
                         <div className={cx('write')}>
                             <div className={cx('img')}>
-                                <img src={user?.userInfo.avatarUrl} alt="" />
+                                <img src={user?.userInfo.avatarUrl || noAvt} alt="" />
                             </div>
                             <div className={cx('input')}>
                                 <input
@@ -178,7 +179,7 @@ const Status = (props: Props) => {
                             <div key={i}>
                                 <div className={cx('user-comment')}>
                                     <div className={cx('img')}>
-                                        <img src={cmt.user.avatarUrl} alt="" />
+                                        <img src={cmt.user.avatarUrl || noAvt} alt="" />
                                     </div>
                                     <div className={cx('body-comment')}>
                                         <div className={cx('name')}>

@@ -128,7 +128,7 @@ const Messenger = (props: Props) => {
                                     value={text}
                                 />
                                 <button>
-                                    <Icon icon="bxs:smile" width="30" height="30" />
+                                    <Icon icon="bxs:smile" width="30" height="30" style={{ color: '#1685fc' }} />
                                 </button>
                             </div>
                         </form>

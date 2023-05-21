@@ -1,6 +1,7 @@
 .wrapper {
     border-radius: 8px;
     padding: 8px;
+    cursor: pointer;
     span {
         display: flex;
         align-items: center;
@@ -27,4 +28,9 @@
     border-radius: 50%;
     background-color: antiquewhite;
     margin-right: 8px;
+    img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+    }
 }

@@ -3,55 +3,42 @@ import { Icon } from '@iconify/react'
 
 import styles from './SidebarR.module.scss'
 import ButtonItem from '../../Item/ButtonItem'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
 
 const cx = classNames.bind(styles)
 
 const Sidebar = () => {
-    const items = [
-        {
-            icon: <Icon icon="icon-park:avatar" />,
-            text: 'Ngo Thi Thu Ha',
-        },
-        {
-            icon: <Icon icon="icon-park:avatar" />,
-            text: 'Ngo Thi Thu Cun',
-        },
-        {
-            icon: <Icon icon="icon-park:avatar" />,
-            text: 'Ngo Thi Thu Chui',
-        },
-        {
-            icon: <Icon icon="icon-park:avatar" />,
-            text: 'Ngo Thi  Chu Chun',
-        },
-    ]
+    const [users, setUsers] = useState<any>(null)
+
+    useEffect(() => {
+        const getAllUser = async () => {
+            try {
+                const res = await axios.get('/auth/alluser')
+                setUsers(res.data)
+            } catch (err) {
+                console.log(err)
+            }
+        }
+        getAllUser()
+    }, [])
 
     return (
         <div className={cx('wrapper')}>
             <div className={cx('header')}>
                 <p>Nguoi lien he</p>
                 <div className={cx('h-footer')}>
-                    <Icon
-                        className={cx('h-icon')}
-                        icon="material-symbols:video-call-rounded"
-                    />
+                    <Icon className={cx('h-icon')} icon="material-symbols:video-call-rounded" />
                     <Icon className={cx('h-icon')} icon="ic:baseline-search" />
-                    <Icon
-                        className={cx('h-icon')}
-                        icon="iwwa:option-horizontal"
-                    />
+                    <Icon className={cx('h-icon')} icon="iwwa:option-horizontal" />
                 </div>
             </div>
             <div className={cx('body')}>
-                {items.map((item, i) => {
+                {users?.map((u: any, i: any) => {
                     return (
                         <div key={i}>
-                            <ButtonItem
-                                img={item.icon}
-                                width={'100%'}
-                                height={'50px'}
-                            >
-                                {item.text}
+                            <ButtonItem img={u?.avatarUrl} width={'100%'} height={'50px'} to={u._id}>
+                                {u?.fullName}
                             </ButtonItem>
                         </div>
                     )

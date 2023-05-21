@@ -1,21 +1,20 @@
 import classNames from 'classnames/bind'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import styles from './Home.module.scss'
 import Status from '../../Item/Status'
-import { getStatus } from '../../../redux/Api/apiRequest'
 import config from '../../../config'
 import NewsFeed from '../../Item/NewsFeed'
 import CreateStatus from '../../Item/CreateStatus'
+import axios from 'axios'
 
 const cx = classNames.bind(styles)
 
 const Home = () => {
-    const dispatch = useDispatch()
     const navigate = useNavigate()
-    const listStatus = useSelector((state: any) => state.status.getStatus.curenttStatus)
+    const [listStatus, setListStatus] = useState<any>(null)
     const user = useSelector((state: any) => state.auth.login.currentUser)
 
     const [newsFeed, setNewsFeed] = useState(false)
@@ -29,12 +28,19 @@ const Home = () => {
         if (userRegister) {
             navigate('/registerN')
         }
-        getStatus(dispatch)
-        //dùng tạm
-        // setInterval(() => {
-        //     getStatus(dispatch)
-        // }, 1000)
-    }, [dispatch, navigate, user, userRegister])
+    }, [navigate, user, userRegister])
+
+    useEffect(() => {
+        const getStatus = async () => {
+            const res = await axios.get('/status/getstatus')
+            setListStatus(res.data)
+            try {
+            } catch (err) {
+                console.log(err)
+            }
+        }
+        getStatus()
+    }, [])
 
     return (
         <div className="wrapper">

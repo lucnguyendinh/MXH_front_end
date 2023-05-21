@@ -1,7 +1,9 @@
 import classNames from 'classnames/bind'
-import ButtonReact from '../ButtonReact'
+import { useSelector } from 'react-redux'
 
+import ButtonReact from '../ButtonReact'
 import styles from './NewsFeed.module.scss'
+import noAvt from '../../../public/img/person/non-avt.jpg'
 
 const cx = classNames.bind(styles)
 
@@ -11,7 +13,7 @@ interface Props {
 
 const NewsFeed = (props: Props) => {
     const { setNewsFeed } = props
-
+    const user = useSelector((state: any) => state.auth.login.currentUser)
     const handleClick = () => {
         setNewsFeed(true)
     }
@@ -20,7 +22,7 @@ const NewsFeed = (props: Props) => {
         <div className={cx('wrapper')}>
             <div className={cx('header')}>
                 <div className={cx('img')}>
-                    <img src="" alt="" />
+                    <img src={user?.userInfo?.avtImg?.url || noAvt} alt="" />
                 </div>
                 <div className={cx('input')} onClick={handleClick}>
                     <p>Bạn đang nghĩ gì thế ?</p>

@@ -61,7 +61,11 @@
     .element-user {
         height: 44px;
         width: 44px;
-        border-radius: 50%;
-        background-color: antiquewhite;
+        cursor: pointer;
+        img {
+            height: 100%;
+            width: 100%;
+            border-radius: 50%;
+        }
     }
 }
