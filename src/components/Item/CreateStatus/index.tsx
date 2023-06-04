@@ -1,36 +1,85 @@
 import classNames from 'classnames/bind'
 import { Icon } from '@iconify/react'
-import { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useEffect, useRef, useState } from 'react'
+import { useSelector } from 'react-redux'
 
+import noAvt from '../../../public/img/person/non-avt.jpg'
 import styles from './CreateStatus.module.scss'
-import { upStatus } from '../../../redux/Api/apiRequest'
+import config from '../../../config'
+import axios from 'axios'
 
 const cx = classNames.bind(styles)
 
 interface Props {
-    setNewsFeed: any
+    setNewsFeed?: any
+    share?: any
+    idStatus?: any
 }
 
 const CreateStatus = (props: Props) => {
-    const { setNewsFeed } = props
-    const dispatch = useDispatch()
-    const user = useSelector((state: any) => state.auth.login.currentUser?.userInfo._id)
+    const { setNewsFeed, share, idStatus } = props
+    const userInfo = useSelector((state: any) => state.auth.login.currentUser?.userInfo)
+    const user = userInfo._id
     const [optionCheck, setOptionCheck] = useState(1)
     const [checkOption, setCheckOption] = useState(false)
     const [content, setContent] = useState('')
+    const [img, setImg] = useState<any>(null)
+    const [status, setStatus] = useState<any>(null)
     const [shareW, setShareW] = useState('Công khai')
+    const [displayTime, setDisplayTime] = useState('')
+    const inputFileImg = useRef<any>(null)
 
-    const handleUp = () => {
+    const handleImage = async (e: any) => {
+        const file = e.target.files[0]
+        config.setFileToBase(file, setImg)
+    }
+
+    const handleShare = async () => {
         const status = {
             content,
             user,
             shareW: optionCheck,
+            idStatus,
         }
-
-        upStatus(status, dispatch)
-        setNewsFeed(false)
+        try {
+            await axios.post('/status/share', status)
+            setNewsFeed(false)
+        } catch (err) {
+            console.log(err)
+        }
     }
+
+    const handleUp = async () => {
+        const status = {
+            content,
+            user,
+            shareW: optionCheck,
+            img,
+        }
+        try {
+            await axios.post('/status/upstatus', status)
+            setNewsFeed(false)
+        } catch (err) {
+            console.log(err)
+        }
+    }
+    useEffect(() => {
+        const getStatus = async () => {
+            try {
+                const res = await axios.get('/status/getstatusbyid/' + idStatus)
+                setStatus(res.data)
+            } catch (err) {
+                console.log(err)
+            }
+        }
+        if (idStatus) {
+            getStatus()
+        }
+    }, [])
+    useEffect(() => {
+        const timeSinceCreation = (Date.now() - Date.parse(status?.createdAt)) / 1000
+        setDisplayTime(config.timeDefault(timeSinceCreation))
+    }, [status?.createdAt])
 
     const option = [
         {
@@ -63,7 +112,8 @@ const CreateStatus = (props: Props) => {
             {!checkOption ? (
                 <div className={cx('container')}>
                     <div className={cx('header')}>
-                        <h1>Tạo bài viết</h1>
+                        {share ? <h1>Viết bài</h1> : <h1>Tạo bài viết</h1>}
+
                         <div className={cx('close')}>
                             <div className={cx('icon')} onClick={() => setNewsFeed(false)}>
                                 <Icon icon="mdi:close" />
@@ -73,10 +123,10 @@ const CreateStatus = (props: Props) => {
                     <div className={cx('content')}>
                         <div className={cx('user')}>
                             <div className={cx('avatar')}>
-                                <img src="https://via.placeholder.com/40" alt="" />
+                                <img src={userInfo.avtImg.url} alt="" />
                             </div>
                             <div className={cx('info')}>
-                                <div className={cx('name')}>Nguyễn Đình Lực</div>
+                                <div className={cx('name')}>{userInfo.fullName}</div>
                                 <div className={cx('option')} onClick={() => setCheckOption(true)}>
                                     {shareW}
                                 </div>
@@ -92,12 +142,51 @@ const CreateStatus = (props: Props) => {
                                 />
                             </div>
                         </div>
+                        {!!img && (
+                            <div className={cx('images')}>
+                                <img src={img} alt="" />
+                            </div>
+                        )}
+                        {share && (
+                            <div className={cx('share')}>
+                                <div className={cx('header')}>
+                                    <div className={cx('user')}>
+                                        <div className={cx('img')}>
+                                            <img src={status?.user.avtImg?.url || noAvt} alt="" />
+                                        </div>
+                                        <div className={cx('des')}>
+                                            <div className={cx('name')}>{status?.user.fullName}</div>
+                                            <div className={cx('info')}>
+                                                <div className={cx('time')}>{displayTime}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className={cx('content')}>
+                                    <h4>{status?.content}</h4>
+                                    {status?.img && (
+                                        <img style={{ width: '100%' }} className={cx('img')} src={status.img} alt="" />
+                                    )}
+                                </div>
+                            </div>
+                        )}
                     </div>
                     <div className={cx('footer')}>
                         <div className={cx('more')}>
                             <h4>Thêm vào bài viết của bạn</h4>
                             <div className={cx('icon-more')}>
-                                <Icon className={cx('icon', 'green')} icon="icomoon-free:images" />
+                                <Icon
+                                    onClick={() => inputFileImg.current.click()}
+                                    className={cx('icon', 'green')}
+                                    icon="icomoon-free:images"
+                                />
+                                <input
+                                    type="file"
+                                    id="file"
+                                    ref={inputFileImg}
+                                    style={{ display: 'none' }}
+                                    onChange={handleImage}
+                                />
                                 <Icon className={cx('icon', 'blue')} icon="fluent-mdl2:add-friend" />
                                 <Icon
                                     className={cx('icon', 'orange')}
@@ -108,9 +197,20 @@ const CreateStatus = (props: Props) => {
                                 <Icon className={cx('icon')} icon="iwwa:option-horizontal" />
                             </div>
                         </div>
-                        <div onClick={handleUp} className={cx('up')}>
-                            Đăng
-                        </div>
+                        {share ? (
+                            <div onClick={handleShare} className={cx('btn-share')}>
+                                Chia sẻ
+                            </div>
+                        ) : (
+                            <div
+                                onClick={handleUp}
+                                className={cx('up', {
+                                    done: content,
+                                })}
+                            >
+                                Đăng
+                            </div>
+                        )}
                     </div>
                 </div>
             ) : (

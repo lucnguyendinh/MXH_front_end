@@ -20,6 +20,30 @@
     display: flex;
     height: 60px;
     position: relative;
+    .user {
+        display: flex;
+        .img {
+            height: 40px;
+            width: 40px;
+            border-radius: 50%;
+            background-color: antiquewhite;
+            justify-content: center;
+            align-items: center;
+            margin-right: 8px;
+            img {
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+            }
+        }
+        .info {
+            display: flex;
+            .time {
+                position: relative;
+                margin-right: 10px;
+            }
+        }
+    }
     h1 {
         width: 465px;
         display: flex;
@@ -32,6 +56,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        cursor: pointer;
         .icon {
             width: 35px;
             height: 35px;
@@ -64,6 +89,11 @@
             height: 40px;
             border-radius: 50%;
             overflow: hidden;
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
         }
         .option {
             background-color: #cfd1d5;
@@ -84,6 +114,32 @@
                 font-size: 25px;
             }
         }
+    }
+    .images {
+        width: 100%;
+        padding: 1%;
+        img {
+            border-radius: 8px;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+}
+
+.share {
+    margin: 0 16px 8px 16px;
+    border: #cfd1d5 1px solid;
+    border-radius: 16px;
+    .header {
+        &::before {
+            content: none;
+        }
+    }
+    .content {
+        margin-left: 16px;
+        margin-right: 16px;
+        padding-bottom: 12px;
     }
 }
 
@@ -122,20 +178,31 @@
             color: #00a5f4;
         }
     }
+    .btn-share,
     .up {
         margin: 0 16px;
         height: 36px;
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: #e4e6eb;
         border-radius: 8px;
         margin-top: 24px;
-        cursor: pointer;
+
         button {
             background-color: transparent;
-            cursor: pointer;
         }
+    }
+    .up {
+        background-color: #e4e6eb;
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
+    .done,
+    .btn-share {
+        opacity: 1;
+        background-color: #2375e1;
+        color: #fff;
+        cursor: pointer;
     }
 }
 

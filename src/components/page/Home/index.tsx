@@ -56,12 +56,14 @@ const Home = () => {
                         <Status
                             name={status.user.fullName}
                             timed={displayTime}
-                            avt={status.user.avatarUrl}
+                            avt={status.user.avtImg?.url}
                             status={status.shareW}
                             idStatus={status._id}
+                            idUser={status.user._id}
+                            idStatusS={status.idStatus}
                         >
                             <h3>{status.content}</h3>
-                            {status.img && <img className={cx('img')} src={status.img} alt="Thien nhien" />}
+                            {status.img && <img className={cx('img')} src={status.img} alt="" />}
                         </Status>
                     </div>
                 )

@@ -18,8 +18,6 @@ const Me = () => {
     const [listStatus, setListStatus] = useState<any>(null)
     const [userInfo, setUserInfo] = useState<any>(null)
     const [linkCover, setLinkCover] = useState<any>(null)
-    const [coverImg, setCoverImg] = useState<any>('')
-    const [avtImg, setAvtImg] = useState<any>('')
     const [confirm, setConfirm] = useState<Boolean>(false)
     const [linkAvt, setLinkAvt] = useState<any>(null)
     const [other, setOther] = useState<any>('')
@@ -58,7 +56,6 @@ const Me = () => {
     //handle and convert it in base 64
     const handleImageCover = async (e: any) => {
         const file = e.target.files[0]
-        setCoverImg(URL.createObjectURL(file))
         config.setFileToBase(file, setLinkCover)
         setConfirm(true)
     }
@@ -77,7 +74,6 @@ const Me = () => {
 
     const handleImageAvt = async (e: any) => {
         const file = e.target.files[0]
-        setAvtImg(URL.createObjectURL(file))
         config.setFileToBase(file, setLinkAvt)
     }
     useEffect(() => {
@@ -113,12 +109,12 @@ const Me = () => {
         <div className={cx('wrapper')}>
             <div className={cx('header')}>
                 <div className={cx('cover-img')}>
-                    <img src={!!coverImg ? coverImg : userInfo?.coverImg?.url || noCoverImg} alt="anh-bia" />
+                    <img src={!!linkCover ? linkCover : userInfo?.coverImg?.url || noCoverImg} alt="anh-bia" />
                 </div>
                 <div className={cx('h-content')}>
                     <div className={cx('info')}>
                         <div className={cx('avt')} onClick={() => inputFileAvt.current.click()}>
-                            <img src={!!avtImg ? avtImg : userInfo?.avtImg?.url || noAvt} alt="avt" />
+                            <img src={!!linkAvt ? linkAvt : userInfo?.avtImg?.url || noAvt} alt="avt" />
                             <input
                                 type="file"
                                 id="file"
@@ -239,7 +235,14 @@ const Me = () => {
                                     idStatus={status._id}
                                 >
                                     <h3>{status.content}</h3>
-                                    {status.img && <img className={cx('img')} src={status.img} alt="Thien nhien" />}
+                                    {status.img && (
+                                        <img
+                                            style={{ width: '100%' }}
+                                            className={cx('img')}
+                                            src={status.img}
+                                            alt="Thien nhien"
+                                        />
+                                    )}
                                 </Status>
                             </div>
                         )
