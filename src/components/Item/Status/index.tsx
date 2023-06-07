@@ -87,6 +87,14 @@ const Status = (props: Props) => {
         }
     }
 
+    const handleLikeComment = async (id: any) => {
+        try {
+            await axios.put('/status/likecomment', { id: id })
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
     const handleLike = async () => {
         const newLike = {
             status: idStatus,
@@ -251,7 +259,7 @@ const Status = (props: Props) => {
                                 <div key={i}>
                                     <div className={cx('user-comment')}>
                                         <div className={cx('img')}>
-                                            <img src={cmt.user.avatarUrl || noAvt} alt="" />
+                                            <img src={cmt.user.avtImg?.url || noAvt} alt="" />
                                         </div>
                                         <div className={cx('body-comment')}>
                                             <div className={cx('name')}>
@@ -264,7 +272,7 @@ const Status = (props: Props) => {
                                     </div>
                                     <div className={cx('option')}>
                                         <div className={cx('like')}>
-                                            <p>Thich</p>
+                                            <p onClick={() => handleLikeComment(cmt._id)}>Thich (1)</p>
                                         </div>
                                         {cmt?.user?._id === user?.userInfo._id && (
                                             <div className={cx('feedback')}>

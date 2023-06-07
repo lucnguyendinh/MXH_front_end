@@ -123,7 +123,7 @@ const CreateStatus = (props: Props) => {
                     <div className={cx('content')}>
                         <div className={cx('user')}>
                             <div className={cx('avatar')}>
-                                <img src={userInfo.avtImg.url} alt="" />
+                                <img src={userInfo.avtImg?.url || noAvt} alt="" />
                             </div>
                             <div className={cx('info')}>
                                 <div className={cx('name')}>{userInfo.fullName}</div>
