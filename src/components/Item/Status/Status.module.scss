@@ -32,6 +32,7 @@
         .time {
             position: relative;
             margin-right: 10px;
+            cursor: pointer;
             &::after {
                 content: '';
                 background-color: black;
@@ -42,6 +43,9 @@
                 top: 45%;
                 right: -5px;
             }
+        }
+        .status {
+            cursor: pointer;
         }
     }
 }

@@ -16,9 +16,7 @@ interface Props {
 
 const EditProfile = (props: Props) => {
     const { setEditProfileCheck, userInfo } = props
-    const [avtImg, setAvtImg] = useState<any>(userInfo?.avtImg?.url)
     const [linkAvt, setLinkAvt] = useState<any>(userInfo?.avtImg?.url)
-    const [coverImg, setCoverImg] = useState<any>(userInfo?.coverImg?.url)
     const [linkCover, setLinkCover] = useState<any>(userInfo?.coverImg?.url)
     const [fullName, setFullName] = useState<any>(userInfo?.fullName)
     const [favorites, setFavorites] = useState<any>(userInfo?.favorites)
@@ -46,13 +44,11 @@ const EditProfile = (props: Props) => {
 
     const handleImageAvt = async (e: any) => {
         const file = e.target.files[0]
-        setAvtImg(URL.createObjectURL(file))
         config.setFileToBase(file, setLinkAvt)
     }
 
     const handleImageCover = async (e: any) => {
         const file = e.target.files[0]
-        setCoverImg(URL.createObjectURL(file))
         config.setFileToBase(file, setLinkCover)
     }
 
@@ -78,7 +74,7 @@ const EditProfile = (props: Props) => {
                         />
                     </div>
                     <div className={cx('img')}>
-                        <img src={avtImg || noAvt} alt="" />
+                        <img src={linkAvt || noAvt} alt="" />
                     </div>
                 </div>
                 <div className={cx('edit-cover')}>
@@ -94,7 +90,7 @@ const EditProfile = (props: Props) => {
                         />
                     </div>
                     <div className={cx('img')}>
-                        <img src={coverImg || noCoverImg} alt="" />
+                        <img src={linkCover || noCoverImg} alt="" />
                     </div>
                 </div>
                 <div className={cx('edit-name')}>

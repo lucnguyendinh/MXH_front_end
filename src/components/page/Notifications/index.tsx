@@ -14,9 +14,9 @@ const Notifications = () => {
     const user = useSelector((state: any) => state.auth.login.currentUser)
     useEffect(() => {
         const getNotifi = async () => {
-            const res = await axios.get('/notification/' + user?.userInfo?._id)
-            setListNotifi(res.data)
             try {
+                const res = await axios.get('/notification/' + user?.userInfo?._id)
+                setListNotifi(res.data)
             } catch (err) {
                 console.log(err)
             }
@@ -44,22 +44,34 @@ const Notifications = () => {
                         } else if (l.action === 3) {
                             action = 'Chia sẻ'
                         }
-
-                        return (
-                            <div className={cx('item')} key={i}>
-                                <div className={cx('img')}>
-                                    <img src={userLast?.avtImg?.url || noAvt} alt="" />
+                        if (l.count !== 0) {
+                            return (
+                                <div className={cx('item')} key={i}>
+                                    <div className={cx('img')}>
+                                        <img src={userLast?.avtImg?.url || noAvt} alt="" />
+                                    </div>
+                                    <div>
+                                        {l.count === 1 ? (
+                                            <>
+                                                <p>
+                                                    <strong>{userLast?.fullName}</strong> đã <strong>{action}</strong>{' '}
+                                                    bài viết của bạn
+                                                </p>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <p>
+                                                    <strong>{userLast?.fullName}</strong> và{' '}
+                                                    <strong>{l.count - 1} người khác</strong> đã{' '}
+                                                    <strong>{action}</strong> bài viết của bạn
+                                                </p>
+                                            </>
+                                        )}
+                                        <p>{displayTime}</p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <p>
-                                        <strong>{userLast?.fullName}</strong> và{' '}
-                                        <strong>{l.count - 1} người khác</strong> đã <strong>{action}</strong> bài viết
-                                        của bạn
-                                    </p>
-                                    <p>{displayTime}</p>
-                                </div>
-                            </div>
-                        )
+                            )
+                        }
                     })}
                 </div>
             </div>

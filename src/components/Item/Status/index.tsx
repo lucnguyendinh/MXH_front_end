@@ -9,6 +9,7 @@ import styles from './Status.module.scss'
 import ButtonReact from '../ButtonReact'
 import config from '../../../config'
 import CreateStatus from '../CreateStatus'
+import { Link } from 'react-router-dom'
 
 interface Props {
     children: any
@@ -16,25 +17,25 @@ interface Props {
     timed?: any
     avt?: any
     status?: any
+    share?: any
     idStatus?: any
     idUser?: any
     idStatusS?: any
+    idStatusUser?: any
 }
 
 const cx = classNames.bind(styles)
 
 const Status = (props: Props) => {
-    const { children, name, timed, avt, status, idStatus, idUser, idStatusS } = props
+    const { children, name, timed, avt, status, share, idStatus, idUser, idStatusS, idStatusUser } = props
 
     const user = useSelector((state: any) => state.auth.login.currentUser)
     const [like, setLike] = useState<any[]>([])
     const [comment, setComment] = useState<any[]>([])
-    const [share, setShare] = useState<any[]>([])
     const [checkShare, setCheckShare] = useState(false)
     const [checkDelete, setCheckDelete] = useState(false)
     const [displayTime, setDisplayTime] = useState('')
     const [idCmt, setIdCmt] = useState('')
-
     let checkLiked = false
     let idLike: any
 
@@ -89,7 +90,31 @@ const Status = (props: Props) => {
 
     const handleLikeComment = async (id: any) => {
         try {
-            await axios.put('/status/likecomment', { id: id })
+            const likeComment = {
+                id: id,
+                user: user?.userInfo._id,
+                status: idStatus,
+            }
+            const res = await axios.put('/status/likecomment', likeComment)
+            console.log(res.data)
+
+            setComment(res.data)
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    const handleUnLikeComment = async (id: any) => {
+        try {
+            const likeComment = {
+                id: id,
+                user: user?.userInfo._id,
+                status: idStatus,
+            }
+            const res = await axios.put('/status/unlikecomment', likeComment)
+            setComment(res.data)
+
+            //setComment(res.data)
         } catch (err) {
             console.log(err)
         }
@@ -151,13 +176,8 @@ const Status = (props: Props) => {
             const res = await axios.get(`/status/getcomment/${idStatus}`)
             setComment(res.data)
         }
-        const getShare = async () => {
-            const res = await axios.get(`/status/getshare/${idStatus}`)
-            setShare(res.data)
-        }
         getLike()
         getComment()
-        getShare()
     }, [idStatus])
     useEffect(() => {
         const timeSinceCreation = (Date.now() - Date.parse(idStatusS?.createdAt)) / 1000
@@ -169,11 +189,15 @@ const Status = (props: Props) => {
             <div className={cx('wrapper')}>
                 <div className={cx('header')}>
                     <div className={cx('user')}>
-                        <div className={cx('img')}>
-                            <img src={avt || noAvt} alt="" />
-                        </div>
+                        <Link to={`/profile/${idUser}`}>
+                            <div className={cx('img')}>
+                                <img src={avt || noAvt} alt="" />
+                            </div>
+                        </Link>
                         <div className={cx('des')}>
-                            <div className={cx('name')}>{name}</div>
+                            <Link to={`/profile/${idUser}`}>
+                                <div className={cx('name')}>{name}</div>
+                            </Link>
                             <div className={cx('info')}>
                                 <div className={cx('time')}>{timed}</div>
                                 <div className={cx('status')}>{iconStatus}</div>
@@ -181,8 +205,10 @@ const Status = (props: Props) => {
                         </div>
                     </div>
                     <div className={cx('option')}>
-                        <Icon icon="iwwa:option-horizontal" />
-                        <Icon icon="material-symbols:close" />
+                        <Icon icon="iwwa:option-horizontal" style={{ cursor: 'pointer' }} />
+                        {user?.userInfo._id !== idUser && (
+                            <Icon icon="material-symbols:close" style={{ cursor: 'pointer' }} />
+                        )}
                     </div>
                 </div>
                 <div className={cx('container')}>
@@ -192,10 +218,15 @@ const Status = (props: Props) => {
                             <div className={cx('header')}>
                                 <div className={cx('user')}>
                                     <div className={cx('img')}>
-                                        <img src={idStatusS.user.avtImg?.url || noAvt} alt="" />
+                                        <img
+                                            src={idStatusS.user.avtImg?.url || idStatusUser.avtImg?.url || noAvt}
+                                            alt=""
+                                        />
                                     </div>
                                     <div className={cx('des')}>
-                                        <div className={cx('name')}>{idStatusS.user.fullName}</div>
+                                        <div className={cx('name')}>
+                                            {idStatusS.user.fullName || idStatusUser.fullName}
+                                        </div>
                                         <div className={cx('info')}>
                                             <div className={cx('time')}>{displayTime}</div>
                                             <div className={cx('status')}>{iconStatus}</div>
@@ -204,9 +235,17 @@ const Status = (props: Props) => {
                                 </div>
                             </div>
                             <div className={cx('content')}>
-                                <h4>{idStatusS?.content}</h4>
+                                {idStatusS?.content && <h4>{idStatusS?.content}</h4>}
                                 {idStatusS?.img && (
                                     <img style={{ width: '100%' }} className={cx('img')} src={idStatusS.img} alt="" />
+                                )}
+                                {idStatusS?.video && (
+                                    <video
+                                        style={{ width: '100%' }}
+                                        className={cx('img')}
+                                        src={idStatusS.video}
+                                        controls
+                                    />
                                 )}
                             </div>
                         </div>
@@ -217,7 +256,7 @@ const Status = (props: Props) => {
                         <h4>{like.length} lượt thích</h4>
                         <div className={cx('comment-share')}>
                             <h4>{comment.length} bình luận</h4>
-                            <h4>{share.length} chia sẻ</h4>
+                            <h4>{share?.length} chia sẻ</h4>
                         </div>
                     </div>
                     <div className={cx('react')}>
@@ -241,6 +280,7 @@ const Status = (props: Props) => {
                                 <div className={cx('img')}>
                                     <img src={user?.userInfo.avtImg?.url || noAvt} alt="" />
                                 </div>
+
                                 <div className={cx('input')}>
                                     <input
                                         onChange={(e) => setContent(e.target.value)}
@@ -251,29 +291,45 @@ const Status = (props: Props) => {
                                 </div>
                             </div>
                         </form>
-                        {comment.map((cmt: any, i: any) => {
+                        {comment?.map((cmt: any, i: any) => {
                             const timeSinceCreation = (Date.now() - Date.parse(cmt.createdAt)) / 1000
                             const displayTime = config.timeDefault(timeSinceCreation)
+                            const checkCmt = cmt.numberLike.user.includes(user?.userInfo._id)
 
                             return (
                                 <div key={i}>
                                     <div className={cx('user-comment')}>
-                                        <div className={cx('img')}>
-                                            <img src={cmt.user.avtImg?.url || noAvt} alt="" />
-                                        </div>
-                                        <div className={cx('body-comment')}>
-                                            <div className={cx('name')}>
-                                                <h4>{cmt.user.fullName}</h4>
+                                        <Link to={`/profile/${cmt.user._id}`}>
+                                            <div className={cx('img')}>
+                                                <img src={cmt.user.avtImg?.url || noAvt} alt="" />
                                             </div>
+                                        </Link>
+                                        <div className={cx('body-comment')}>
+                                            <Link to={`/profile/${cmt.user._id}`}>
+                                                <div className={cx('name')}>
+                                                    <h4>{cmt.user.fullName}</h4>
+                                                </div>
+                                            </Link>
                                             <div className={cx('content')}>
                                                 <p>{cmt.content}</p>
                                             </div>
                                         </div>
                                     </div>
                                     <div className={cx('option')}>
-                                        <div className={cx('like')}>
-                                            <p onClick={() => handleLikeComment(cmt._id)}>Thich (1)</p>
-                                        </div>
+                                        {checkCmt ? (
+                                            <div style={{ color: '#2078f4' }} className={cx('like')}>
+                                                <p onClick={() => handleUnLikeComment(cmt._id)}>
+                                                    Thich ({cmt.numberLike.count})
+                                                </p>
+                                            </div>
+                                        ) : (
+                                            <div className={cx('like')}>
+                                                <p onClick={() => handleLikeComment(cmt._id)}>
+                                                    Thich {cmt.numberLike.count > 0 && `(${cmt.numberLike.count})`}
+                                                </p>
+                                            </div>
+                                        )}
+
                                         {cmt?.user?._id === user?.userInfo._id && (
                                             <div className={cx('feedback')}>
                                                 <p
@@ -296,7 +352,9 @@ const Status = (props: Props) => {
                     </div>
                 </div>
             </div>
-            {checkShare && <CreateStatus setNewsFeed={setCheckShare} share={true} idStatus={idStatus} />}
+            {checkShare && (
+                <CreateStatus setNewsFeed={setCheckShare} share={true} idStatus={idStatus} idUser={idUser} />
+            )}
             {checkDelete && (
                 <div className={cx('wapper-delete')}>
                     <div className={cx('tab-delete')}>

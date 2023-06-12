@@ -14,16 +14,17 @@ interface Props {
     setNewsFeed?: any
     share?: any
     idStatus?: any
+    idUser?: any
 }
 
 const CreateStatus = (props: Props) => {
-    const { setNewsFeed, share, idStatus } = props
+    const { setNewsFeed, share, idStatus, idUser } = props
     const userInfo = useSelector((state: any) => state.auth.login.currentUser?.userInfo)
     const user = userInfo._id
     const [optionCheck, setOptionCheck] = useState(1)
     const [checkOption, setCheckOption] = useState(false)
     const [content, setContent] = useState('')
-    const [img, setImg] = useState<any>(null)
+    const [media, setMedia] = useState<any>(null)
     const [status, setStatus] = useState<any>(null)
     const [shareW, setShareW] = useState('Công khai')
     const [displayTime, setDisplayTime] = useState('')
@@ -31,7 +32,7 @@ const CreateStatus = (props: Props) => {
 
     const handleImage = async (e: any) => {
         const file = e.target.files[0]
-        config.setFileToBase(file, setImg)
+        config.setFileToBase(file, setMedia)
     }
 
     const handleShare = async () => {
@@ -41,8 +42,14 @@ const CreateStatus = (props: Props) => {
             shareW: optionCheck,
             idStatus,
         }
+        const Notifi = {
+            idUser,
+            idOther: user,
+            idStatus: idStatus,
+        }
         try {
             await axios.post('/status/share', status)
+            await axios.post('/notification/share', Notifi)
             setNewsFeed(false)
         } catch (err) {
             console.log(err)
@@ -54,7 +61,7 @@ const CreateStatus = (props: Props) => {
             content,
             user,
             shareW: optionCheck,
-            img,
+            media,
         }
         try {
             await axios.post('/status/upstatus', status)
@@ -142,9 +149,14 @@ const CreateStatus = (props: Props) => {
                                 />
                             </div>
                         </div>
-                        {!!img && (
+                        {!!media && media.startsWith('data:image/') && (
                             <div className={cx('images')}>
-                                <img src={img} alt="" />
+                                <img src={media} alt="" />
+                            </div>
+                        )}
+                        {!!media && media.startsWith('data:video/') && (
+                            <div className={cx('images')}>
+                                <video src={media} controls />
                             </div>
                         )}
                         {share && (
@@ -186,6 +198,7 @@ const CreateStatus = (props: Props) => {
                                     ref={inputFileImg}
                                     style={{ display: 'none' }}
                                     onChange={handleImage}
+                                    accept="image/*,video/*"
                                 />
                                 <Icon className={cx('icon', 'blue')} icon="fluent-mdl2:add-friend" />
                                 <Icon

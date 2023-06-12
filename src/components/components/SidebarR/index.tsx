@@ -26,7 +26,7 @@ const Sidebar = () => {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('header')}>
-                <p>Nguoi lien he</p>
+                <p>Người liên hệ</p>
                 <div className={cx('h-footer')}>
                     <Icon className={cx('h-icon')} icon="material-symbols:video-call-rounded" />
                     <Icon className={cx('h-icon')} icon="ic:baseline-search" />
@@ -37,7 +37,7 @@ const Sidebar = () => {
                 {users?.map((u: any, i: any) => {
                     return (
                         <div key={i}>
-                            <ButtonItem img={u?.avatarUrl} width={'100%'} height={'50px'} to={u._id}>
+                            <ButtonItem img={u.avtImg?.url} width={'100%'} height={'50px'} to={u._id}>
                                 {u?.fullName}
                             </ButtonItem>
                         </div>

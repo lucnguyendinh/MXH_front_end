@@ -45,8 +45,9 @@ export const authSlice = createSlice({
         registerNStart: (state) => {
             state.isFetching = true
         },
-        registerNSuccess: (state) => {
+        registerNSuccess: (state, action) => {
             state.isFetching = false
+            state.login.currentUser = action.payload
             state.success = true
             state.error = false
         },

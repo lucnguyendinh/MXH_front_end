@@ -51,7 +51,7 @@ export const registerN = async (user: any, dispatch: any, navigate: any) => {
     dispatch(registerNStart())
     try {
         await axios.post('/auth/register1', user)
-        dispatch(registerNSuccess())
+        dispatch(registerNSuccess(null))
         navigate('/login')
     } catch (err) {
         dispatch(registerNFailed())

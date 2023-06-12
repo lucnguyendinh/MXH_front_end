@@ -10,25 +10,43 @@ interface Props {
     width: any
     height: any
     to?: any
+    className?: any
+    toChildren?: any
+    closeTab?: any
 }
 
 const cx = classNames.bind(styles)
 
 const ButtonItem = (props: Props) => {
-    const { children, img, width, height, to } = props
+    const { children, img, width, height, to, className, toChildren, closeTab } = props
 
-    return (
-        <Link to={`/profile/${to}`}>
-            <div className={cx('wrapper')} style={{ width, height }}>
+    if (to) {
+        return (
+            <Link to={`/profile/${to}`}>
+                <div className={cx('wrapper', className)} style={{ width, height }}>
+                    <span>
+                        <div className={cx('img')}>
+                            <img src={img || noAvt} alt="avt" />
+                        </div>
+                        <div className={cx('text')}>{children}</div>
+                    </span>
+                </div>
+            </Link>
+        )
+    } else {
+        return (
+            <div className={cx('wrapper', className)} style={{ width, height }}>
                 <span>
-                    <div className={cx('img')}>
-                        <img src={img || noAvt} alt="avt" />
-                    </div>
+                    <Link to={`/profile/${toChildren}`} onClick={closeTab}>
+                        <div className={cx('img')}>
+                            <img src={img || noAvt} alt="avt" />
+                        </div>
+                    </Link>
                     <div className={cx('text')}>{children}</div>
                 </span>
             </div>
-        </Link>
-    )
+        )
+    }
 }
 
 export default ButtonItem
