@@ -5,17 +5,19 @@ import styles from './SidebarR.module.scss'
 import ButtonItem from '../../Item/ButtonItem'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import { useSelector } from 'react-redux'
 
 const cx = classNames.bind(styles)
 
 const Sidebar = () => {
+    const userId = useSelector((state: any) => state.auth.login.currentUser.userInfo._id)
     const [users, setUsers] = useState<any>(null)
 
     useEffect(() => {
         const getAllUser = async () => {
             try {
-                const res = await axios.get('/auth/alluser')
-                setUsers(res.data)
+                const res = await axios.get(`/auth?userId=${userId}`)
+                setUsers(res.data.follow.following)
             } catch (err) {
                 console.log(err)
             }

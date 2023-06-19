@@ -141,10 +141,9 @@ const CreateStatus = (props: Props) => {
                         </div>
                         <div className={cx('input')}>
                             <div className={cx('work')}>
-                                <input
+                                <textarea
                                     onChange={(e) => setContent(e.target.value)}
                                     value={content}
-                                    type="text"
                                     placeholder="Bạn đang nghĩ gì thế ?"
                                 />
                             </div>

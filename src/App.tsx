@@ -5,6 +5,7 @@ import { publicRoutes } from './routes'
 import DefaultLayout from './components/layout/DefaultLayout'
 import MessengerLayout from './components/layout/MessengerLayout'
 import OnlyHeaderLayout from './components/layout/OnlyHeaderLayout'
+import HeaderAndSideBarL from './components/layout/HeaderAndSideBarL'
 
 const App = () => {
     return (
@@ -20,6 +21,8 @@ const App = () => {
                             Layout = OnlyHeaderLayout
                         } else if (route.layout === 'msg') {
                             Layout = MessengerLayout
+                        } else if (route.layout === 'headerandsidebarl') {
+                            Layout = HeaderAndSideBarL
                         }
 
                         return (

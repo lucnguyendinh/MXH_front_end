@@ -7,17 +7,19 @@ import Sender from '../../components/Sender'
 import { useEffect, useRef, useState } from 'react'
 import axios from 'axios'
 import { useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
+import noAvt from '../../../public/img/person/non-avt.jpg'
 
 const cx = classNames.bind(styles)
 
 interface Props {
     className?: any
-    item?: any
-    idU?: any
+    idMess?: any
+    id?: any
 }
 
 const Messenger = (props: Props) => {
-    const { className, item, idU } = props
+    const { className, idMess, id } = props
     const user = useSelector((state: any) => state.auth.login.currentUser)
     const [currentChat, setCurrentChat] = useState<any>(null)
     const [userChat, setUserChat] = useState<any>(null)
@@ -38,32 +40,35 @@ const Messenger = (props: Props) => {
 
     useEffect(() => {
         //emit: gửi lên server
-        socket.current.emit('addUser', user.userInfo._id)
+        socket.current.emit('addUser', user?.userInfo._id)
         socket.current.on('getUsers', (users: any) => {
             console.log(users)
         })
-    }, [user.userInfo._id])
+    }, [user?.userInfo._id])
 
     useEffect(() => {
         const getMess = async () => {
             try {
-                const res = await axios.get('/message/getmess/' + item)
+                const res = await axios.get('/message/getmess/' + idMess)
                 setCurrentChat(res.data)
             } catch (err) {
                 console.log(err)
             }
         }
+        if (idMess) getMess()
+    }, [idMess])
+
+    useEffect(() => {
         const getUser = async () => {
             try {
-                const res = await axios.get('/auth?userId=' + idU)
+                const res = await axios.get('/auth?userId=' + id)
                 setUserChat(res.data)
             } catch (err) {
                 console.log(err)
             }
         }
-        if (idU) getUser()
-        if (item) getMess()
-    }, [item, idU])
+        if (id) getUser()
+    }, [id])
     useEffect(() => {
         scrollRef.current?.scrollIntoView()
     }, [currentChat])
@@ -72,14 +77,14 @@ const Messenger = (props: Props) => {
         e.preventDefault()
         try {
             const newChat = {
-                conversationId: item,
+                conversationId: idMess,
                 sender: user?.userInfo._id,
                 text: text,
             }
 
             socket.current.emit('sendMessage', {
                 senderId: user.userInfo._id,
-                receiverId: idU,
+                receiverId: id,
                 text: newChat,
             })
 
@@ -94,10 +99,7 @@ const Messenger = (props: Props) => {
         <div className={cx('wrapper', className)}>
             <div className={cx('header')}>
                 <div className={cx('img')}>
-                    <img
-                        src={userChat?.avatarUrl ? userChat?.avatarUrl : 'https://www.danhgiaxe.com/data/avatar.jpg'}
-                        alt=""
-                    />
+                    <img src={userChat?.avtImg?.url ? userChat?.avtImg.url : noAvt} alt="avt" />
                 </div>
                 <div className="name">
                     <h3>{userChat?.fullName}</h3>

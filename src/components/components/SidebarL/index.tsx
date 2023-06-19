@@ -1,19 +1,60 @@
 import classNames from 'classnames/bind'
+import { Icon } from '@iconify/react'
 
 import styles from './SidebarL.module.scss'
 import ButtonItem from '../../Item/ButtonItem'
 import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 const cx = classNames.bind(styles)
 
 const SidebarL = () => {
     const user = useSelector((state: any) => state.auth.login.currentUser)
+    const list: any = [
+        {
+            icon: <Icon icon="fa-solid:user-friends" className={cx('icon')} />,
+            title: 'Bạn bè ( đề xuất )',
+            to: '/friends',
+        },
+        {
+            icon: <Icon icon="jam:screen-f" className={cx('icon')} />,
+            title: 'Watch',
+        },
+        {
+            icon: <Icon icon="fluent:feed-24-regular" className={cx('icon')} />,
+            title: 'Bảng feed (Gần đây nhất)',
+        },
+        {
+            icon: <Icon icon="el:group" className={cx('icon')} />,
+            title: 'Nhóm',
+        },
+        {
+            icon: <Icon icon="healthicons:market-stall" className={cx('icon')} />,
+            title: 'Marketplace',
+        },
+    ]
 
     return (
         <div className={cx('wrapper')}>
             <ButtonItem img={user?.userInfo?.avtImg?.url} width={'100%'} height={'50px'} to={user?.userInfo?._id}>
                 {user?.userInfo?.fullName}
             </ButtonItem>
+            {list.map((l: any, i: any) => {
+                if (l.to) {
+                    return (
+                        <Link key={i} to={l.to}>
+                            <ButtonItem icon={l.icon} width={'100%'} height={'55px'}>
+                                {l.title}
+                            </ButtonItem>
+                        </Link>
+                    )
+                }
+                return (
+                    <ButtonItem key={i} icon={l.icon} width={'100%'} height={'55px'}>
+                        {l.title}
+                    </ButtonItem>
+                )
+            })}
         </div>
     )
 }

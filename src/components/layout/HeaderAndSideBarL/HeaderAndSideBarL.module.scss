@@ -1,0 +1,22 @@
+.wrapper {
+    min-height: 1000px;
+    background-color: #f0f2f5;
+    margin-top: 56px;
+}
+
+.container {
+    display: flex;
+}
+
+.content {
+    flex: 1;
+    margin: 8px 20% 0 25%;
+}
+
+.side-bar-l {
+    width: 22%;
+    margin-right: 3%;
+    height: 100vh;
+    overflow-y: auto;
+    position: fixed;
+}

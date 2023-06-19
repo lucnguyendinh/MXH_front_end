@@ -3,29 +3,27 @@ import { Icon } from '@iconify/react'
 
 import styles from './SidebarMsg.module.scss'
 import MsgItem from '../MsgItem'
-import { useState } from 'react'
 import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 const cx = classNames.bind(styles)
 
 interface Props {
     className?: any
     item?: any
-    setIdMess?: any
-    setIdU?: any
+    id?: any
 }
 
 const SidebarMsg = (props: Props) => {
-    const { className, item, setIdMess, setIdU } = props
+    const { className, item, id } = props
+    const navigate = useNavigate()
     const user = useSelector((state: any) => state.auth.login.currentUser)
-    const [idM, setIdM] = useState<any>()
 
     const handleClick = (i: any) => {
-        setIdMess(i._id)
-        setIdM(i._id)
         const idFriend = i.members.filter((i: any) => i !== user?.userInfo._id).join('')
-        setIdU(idFriend)
+        navigate('/messenger/' + idFriend)
     }
+
     return (
         <div className={cx('wrapper', className)}>
             <div className={cx('header')}>
@@ -48,7 +46,7 @@ const SidebarMsg = (props: Props) => {
                     return (
                         <MsgItem
                             item={i?.members}
-                            currentChat={idM === i._id}
+                            currentChat={i.members.includes(id)}
                             key={index}
                             onClick={() => handleClick(i)}
                         />

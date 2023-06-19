@@ -22,12 +22,13 @@ interface Props {
     idUser?: any
     idStatusS?: any
     idStatusUser?: any
+    className?: any
 }
 
 const cx = classNames.bind(styles)
 
 const Status = (props: Props) => {
-    const { children, name, timed, avt, status, share, idStatus, idUser, idStatusS, idStatusUser } = props
+    const { children, name, timed, avt, status, share, idStatus, idUser, idStatusS, idStatusUser, className } = props
 
     const user = useSelector((state: any) => state.auth.login.currentUser)
     const [like, setLike] = useState<any[]>([])
@@ -186,7 +187,7 @@ const Status = (props: Props) => {
 
     return (
         <>
-            <div className={cx('wrapper')}>
+            <div className={cx('wrapper', className)}>
                 <div className={cx('header')}>
                     <div className={cx('user')}>
                         <Link to={`/profile/${idUser}`}>

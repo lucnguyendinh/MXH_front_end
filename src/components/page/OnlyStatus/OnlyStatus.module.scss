@@ -1,0 +1,11 @@
+.wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f2f5;
+    min-height: calc(100vh - 56px);
+}
+
+.status {
+    min-width: 1056px;
+}

@@ -1,11 +1,10 @@
 import classNames from 'classnames/bind'
 import { Icon } from '@iconify/react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 
 import ButtonHome from '../../Item/ButtonAction'
 import styles from './Header.module.scss'
-import { updateStt } from '../../../redux/Slice/otherSlice'
 import { logOutUser } from '../../../redux/Api/apiRequest'
 import config from '../../../config'
 import { logOutSuccess } from '../../../redux/Slice/authSlice'
@@ -24,8 +23,7 @@ const Header = () => {
     const navigate = useNavigate()
 
     const user = useSelector((state: any) => state.auth.login.currentUser)
-    const Rstt = useSelector((state: any) => state.other.stt)
-
+    const location = useLocation()
     const id = user?.userInfo?._id
 
     const accessToken = useSelector((state: any) => state.auth.login.currentUser?.accessToken)
@@ -61,18 +59,22 @@ const Header = () => {
             </div>
             <div className={cx('action')}>
                 {icons.map((icon: Icons) => {
+                    let stt: Number
+                    if (location.pathname.startsWith('/notifications')) {
+                        stt = 3
+                    } else if (location.pathname.startsWith('/messenger')) {
+                        stt = 2
+                    } else {
+                        stt = 1
+                    }
                     return (
                         <div key={icon.stt}>
                             <ButtonHome
                                 to={icon.to}
                                 className={cx('element', {
-                                    active: Rstt === icon.stt,
-                                    'no-active': Rstt !== icon.stt,
+                                    active: stt === icon.stt,
+                                    'no-active': stt !== icon.stt,
                                 })}
-                                onClick={() => {
-                                    const stt = icon.stt
-                                    dispatch(updateStt({ stt }))
-                                }}
                             >
                                 {icon.icon}
                             </ButtonHome>

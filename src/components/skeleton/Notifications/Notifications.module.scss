@@ -1,0 +1,16 @@
+.wrapper {
+    display: flex;
+    justify-content: center;
+    background-color: #f0f2f5;
+}
+
+.container {
+    background-color: #fff;
+    width: 680px;
+    margin-top: 16px;
+    border-radius: 8px;
+    height: 1000px;
+    .h {
+        padding: 16px;
+    }
+}

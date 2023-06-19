@@ -8,19 +8,33 @@ import SidebarMsg from '../../components/SidebarMsg'
 import InfoMsg from '../../components/InfoMsg'
 import Messenger from '../../page/Messenger'
 import styles from './MessengerLayout.module.scss'
+import { useParams } from 'react-router-dom'
+import MessengerSkeleton from '../../skeleton/Messenger'
 
 const cx = classNames.bind(styles)
 
 const MessengerLayout = () => {
     const user = useSelector((state: any) => state.auth.login.currentUser)
-    const [userM, setUserM] = useState(null)
+    const [userM, setUserM] = useState([])
     const [idMess, setIdMess] = useState<any>()
-    const [idU, setIdU] = useState<any>()
+    const [loading, setLoading] = useState(false)
+
+    const { id } = useParams()
+
+    useEffect(() => {
+        userM.forEach((e: any) => {
+            if (e.members.includes(id)) {
+                setIdMess(e._id)
+            }
+        })
+    }, [userM, id])
 
     useEffect(() => {
         const getMessage = async () => {
             try {
+                setLoading(true)
                 const res = await axios.get(`/message/getmessage/${user.userInfo._id}`)
+                setLoading(false)
                 setUserM(res.data)
             } catch (err) {
                 console.log(err)
@@ -29,14 +43,20 @@ const MessengerLayout = () => {
         getMessage()
     }, [user?.userInfo._id])
     return (
-        <div className={cx('wrapper')}>
-            <Header />
-            <div className={cx('container')}>
-                <SidebarMsg className={cx('side-bar')} item={userM} setIdMess={setIdMess} setIdU={setIdU} />
-                <Messenger className={cx('msg')} item={idMess} idU={idU} />
-                <InfoMsg className={cx('info')} idU={idU} />
-            </div>
-        </div>
+        <>
+            {loading ? (
+                <MessengerSkeleton />
+            ) : (
+                <div className={cx('wrapper')}>
+                    <Header />
+                    <div className={cx('container')}>
+                        <SidebarMsg className={cx('side-bar')} item={userM} id={id} />
+                        <Messenger className={cx('msg')} idMess={idMess} id={id} />
+                        <InfoMsg className={cx('info')} id={id} />
+                    </div>
+                </div>
+            )}
+        </>
     )
 }
 

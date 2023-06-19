@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 
 import styles from './MsgItem.module.scss'
+import noAvt from '../../../public/img/person/non-avt.jpg'
 
 const cx = classNames.bind(styles)
 
@@ -39,10 +40,7 @@ const MsgItem = (props: Props) => {
             onClick={onClick}
         >
             <div className={cx('avt')}>
-                <img
-                    src={infoUser?.avatarUrl ? infoUser?.avatarUrl : 'https://www.danhgiaxe.com/data/avatar.jpg'}
-                    alt=""
-                />
+                <img src={infoUser?.avtImg?.url ? infoUser?.avtImg.url : noAvt} alt="" />
             </div>
             <div className={cx('name')}>{infoUser?.fullName}</div>
         </div>

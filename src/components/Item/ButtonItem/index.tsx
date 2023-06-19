@@ -6,7 +6,8 @@ import styles from './ButtonItem.module.scss'
 
 interface Props {
     children: any
-    img: any
+    img?: any
+    icon?: any
     width: any
     height: any
     to?: any
@@ -18,7 +19,7 @@ interface Props {
 const cx = classNames.bind(styles)
 
 const ButtonItem = (props: Props) => {
-    const { children, img, width, height, to, className, toChildren, closeTab } = props
+    const { children, img, icon, width, height, to, className, toChildren, closeTab } = props
 
     if (to) {
         return (
@@ -37,11 +38,15 @@ const ButtonItem = (props: Props) => {
         return (
             <div className={cx('wrapper', className)} style={{ width, height }}>
                 <span>
-                    <Link to={`/profile/${toChildren}`} onClick={closeTab}>
-                        <div className={cx('img')}>
-                            <img src={img || noAvt} alt="avt" />
-                        </div>
-                    </Link>
+                    {!icon ? (
+                        <Link to={`/profile/${toChildren}`} onClick={closeTab}>
+                            <div className={cx('img')}>
+                                <img src={img || noAvt} alt="avt" />
+                            </div>
+                        </Link>
+                    ) : (
+                        <div className={cx('img')}>{icon}</div>
+                    )}
                     <div className={cx('text')}>{children}</div>
                 </span>
             </div>
