@@ -57,5 +57,5 @@
         "@types/lodash": "^4.14.195",
         "sass": "^1.57.1"
     },
-    "proxy": "http://mxh-back-end.vercel.app/"
+    "proxy": "https://mxh-back-end.vercel.app/"
 }
