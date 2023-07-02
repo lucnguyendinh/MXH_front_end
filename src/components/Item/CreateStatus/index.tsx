@@ -6,7 +6,8 @@ import { useSelector } from 'react-redux'
 import noAvt from '../../../public/img/person/non-avt.jpg'
 import styles from './CreateStatus.module.scss'
 import config from '../../../config'
-import axios from 'axios'
+import useJWT from '../../../config/useJWT'
+import Video from '../Video'
 
 const cx = classNames.bind(styles)
 
@@ -19,8 +20,7 @@ interface Props {
 
 const CreateStatus = (props: Props) => {
     const { setNewsFeed, share, idStatus, idUser } = props
-    const userInfo = useSelector((state: any) => state.auth.login.currentUser?.userInfo)
-    const user = userInfo._id
+    const user = useSelector((state: any) => state.auth.login.currentUser)
     const [optionCheck, setOptionCheck] = useState(1)
     const [checkOption, setCheckOption] = useState(false)
     const [content, setContent] = useState('')
@@ -29,6 +29,7 @@ const CreateStatus = (props: Props) => {
     const [shareW, setShareW] = useState('Công khai')
     const [displayTime, setDisplayTime] = useState('')
     const inputFileImg = useRef<any>(null)
+    const axiosJWT = useJWT()
 
     const handleImage = async (e: any) => {
         const file = e.target.files[0]
@@ -38,18 +39,22 @@ const CreateStatus = (props: Props) => {
     const handleShare = async () => {
         const status = {
             content,
-            user,
+            user: user?.userInfo._id,
             shareW: optionCheck,
             idStatus,
         }
         const Notifi = {
             idUser,
-            idOther: user,
+            idOther: user?.userInfo._id,
             idStatus: idStatus,
         }
         try {
-            await axios.post('/status/share', status)
-            await axios.post('/notification/share', Notifi)
+            await axiosJWT.post('/status/share', status, {
+                headers: { token: `Bearer ${user.accessToken}` },
+            })
+            await axiosJWT.post('/notification/share', Notifi, {
+                headers: { token: `Bearer ${user.accessToken}` },
+            })
             setNewsFeed(false)
         } catch (err) {
             console.log(err)
@@ -59,12 +64,14 @@ const CreateStatus = (props: Props) => {
     const handleUp = async () => {
         const status = {
             content,
-            user,
+            user: user?.userInfo._id,
             shareW: optionCheck,
             media,
         }
         try {
-            await axios.post('/status/upstatus', status)
+            await axiosJWT.post('/status/upstatus', status, {
+                headers: { token: `Bearer ${user.accessToken}` },
+            })
             setNewsFeed(false)
         } catch (err) {
             console.log(err)
@@ -73,7 +80,9 @@ const CreateStatus = (props: Props) => {
     useEffect(() => {
         const getStatus = async () => {
             try {
-                const res = await axios.get('/status/getstatusbyid/' + idStatus)
+                const res = await axiosJWT.get('/status/getstatusbyid/' + idStatus, {
+                    headers: { token: `Bearer ${user.accessToken}` },
+                })
                 setStatus(res.data)
             } catch (err) {
                 console.log(err)
@@ -130,10 +139,10 @@ const CreateStatus = (props: Props) => {
                     <div className={cx('content')}>
                         <div className={cx('user')}>
                             <div className={cx('avatar')}>
-                                <img src={userInfo.avtImg?.url || noAvt} alt="" />
+                                <img src={user?.userInfo.avtImg?.url || noAvt} alt="" />
                             </div>
                             <div className={cx('info')}>
-                                <div className={cx('name')}>{userInfo.fullName}</div>
+                                <div className={cx('name')}>{user?.userInfo.fullName}</div>
                                 <div className={cx('option')} onClick={() => setCheckOption(true)}>
                                     {shareW}
                                 </div>
@@ -177,6 +186,11 @@ const CreateStatus = (props: Props) => {
                                     <h4>{status?.content}</h4>
                                     {status?.img && (
                                         <img style={{ width: '100%' }} className={cx('img')} src={status.img} alt="" />
+                                    )}
+                                    {status?.video && (
+                                        <div className={cx('images')}>
+                                            <Video url={status.video} />
+                                        </div>
                                     )}
                                 </div>
                             </div>

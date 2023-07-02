@@ -13,15 +13,6 @@ import {
     registerStart,
     registerSuccess,
 } from '../Slice/authSlice'
-import {
-    getStatusFail,
-    getStatusStart,
-    getStatusSuccess,
-    upStatusStart,
-    upStatusSuccess,
-    upStatusFail,
-} from '../Slice/statusSlice'
-
 export const loginUser = async (user: any, dispatch: any, navigate: any) => {
     dispatch(loginStart())
     try {
@@ -58,7 +49,7 @@ export const registerN = async (user: any, dispatch: any, navigate: any) => {
     }
 }
 
-export const logOutUser = async (dispatch: any, navigate: any, id: any, accessToken: any, axiosJWT: any) => {
+export const logOutUser = async (dispatch: any, navigate: any, id: any, accessToken: any) => {
     dispatch(logOutStart())
     try {
         await axios.post('/auth/logout', id, {
@@ -68,25 +59,5 @@ export const logOutUser = async (dispatch: any, navigate: any, id: any, accessTo
         navigate('/login')
     } catch (err) {
         dispatch(logOutFailed())
-    }
-}
-
-export const getStatus = async (dispatch: any) => {
-    dispatch(getStatusStart())
-    try {
-        const status = await axios.get('/status/getstatus')
-        dispatch(getStatusSuccess(status.data))
-    } catch (err) {
-        dispatch(getStatusFail())
-    }
-}
-
-export const upStatus = async (status: any, dispatch: any) => {
-    dispatch(upStatusStart())
-    try {
-        await axios.post('/status/upstatus', status)
-        dispatch(upStatusSuccess())
-    } catch (err) {
-        dispatch(upStatusFail())
     }
 }

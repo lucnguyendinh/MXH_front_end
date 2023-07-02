@@ -9,6 +9,8 @@ import Personal from '../components/page/Personal'
 import OnlyStatus from '../components/page/OnlyStatus'
 import Friends from '../components/page/Friends'
 import MessengerSkeleton from '../components/skeleton/Messenger'
+import Watch from '../components/page/Watch'
+import NewFeed from '../components/page/NewFeed'
 
 interface Public {
     path: string
@@ -29,6 +31,8 @@ const publicRoutes: Public[] = [
     { path: '/profile/:id', component: Personal, layout: 'header' },
     { path: '/status/:id', component: OnlyStatus, layout: 'header' },
     { path: '/friends', component: Friends, layout: 'headerandsidebarl' },
+    { path: '/watch', component: Watch, layout: 'headerandsidebarl' },
+    { path: '/newfeed', component: NewFeed, layout: 'headerandsidebarl' },
 ]
 
 const privateRoutes: any[] = []

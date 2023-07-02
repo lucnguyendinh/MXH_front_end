@@ -2,24 +2,28 @@ import classNames from 'classnames/bind'
 
 import styles from './Notifications.module.scss'
 import { useEffect, useState } from 'react'
-import axios from 'axios'
 import { useSelector } from 'react-redux'
 import noAvt from '../../../public/img/person/non-avt.jpg'
 import config from '../../../config'
 import { Link } from 'react-router-dom'
 import NotificationsSkeleton from '../../skeleton/Notifications'
+import useJWT from '../../../config/useJWT'
 
 const cx = classNames.bind(styles)
 
 const Notifications = () => {
+    let axiosJWT = useJWT()
     const [listNotifi, setListNotifi] = useState<any>(null)
     const [loading, setLoading] = useState(false)
     const user = useSelector((state: any) => state.auth.login.currentUser)
+
     useEffect(() => {
         const getNotifi = async () => {
             try {
                 setLoading(true)
-                const res = await axios.get('/notification/' + user?.userInfo?._id)
+                const res = await axiosJWT.get('/notification/' + user?.userInfo?._id, {
+                    headers: { token: `Bearer ${user.accessToken}` },
+                })
                 setListNotifi(res.data)
                 setLoading(false)
             } catch (err) {
@@ -27,7 +31,7 @@ const Notifications = () => {
             }
         }
         getNotifi()
-    }, [user?.userInfo?._id])
+    }, [user])
     return (
         <>
             {loading ? (

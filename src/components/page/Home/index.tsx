@@ -9,8 +9,10 @@ import Status from '../../Item/Status'
 import config from '../../../config'
 import NewsFeed from '../../Item/NewsFeed'
 import CreateStatus from '../../Item/CreateStatus'
-import axios from 'axios'
 import HomeSkeleton from '../../skeleton/Home'
+import Error from '../../components/Error'
+import useJWT from '../../../config/useJWT'
+import Video from '../../Item/Video'
 
 const cx = classNames.bind(styles)
 
@@ -19,11 +21,14 @@ const Home = () => {
     const [listStatus, setListStatus] = useState<any>([])
     const [newsFeed, setNewsFeed] = useState(false)
     const [loading, setLoading] = useState(false)
+    const [error, setError] = useState(false)
     const user = useSelector((state: any) => state.auth.login.currentUser)
-
+    const axiosJWT = useJWT()
     const getStatusLast = async () => {
         try {
-            const res = await axios.get('/status/getstatus')
+            const res = await axiosJWT.get('/status/getstatus', {
+                headers: { token: `Bearer ${user.accessToken}` },
+            })
 
             setListStatus((prev: any) => {
                 const status = [...prev, ...res.data]
@@ -62,7 +67,9 @@ const Home = () => {
         const getStatus = async () => {
             try {
                 setLoading(true)
-                const res = await axios.get('/status/getstatus')
+                const res = await axiosJWT.get('/status/getstatus', {
+                    headers: { token: `Bearer ${user.accessToken}` },
+                })
                 setListStatus(res.data)
                 setLoading(false)
             } catch (err) {
@@ -70,7 +77,7 @@ const Home = () => {
             }
         }
         getStatus()
-    }, [])
+    }, [user])
 
     return (
         <>
@@ -87,40 +94,20 @@ const Home = () => {
                         if (listStatus.length === i + 1) {
                             return (
                                 <div ref={lastStatusElementRef} key={i}>
-                                    <Status
-                                        name={status.user.fullName}
-                                        timed={displayTime}
-                                        avt={status.user.avtImg?.url}
-                                        status={status.shareW}
-                                        share={status.share}
-                                        idStatus={status._id}
-                                        idUser={status.user._id}
-                                        idStatusS={status.idStatus}
-                                        idStatusUser={status.idStatusUser}
-                                    >
+                                    <Status timed={displayTime} status={status}>
                                         <h3 style={{ whiteSpace: 'pre-wrap' }}>{status.content}</h3>
                                         {status.img && <img className={cx('img')} src={status.img} alt="" />}
-                                        {status.video && <video className={cx('img')} src={status.video} controls />}
+                                        {status.video && <Video url={status.video} />}
                                     </Status>
                                 </div>
                             )
                         } else {
                             return (
                                 <div key={i}>
-                                    <Status
-                                        name={status.user.fullName}
-                                        timed={displayTime}
-                                        avt={status.user.avtImg?.url}
-                                        status={status.shareW}
-                                        share={status.share}
-                                        idStatus={status._id}
-                                        idUser={status.user._id}
-                                        idStatusS={status.idStatus}
-                                        idStatusUser={status.idStatusUser}
-                                    >
+                                    <Status timed={displayTime} status={status}>
                                         <h3>{status.content}</h3>
                                         {status.img && <img className={cx('img')} src={status.img} alt="" />}
-                                        {status.video && <video className={cx('img')} src={status.video} controls />}
+                                        {status.video && <Video url={status.video} />}
                                     </Status>
                                 </div>
                             )
@@ -128,6 +115,7 @@ const Home = () => {
                     })}
                 </div>
             )}
+            {error && <Error setError={setError} />}
         </>
     )
 }

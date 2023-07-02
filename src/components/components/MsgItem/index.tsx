@@ -1,10 +1,10 @@
-import axios from 'axios'
 import classNames from 'classnames/bind'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 
 import styles from './MsgItem.module.scss'
 import noAvt from '../../../public/img/person/non-avt.jpg'
+import axios from 'axios'
 
 const cx = classNames.bind(styles)
 
@@ -30,7 +30,7 @@ const MsgItem = (props: Props) => {
             }
         }
         getUser()
-    }, [item, user?.userInfo._id])
+    }, [item, user])
 
     return (
         <div

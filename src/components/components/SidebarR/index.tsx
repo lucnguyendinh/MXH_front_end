@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux'
 const cx = classNames.bind(styles)
 
 const Sidebar = () => {
-    const userId = useSelector((state: any) => state.auth.login.currentUser.userInfo._id)
+    const userId = useSelector((state: any) => state.auth.login.currentUser?.userInfo._id)
     const [users, setUsers] = useState<any>(null)
 
     useEffect(() => {

@@ -10,6 +10,7 @@ import Messenger from '../../page/Messenger'
 import styles from './MessengerLayout.module.scss'
 import { useParams } from 'react-router-dom'
 import MessengerSkeleton from '../../skeleton/Messenger'
+import useJWT from '../../../config/useJWT'
 
 const cx = classNames.bind(styles)
 
@@ -18,7 +19,7 @@ const MessengerLayout = () => {
     const [userM, setUserM] = useState([])
     const [idMess, setIdMess] = useState<any>()
     const [loading, setLoading] = useState(false)
-
+    const axiosJWT = useJWT()
     const { id } = useParams()
 
     useEffect(() => {
@@ -33,7 +34,9 @@ const MessengerLayout = () => {
         const getMessage = async () => {
             try {
                 setLoading(true)
-                const res = await axios.get(`/message/getmessage/${user.userInfo._id}`)
+                const res = await axiosJWT.get(`/message/getmessage/${user.userInfo._id}`, {
+                    headers: { token: `Bearer ${user.accessToken}` },
+                })
                 setLoading(false)
                 setUserM(res.data)
             } catch (err) {
@@ -41,7 +44,7 @@ const MessengerLayout = () => {
             }
         }
         getMessage()
-    }, [user?.userInfo._id])
+    }, [user])
     return (
         <>
             {loading ? (

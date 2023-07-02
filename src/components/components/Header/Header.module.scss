@@ -13,6 +13,17 @@
     z-index: 10;
 }
 
+.logo {
+    height: 40px;
+    width: 40px;
+    cursor: pointer;
+    .icon {
+        height: 100%;
+        width: 100%;
+        color: #177be7;
+    }
+}
+
 .action {
     display: flex;
     justify-content: space-between;
@@ -67,5 +78,15 @@
             width: 100%;
             border-radius: 50%;
         }
+    }
+}
+
+@media (max-width: 480px) {
+    .logo {
+        display: none;
+    }
+    .element {
+        padding: 0;
+        margin: 0 !important;
     }
 }

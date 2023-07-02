@@ -6,25 +6,30 @@ import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import FriendsSkeleton from '../../skeleton/Friends'
+import { useSelector } from 'react-redux'
 
 const cx = classNames.bind(styles)
 
 const Friends = () => {
+    const user = useSelector((state: any) => state.auth.login.currentUser?.userInfo)
+    const following = user.follow.following
     const [users, setUsers] = useState<any>([])
     const [loading, setLoading] = useState(false)
     useEffect(() => {
         const getAllUser = async () => {
             try {
+                const idUser = [...following, user._id]
                 setLoading(true)
                 const res = await axios.get(`/auth/alluser`)
-                setUsers(res.data)
+                const rcmFriend = res.data.filter((itemA: any) => !idUser.some((itemB) => itemB === itemA._id))
+                setUsers(rcmFriend)
                 setLoading(false)
             } catch (err) {
                 console.log(err)
             }
         }
         getAllUser()
-    }, [])
+    }, [following, user])
     return (
         <>
             {loading ? (

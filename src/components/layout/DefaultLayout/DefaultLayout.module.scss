@@ -29,3 +29,15 @@
     position: fixed;
     right: 0;
 }
+
+@media (max-width: 480px) {
+    .side-bar-l {
+        display: none;
+    }
+    .side-bar-r {
+        display: none;
+    }
+    .content {
+        margin: auto;
+    }
+}

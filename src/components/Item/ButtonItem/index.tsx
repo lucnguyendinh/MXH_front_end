@@ -14,16 +14,17 @@ interface Props {
     className?: any
     toChildren?: any
     closeTab?: any
+    onClick?: any
 }
 
 const cx = classNames.bind(styles)
 
 const ButtonItem = (props: Props) => {
-    const { children, img, icon, width, height, to, className, toChildren, closeTab } = props
+    const { children, img, icon, width, height, to, className, toChildren, closeTab, onClick } = props
 
     if (to) {
         return (
-            <Link to={`/profile/${to}`}>
+            <Link onClick={onClick} to={`/profile/${to}`}>
                 <div className={cx('wrapper', className)} style={{ width, height }}>
                     <span>
                         <div className={cx('img')}>
@@ -36,7 +37,7 @@ const ButtonItem = (props: Props) => {
         )
     } else {
         return (
-            <div className={cx('wrapper', className)} style={{ width, height }}>
+            <div onClick={onClick} className={cx('wrapper', className)} style={{ width, height }}>
                 <span>
                     {!icon ? (
                         <Link to={`/profile/${toChildren}`} onClick={closeTab}>

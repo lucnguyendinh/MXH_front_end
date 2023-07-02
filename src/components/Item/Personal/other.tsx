@@ -11,6 +11,8 @@ import styles from './Other.module.scss'
 import { useSelector } from 'react-redux'
 import Follow from '../Follow'
 import PersonalSkeleton from '../../skeleton/Personal'
+import useJWT from '../../../config/useJWT'
+import Video from '../Video'
 
 const cx = classNames.bind(styles)
 
@@ -25,7 +27,7 @@ const Other = () => {
     const [followers, setFollowers] = useState<boolean>(false)
     const [following, setFollowing] = useState<boolean>(false)
     const [loading, setLoading] = useState(false)
-
+    const axiosJWT = useJWT()
     const { id } = useParams()
     useEffect(() => {
         const getUser = async () => {
@@ -45,7 +47,9 @@ const Other = () => {
     useEffect(() => {
         const getStatus = async () => {
             try {
-                const res = await axios.get(`/status/getstatus/${id}`)
+                const res = await axiosJWT.get(`/status/getstatus/${id}`, {
+                    headers: { token: `Bearer ${user.accessToken}` },
+                })
                 setListStatus(res.data)
             } catch (err) {
                 console.log(err)
@@ -59,7 +63,9 @@ const Other = () => {
                 id,
                 user: user.userInfo._id,
             }
-            const res = await axios.put('/profile/follow', newFollow)
+            const res = await axiosJWT.put('/profile/follow', newFollow, {
+                headers: { token: `Bearer ${user.accessToken}` },
+            })
             setUserInfo(res.data)
         } catch (err) {
             console.log(err)
@@ -71,7 +77,9 @@ const Other = () => {
                 id,
                 user: user.userInfo._id,
             }
-            const res = await axios.put('/profile/unfollow', newFollow)
+            const res = await axiosJWT.put('/profile/unfollow', newFollow, {
+                headers: { token: `Bearer ${user.accessToken}` },
+            })
             setUserInfo(res.data)
         } catch (err) {
             console.log(err)
@@ -84,7 +92,9 @@ const Other = () => {
                 senderId: user.userInfo._id,
                 receiverId: id,
             }
-            await axios.post('/message/createconversation', newMsg)
+            await axiosJWT.post('/message/createconversation', newMsg, {
+                headers: { token: `Bearer ${user.accessToken}` },
+            })
             navigate('/messenger/' + id)
         } catch (err) {
             console.log(err)
@@ -179,22 +189,12 @@ const Other = () => {
 
                                 return (
                                     <div key={i}>
-                                        <Status
-                                            name={status.user.fullName}
-                                            timed={displayTime}
-                                            avt={status.user.avtImg.url}
-                                            status={status.shareW}
-                                            share={status.share}
-                                            idStatus={status._id}
-                                            idStatusS={status.idStatus}
-                                        >
+                                        <Status timed={displayTime} status={status}>
                                             <h3 style={{ whiteSpace: 'pre-wrap' }}>{status.content}</h3>
                                             {status.img && (
                                                 <img className={cx('img')} src={status.img} alt="Thien nhien" />
                                             )}
-                                            {status.video && (
-                                                <video className={cx('img')} src={status.video} controls />
-                                            )}
+                                            {status.video && <Video url={status.video} />}
                                         </Status>
                                     </div>
                                 )

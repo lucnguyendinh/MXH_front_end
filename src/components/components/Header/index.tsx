@@ -28,8 +28,6 @@ const Header = () => {
 
     const accessToken = useSelector((state: any) => state.auth.login.currentUser?.accessToken)
 
-    let axiosJWT = config.createAxios(user, dispatch, logOutSuccess, user?.userInfo?.idUser._id)
-
     const icons: Icons[] = [
         {
             icon: <Icon className={cx('home-ic')} icon="ci:home-alt-fill" width="35" height="35" />,
@@ -49,13 +47,13 @@ const Header = () => {
     ]
 
     const handleClick = () => {
-        logOutUser(dispatch, navigate, id, accessToken, axiosJWT)
+        logOutUser(dispatch, navigate, id, accessToken)
     }
 
     return (
         <div className={cx('wrapper')}>
             <div className={cx('logo')}>
-                <h1>Logo</h1>
+                <Icon className={cx('icon')} icon="emojione-monotone:letter-l" />
             </div>
             <div className={cx('action')}>
                 {icons.map((icon: Icons) => {

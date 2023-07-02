@@ -3,21 +3,14 @@ import jwtDecode from 'jwt-decode'
 
 const refreshToken = async (user: any) => {
     try {
-        const res = await axios.post('/auth/refresh', user, {
-            withCredentials: true,
-        })
+        const res = await axios.post('/auth/refresh', user)
         return res.data
     } catch (err) {
         console.log(err)
     }
 }
 //check truoc khi goi den api co jwt
-const createAxios = (
-    user: any,
-    dispatch: any,
-    stateSuccess: any,
-    idUser: any,
-) => {
+const createAxios = (user: any, dispatch: any, stateSuccess: any) => {
     const newInstance = axios.create()
 
     newInstance.interceptors.request.use(
@@ -25,10 +18,11 @@ const createAxios = (
             const date = new Date()
             const decodeToken: any = jwtDecode(user?.accessToken)
             if (decodeToken.exp < date.getTime() / 1000) {
-                const data = await refreshToken({ user: idUser })
+                const data = await refreshToken({ user: user?.userInfo?.idUser._id, refreshToken: user?.refreshToken })
                 const refreshUser = {
                     ...user,
                     accessToken: data.accessToken,
+                    refreshToken: data.refreshToken,
                 }
                 dispatch(stateSuccess(refreshUser))
                 config.headers['token'] = 'Bearer ' + data.accessToken

@@ -2,7 +2,6 @@ import classNames from 'classnames/bind'
 import { Icon } from '@iconify/react'
 import { useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
-import axios from 'axios'
 
 import noAvt from '../../../public/img/person/non-avt.jpg'
 import styles from './Status.module.scss'
@@ -10,25 +9,20 @@ import ButtonReact from '../ButtonReact'
 import config from '../../../config'
 import CreateStatus from '../CreateStatus'
 import { Link } from 'react-router-dom'
+import useJWT from '../../../config/useJWT'
+import Video from '../Video'
 
 interface Props {
     children: any
-    name?: any
     timed?: any
-    avt?: any
     status?: any
-    share?: any
-    idStatus?: any
-    idUser?: any
-    idStatusS?: any
-    idStatusUser?: any
     className?: any
 }
 
 const cx = classNames.bind(styles)
 
 const Status = (props: Props) => {
-    const { children, name, timed, avt, status, share, idStatus, idUser, idStatusS, idStatusUser, className } = props
+    const { children, timed, status, className } = props
 
     const user = useSelector((state: any) => state.auth.login.currentUser)
     const [like, setLike] = useState<any[]>([])
@@ -41,23 +35,27 @@ const Status = (props: Props) => {
     let idLike: any
 
     const [content, setContent] = useState('')
-
+    const axiosJWT = useJWT()
     const handleSubmit = async (e: any) => {
         e.preventDefault()
         const newComment = {
-            status: idStatus,
+            status: status._id,
             user: user?.userInfo._id,
             content,
         }
         const Notifi = {
-            idUser: idUser,
+            idUser: status.user._id,
             idOther: user.userInfo._id,
-            idStatus: idStatus,
+            idStatus: status._id,
         }
         try {
-            const res = await axios.post('/status/comment', newComment)
+            const res = await axiosJWT.post('/status/comment', newComment, {
+                headers: { token: `Bearer ${user.accessToken}` },
+            })
             setComment((pre) => [...pre, res.data])
-            await axios.post('/notification/comment', Notifi)
+            await axiosJWT.post('/notification/comment', Notifi, {
+                headers: { token: `Bearer ${user.accessToken}` },
+            })
         } catch (err) {
             console.log(err)
         }
@@ -74,15 +72,19 @@ const Status = (props: Props) => {
     const deleteComment = async (id: any) => {
         const Notifi = {
             idOther: user.userInfo._id,
-            idStatus: idStatus,
+            idStatus: status._id,
         }
         try {
-            await axios.delete('/status/comment/' + id)
+            await axiosJWT.delete('/status/comment/' + id, {
+                headers: { token: `Bearer ${user.accessToken}` },
+            })
             const newComment = comment.filter((c) => {
                 return c._id !== id
             })
             setComment(newComment)
-            await axios.put('/notification/uncomment', Notifi)
+            await axiosJWT.put('/notification/uncomment', Notifi, {
+                headers: { token: `Bearer ${user.accessToken}` },
+            })
             setCheckDelete(false)
         } catch (err) {
             console.log(err)
@@ -94,9 +96,11 @@ const Status = (props: Props) => {
             const likeComment = {
                 id: id,
                 user: user?.userInfo._id,
-                status: idStatus,
+                status: status._id,
             }
-            const res = await axios.put('/status/likecomment', likeComment)
+            const res = await axiosJWT.put('/status/likecomment', likeComment, {
+                headers: { token: `Bearer ${user.accessToken}` },
+            })
             console.log(res.data)
 
             setComment(res.data)
@@ -110,9 +114,11 @@ const Status = (props: Props) => {
             const likeComment = {
                 id: id,
                 user: user?.userInfo._id,
-                status: idStatus,
+                status: status._id,
             }
-            const res = await axios.put('/status/unlikecomment', likeComment)
+            const res = await axiosJWT.put('/status/unlikecomment', likeComment, {
+                headers: { token: `Bearer ${user.accessToken}` },
+            })
             setComment(res.data)
 
             //setComment(res.data)
@@ -123,18 +129,22 @@ const Status = (props: Props) => {
 
     const handleLike = async () => {
         const newLike = {
-            status: idStatus,
+            status: status._id,
             user: user.userInfo._id,
         }
         const Notifi = {
-            idUser: idUser,
+            idUser: status.user._id,
             idOther: user.userInfo._id,
-            idStatus: idStatus,
+            idStatus: status._id,
         }
         try {
-            const res = await axios.post('/status/like', newLike)
+            const res = await axiosJWT.post('/status/like', newLike, {
+                headers: { token: `Bearer ${user.accessToken}` },
+            })
             setLike((pre) => [...pre, res.data])
-            await axios.post('/notification/like', Notifi)
+            await axiosJWT.post('/notification/like', Notifi, {
+                headers: { token: `Bearer ${user.accessToken}` },
+            })
         } catch (err) {
             console.log(err)
         }
@@ -142,62 +152,70 @@ const Status = (props: Props) => {
     const handleUnlike = async () => {
         const Notifi = {
             idOther: user.userInfo._id,
-            idStatus: idStatus,
+            idStatus: status._id,
         }
         try {
-            await axios.delete('/status/unlike/' + idLike, idLike)
+            await axiosJWT.delete('/status/unlike/' + idLike, {
+                headers: { token: `Bearer ${user.accessToken}` },
+            })
             const newLike = like.filter((l) => idLike !== l._id)
             setLike(newLike)
-            await axios.put('/notification/unlike', Notifi)
+            await axiosJWT.put('/notification/unlike', Notifi, {
+                headers: { token: `Bearer ${user.accessToken}` },
+            })
         } catch (err) {
             console.log(err)
         }
     }
 
     let iconStatus: any
-    if (status === 1) {
+    if (status?.shareW === 1) {
         iconStatus = <Icon icon="mdi:world-wide-web" />
     }
-    if (status === 2) {
+    if (status?.shareW === 2) {
         iconStatus = <Icon icon="fa-solid:user-friends" />
     }
-    if (status === 3) {
+    if (status?.shareW === 3) {
         iconStatus = <Icon icon="material-symbols:lock" />
     }
-    if (status === 4) {
+    if (status?.shareW === 4) {
         iconStatus = <Icon icon="uiw:setting" />
     }
 
     useEffect(() => {
         const getLike = async () => {
-            const res = await axios.get(`/status/getlike/${idStatus}`)
+            const res = await axiosJWT.get(`/status/getlike/${status?._id}`, {
+                headers: { token: `Bearer ${user.accessToken}` },
+            })
             setLike(res.data)
         }
         const getComment = async () => {
-            const res = await axios.get(`/status/getcomment/${idStatus}`)
+            const res = await axiosJWT.get(`/status/getcomment/${status?._id}`, {
+                headers: { token: `Bearer ${user.accessToken}` },
+            })
             setComment(res.data)
         }
         getLike()
         getComment()
-    }, [idStatus])
+    }, [user, status])
     useEffect(() => {
-        const timeSinceCreation = (Date.now() - Date.parse(idStatusS?.createdAt)) / 1000
+        const timeSinceCreation = (Date.now() - Date.parse(status?.idStatus?.createdAt)) / 1000
         setDisplayTime(config.timeDefault(timeSinceCreation))
-    }, [idStatusS?.createdAt])
+    }, [status])
 
     return (
         <>
             <div className={cx('wrapper', className)}>
                 <div className={cx('header')}>
                     <div className={cx('user')}>
-                        <Link to={`/profile/${idUser}`}>
+                        <Link to={`/profile/${status?.user._id}`}>
                             <div className={cx('img')}>
-                                <img src={avt || noAvt} alt="" />
+                                <img src={status?.user.avtImg?.url || noAvt} alt="" />
                             </div>
                         </Link>
                         <div className={cx('des')}>
-                            <Link to={`/profile/${idUser}`}>
-                                <div className={cx('name')}>{name}</div>
+                            <Link to={`/profile/${status?.user._id}`}>
+                                <div className={cx('name')}>{status?.user.fullName}</div>
                             </Link>
                             <div className={cx('info')}>
                                 <div className={cx('time')}>{timed}</div>
@@ -207,27 +225,35 @@ const Status = (props: Props) => {
                     </div>
                     <div className={cx('option')}>
                         <Icon icon="iwwa:option-horizontal" style={{ cursor: 'pointer' }} />
-                        {user?.userInfo._id !== idUser && (
+                        {user?.userInfo._id !== status?.user._id && (
                             <Icon icon="material-symbols:close" style={{ cursor: 'pointer' }} />
                         )}
                     </div>
                 </div>
                 <div className={cx('container')}>
                     <div className={cx('content')}>{children}</div>
-                    {idStatusS && (
+                    {status?.idStatus && (
                         <div className={cx('share')}>
                             <div className={cx('header')}>
                                 <div className={cx('user')}>
-                                    <div className={cx('img')}>
-                                        <img
-                                            src={idStatusS.user.avtImg?.url || idStatusUser.avtImg?.url || noAvt}
-                                            alt=""
-                                        />
-                                    </div>
-                                    <div className={cx('des')}>
-                                        <div className={cx('name')}>
-                                            {idStatusS.user.fullName || idStatusUser.fullName}
+                                    <Link to={`/profile/${status.idStatus.user?._id || status.idStatus.user}`}>
+                                        <div className={cx('img')}>
+                                            <img
+                                                src={
+                                                    status.idStatus.user.avtImg?.url ||
+                                                    status.idStatusUser.avtImg?.url ||
+                                                    noAvt
+                                                }
+                                                alt=""
+                                            />
                                         </div>
+                                    </Link>
+                                    <div className={cx('des')}>
+                                        <Link to={`/profile/${status.idStatus.user?._id || status.idStatus.user}`}>
+                                            <div className={cx('name')}>
+                                                {status.idStatus.user.fullName || status.idStatusUser.fullName}
+                                            </div>
+                                        </Link>
                                         <div className={cx('info')}>
                                             <div className={cx('time')}>{displayTime}</div>
                                             <div className={cx('status')}>{iconStatus}</div>
@@ -236,18 +262,16 @@ const Status = (props: Props) => {
                                 </div>
                             </div>
                             <div className={cx('content')}>
-                                {idStatusS?.content && <h4>{idStatusS?.content}</h4>}
-                                {idStatusS?.img && (
-                                    <img style={{ width: '100%' }} className={cx('img')} src={idStatusS.img} alt="" />
-                                )}
-                                {idStatusS?.video && (
-                                    <video
+                                {status.idStatus?.content && <h4>{status.idStatus?.content}</h4>}
+                                {status.idStatus?.img && (
+                                    <img
                                         style={{ width: '100%' }}
                                         className={cx('img')}
-                                        src={idStatusS.video}
-                                        controls
+                                        src={status.idStatus.img}
+                                        alt=""
                                     />
                                 )}
+                                {status.idStatus?.video && <Video url={status.idStatus.video} />}
                             </div>
                         </div>
                     )}
@@ -257,7 +281,7 @@ const Status = (props: Props) => {
                         <h4>{like.length} lượt thích</h4>
                         <div className={cx('comment-share')}>
                             <h4>{comment.length} bình luận</h4>
-                            <h4>{share?.length} chia sẻ</h4>
+                            <h4>{status?.share?.length} chia sẻ</h4>
                         </div>
                     </div>
                     <div className={cx('react')}>
@@ -354,7 +378,7 @@ const Status = (props: Props) => {
                 </div>
             </div>
             {checkShare && (
-                <CreateStatus setNewsFeed={setCheckShare} share={true} idStatus={idStatus} idUser={idUser} />
+                <CreateStatus setNewsFeed={setCheckShare} share={true} idStatus={status._id} idUser={status.user._id} />
             )}
             {checkDelete && (
                 <div className={cx('wapper-delete')}>

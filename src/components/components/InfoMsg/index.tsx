@@ -1,9 +1,10 @@
-import axios from 'axios'
 import classNames from 'classnames/bind'
 import { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 
 import styles from './InfoMsg.module.scss'
 import noAvt from '../../../public/img/person/non-avt.jpg'
+import axios from 'axios'
 
 const cx = classNames.bind(styles)
 
@@ -14,6 +15,7 @@ interface Props {
 
 const InfoMsg = (props: Props) => {
     const { className, id } = props
+
     const [userChat, setUserChat] = useState<any>(null)
 
     useEffect(() => {

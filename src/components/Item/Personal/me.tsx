@@ -12,6 +12,8 @@ import { useSelector } from 'react-redux'
 import EditProfile from '../EditProfile'
 import Follow from '../Follow'
 import PersonalSkeleton from '../../skeleton/Personal'
+import useJWT from '../../../config/useJWT'
+import Video from '../Video'
 
 const cx = classNames.bind(styles)
 
@@ -31,7 +33,7 @@ const Me = () => {
     const [loading, setLoading] = useState(false)
     const inputFile = useRef<any>(null)
     const inputFileAvt = useRef<any>(null)
-
+    const axiosJWT = useJWT()
     const { id } = useParams()
     const getUser = async () => {
         try {
@@ -62,7 +64,9 @@ const Me = () => {
     useEffect(() => {
         const getStatus = async () => {
             try {
-                const res = await axios.get(`/status/getstatus/${id}`)
+                const res = await axiosJWT.get(`/status/getstatus/${id}`, {
+                    headers: { token: `Bearer ${user.accessToken}` },
+                })
                 setListStatus(res.data)
             } catch (err) {
                 console.log(err)
@@ -83,7 +87,9 @@ const Me = () => {
                 idUser: user.userInfo._id,
                 coverImg: linkCover,
             }
-            await axios.put('/profile/upcoverimg', newI)
+            await axiosJWT.put('/profile/upcoverimg', newI, {
+                headers: { token: `Bearer ${user.accessToken}` },
+            })
             setConfirm(false)
         } catch (err) {
             console.log(err)
@@ -101,13 +107,15 @@ const Me = () => {
                     idUser: user.userInfo._id,
                     avtImg: linkAvt,
                 }
-                await axios.put('/profile/upavtimg', newI)
+                await axiosJWT.put('/profile/upavtimg', newI, {
+                    headers: { token: `Bearer ${user.accessToken}` },
+                })
             } catch (err) {
                 console.log(err)
             }
         }
         !!linkAvt && confirmAvt()
-    }, [linkAvt, user.userInfo._id])
+    }, [linkAvt, user])
 
     const handleSaveOther = async () => {
         try {
@@ -115,7 +123,9 @@ const Me = () => {
                 idUser: user.userInfo._id,
                 otherOf: other,
             }
-            await axios.put('/profile/editother', newO)
+            await axiosJWT.put('/profile/editother', newO, {
+                headers: { token: `Bearer ${user.accessToken}` },
+            })
 
             setEditOtherCheck(false)
         } catch (err) {
@@ -128,7 +138,9 @@ const Me = () => {
                 user: idU,
                 id,
             }
-            await axios.put('/profile/unfollow', newFollow)
+            await axiosJWT.put('/profile/unfollow', newFollow, {
+                headers: { token: `Bearer ${user.accessToken}` },
+            })
             getUser()
         } catch (err) {
             console.log(err)
@@ -141,7 +153,9 @@ const Me = () => {
                 id: idU,
                 user: id,
             }
-            await axios.put('/profile/unfollow', newFollow)
+            await axiosJWT.put('/profile/unfollow', newFollow, {
+                headers: { token: `Bearer ${user.accessToken}` },
+            })
             getUser()
         } catch (err) {
             console.log(err)
@@ -280,15 +294,7 @@ const Me = () => {
 
                                 return (
                                     <div key={i}>
-                                        <Status
-                                            name={status.user.fullName}
-                                            timed={displayTime}
-                                            avt={status.user.avtImg.url}
-                                            status={status.shareW}
-                                            share={status.share}
-                                            idStatus={status._id}
-                                            idStatusS={status.idStatus}
-                                        >
+                                        <Status timed={displayTime} status={status}>
                                             <h3 style={{ whiteSpace: 'pre-wrap' }}>{status.content}</h3>
                                             {status.img && (
                                                 <img
@@ -298,9 +304,7 @@ const Me = () => {
                                                     alt="Thien nhien"
                                                 />
                                             )}
-                                            {status.video && (
-                                                <video className={cx('img')} src={status.video} controls />
-                                            )}
+                                            {status.video && <Video url={status.video} />}
                                         </Status>
                                     </div>
                                 )

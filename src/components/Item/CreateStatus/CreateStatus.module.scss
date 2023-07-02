@@ -268,3 +268,20 @@
         cursor: pointer;
     }
 }
+
+@media (max-width: 480px) {
+    .container {
+        width: 95%;
+    }
+    .more {
+        h4 {
+            font-size: 14px;
+        }
+        .icon-more {
+            .icon {
+                margin: 3px;
+                width: 20px;
+            }
+        }
+    }
+}

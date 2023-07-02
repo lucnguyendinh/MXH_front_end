@@ -5,7 +5,8 @@ import config from '../../../config'
 import styles from './EditProfile.module.scss'
 import noAvt from '../../../public/img/person/non-avt.jpg'
 import noCoverImg from '../../../public/img/cover/cover-img.png'
-import axios from 'axios'
+import useJWT from '../../../config/useJWT'
+import { useSelector } from 'react-redux'
 
 const cx = classNames.bind(styles)
 
@@ -16,6 +17,8 @@ interface Props {
 
 const EditProfile = (props: Props) => {
     const { setEditProfileCheck, userInfo } = props
+    const user = useSelector((state: any) => state.auth.login.currentUser)
+
     const [linkAvt, setLinkAvt] = useState<any>(userInfo?.avtImg?.url)
     const [linkCover, setLinkCover] = useState<any>(userInfo?.coverImg?.url)
     const [fullName, setFullName] = useState<any>(userInfo?.fullName)
@@ -23,6 +26,7 @@ const EditProfile = (props: Props) => {
     const [otherOf, setOtherOf] = useState<any>(userInfo?.otherOf)
     const inputFileAvt = useRef<any>(null)
     const inputFileCover = useRef<any>(null)
+    const axiosJWT = useJWT()
 
     const handleClick = async () => {
         try {
@@ -34,7 +38,9 @@ const EditProfile = (props: Props) => {
                 favorites,
                 otherOf,
             }
-            await axios.put('/profile/edit', newP)
+            await axiosJWT.put('/profile/edit', newP, {
+                headers: { token: `Bearer ${user.accessToken}` },
+            })
 
             setEditProfileCheck(false)
         } catch (err) {

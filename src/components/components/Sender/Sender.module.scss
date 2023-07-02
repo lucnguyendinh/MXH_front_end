@@ -19,8 +19,7 @@
             padding: 8px;
             border-radius: 16px;
             background-color: #e4e6eb;
-            max-width: 65%;
-            word-wrap: break-word;
+            white-space: pre-wrap;
         }
     }
 }
@@ -34,7 +33,6 @@
         color: #fff;
         padding: 8px;
         border-radius: 16px;
-        max-width: 65%;
-        word-wrap: break-word;
+        white-space: pre-wrap;
     }
 }

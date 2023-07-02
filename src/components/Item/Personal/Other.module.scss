@@ -187,3 +187,27 @@
     justify-content: center;
     align-items: center;
 }
+
+@media (max-width: 480px) {
+    .header {
+        height: 350px;
+    }
+    .cover-img {
+        height: 150px;
+    }
+    .option {
+        display: none;
+    }
+    .h-footer {
+        display: none;
+    }
+    .content {
+        display: block;
+        padding: 8px;
+        .introduct {
+            width: 100%;
+            margin-bottom: 8px;
+            position: initial;
+        }
+    }
+}

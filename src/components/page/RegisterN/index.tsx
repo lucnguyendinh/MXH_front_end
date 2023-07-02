@@ -36,10 +36,8 @@ const RegisterN = () => {
         }
         registerN(infoUser, dispatch, navigate)
     }
-
-    let axiosJWT = config.createAxios(user, dispatch, logOutSuccess, idUser)
     const handleClick = () => {
-        logOutUser(dispatch, navigate, idUser, accessToken, axiosJWT)
+        logOutUser(dispatch, navigate, idUser, accessToken)
     }
 
     useEffect(() => {
