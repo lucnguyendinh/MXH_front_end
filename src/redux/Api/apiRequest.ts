@@ -52,7 +52,7 @@ export const registerN = async (user: any, dispatch: any, navigate: any) => {
 export const logOutUser = async (dispatch: any, navigate: any, id: any, accessToken: any) => {
     dispatch(logOutStart())
     try {
-        await axios.post('https://mxh-back-end.vercel.app/auth/logout', id, {
+        await axios.post('/auth/logout', id, {
             headers: { token: `Bearer ${accessToken}` },
         })
         dispatch(logOutSuccess())
