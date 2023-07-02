@@ -16,7 +16,7 @@ import {
 export const loginUser = async (user: any, dispatch: any, navigate: any) => {
     dispatch(loginStart())
     try {
-        const res = await axios.post('http://mxh-back-end.vercel.app/auth/login', user)
+        const res = await axios.post('https://mxh-back-end.vercel.app/auth/login', user)
         const checked = res.data.userInfo
         dispatch(loginSuccess(res.data))
         !checked ? navigate('/registerN') : navigate('/')
