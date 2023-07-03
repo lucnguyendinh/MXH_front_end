@@ -68,7 +68,7 @@ const Home = () => {
             try {
                 setLoading(true)
                 const res = await axiosJWT.get('/status/getstatus', {
-                    headers: { token: `Bearer ${user.accessToken}` },
+                    headers: { token: `Bearer ${user?.accessToken}` },
                 })
                 setListStatus(res.data)
                 setLoading(false)
