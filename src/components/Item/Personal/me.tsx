@@ -19,6 +19,9 @@ const cx = classNames.bind(styles)
 
 const Me = () => {
     const user = useSelector((state: any) => state.auth.login.currentUser)
+    const idUserInfo = user?.userInfo._id
+    const accessToken = user?.accessToken
+
     const [listStatus, setListStatus] = useState<any>(null)
     const [userInfo, setUserInfo] = useState<any>(null)
     const [linkCover, setLinkCover] = useState<any>(null)
@@ -65,18 +68,18 @@ const Me = () => {
         const getStatus = async () => {
             try {
                 const res = await axiosJWT.get(`/status/getstatus/${id}`, {
-                    headers: { token: `Bearer ${user.accessToken}` },
+                    headers: { token: `Bearer ${accessToken}` },
                 })
                 setListStatus(res.data)
             } catch (err) {
                 console.log(err)
             }
         }
-        getStatus()
-    }, [id])
+        if (accessToken) getStatus()
+    }, [id, accessToken])
 
     //handle and convert it in base 64
-    const handleImageCover = async (e: any) => {
+    const handleImageCover = (e: any) => {
         const file = e.target.files[0]
         config.setFileToBase(file, setLinkCover)
         setConfirm(true)
@@ -84,11 +87,11 @@ const Me = () => {
     const handleClickCover = async () => {
         try {
             const newI = {
-                idUser: user.userInfo._id,
+                idUser: idUserInfo,
                 coverImg: linkCover,
             }
             await axiosJWT.put('/profile/upcoverimg', newI, {
-                headers: { token: `Bearer ${user.accessToken}` },
+                headers: { token: `Bearer ${accessToken}` },
             })
             setConfirm(false)
         } catch (err) {
@@ -96,7 +99,7 @@ const Me = () => {
         }
     }
 
-    const handleImageAvt = async (e: any) => {
+    const handleImageAvt = (e: any) => {
         const file = e.target.files[0]
         config.setFileToBase(file, setLinkAvt)
     }
@@ -104,27 +107,27 @@ const Me = () => {
         const confirmAvt = async () => {
             try {
                 const newI = {
-                    idUser: user.userInfo._id,
+                    idUser: idUserInfo,
                     avtImg: linkAvt,
                 }
                 await axiosJWT.put('/profile/upavtimg', newI, {
-                    headers: { token: `Bearer ${user.accessToken}` },
+                    headers: { token: `Bearer ${accessToken}` },
                 })
             } catch (err) {
                 console.log(err)
             }
         }
         !!linkAvt && confirmAvt()
-    }, [linkAvt, user])
+    }, [linkAvt, accessToken, idUserInfo])
 
     const handleSaveOther = async () => {
         try {
             const newO = {
-                idUser: user.userInfo._id,
+                idUser: idUserInfo,
                 otherOf: other,
             }
             await axiosJWT.put('/profile/editother', newO, {
-                headers: { token: `Bearer ${user.accessToken}` },
+                headers: { token: `Bearer ${accessToken}` },
             })
 
             setEditOtherCheck(false)
@@ -139,7 +142,7 @@ const Me = () => {
                 id,
             }
             await axiosJWT.put('/profile/unfollow', newFollow, {
-                headers: { token: `Bearer ${user.accessToken}` },
+                headers: { token: `Bearer ${accessToken}` },
             })
             getUser()
         } catch (err) {
@@ -154,7 +157,7 @@ const Me = () => {
                 user: id,
             }
             await axiosJWT.put('/profile/unfollow', newFollow, {
-                headers: { token: `Bearer ${user.accessToken}` },
+                headers: { token: `Bearer ${accessToken}` },
             })
             getUser()
         } catch (err) {

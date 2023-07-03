@@ -27,7 +27,7 @@ const Video = (props: Props) => {
             window.removeEventListener('scroll', handleScroll)
         }
     }, [])
-    return <video style={{ width: '100%' }} ref={videoRef} src={url} controls loop />
+    return <video style={{ width: '100%' }} ref={videoRef} src={url} muted={true} controls loop />
 }
 
 export default Video

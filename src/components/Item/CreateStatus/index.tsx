@@ -31,7 +31,7 @@ const CreateStatus = (props: Props) => {
     const inputFileImg = useRef<any>(null)
     const axiosJWT = useJWT()
 
-    const handleImage = async (e: any) => {
+    const handleImage = (e: any) => {
         const file = e.target.files[0]
         config.setFileToBase(file, setMedia)
     }
@@ -62,13 +62,13 @@ const CreateStatus = (props: Props) => {
     }
 
     const handleUp = async () => {
-        const status = {
-            content,
-            user: user?.userInfo._id,
-            shareW: optionCheck,
-            media,
-        }
         try {
+            const status = {
+                content,
+                user: user?.userInfo._id,
+                shareW: optionCheck,
+                media,
+            }
             await axiosJWT.post('/status/upstatus', status, {
                 headers: { token: `Bearer ${user.accessToken}` },
             })

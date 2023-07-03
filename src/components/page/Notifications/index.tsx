@@ -16,13 +16,15 @@ const Notifications = () => {
     const [listNotifi, setListNotifi] = useState<any>(null)
     const [loading, setLoading] = useState(false)
     const user = useSelector((state: any) => state.auth.login.currentUser)
+    const idUserInfo = user?.userInfo._id
+    const accessToken = user?.accessToken
 
     useEffect(() => {
         const getNotifi = async () => {
             try {
                 setLoading(true)
-                const res = await axiosJWT.get('/notification/' + user?.userInfo?._id, {
-                    headers: { token: `Bearer ${user.accessToken}` },
+                const res = await axiosJWT.get('/notification/' + idUserInfo, {
+                    headers: { token: `Bearer ${accessToken}` },
                 })
                 setListNotifi(res.data)
                 setLoading(false)
@@ -31,7 +33,7 @@ const Notifications = () => {
             }
         }
         getNotifi()
-    }, [user])
+    }, [accessToken, idUserInfo])
     return (
         <>
             {loading ? (

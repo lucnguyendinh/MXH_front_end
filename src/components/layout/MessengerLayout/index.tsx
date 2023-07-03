@@ -16,6 +16,8 @@ const cx = classNames.bind(styles)
 
 const MessengerLayout = () => {
     const user = useSelector((state: any) => state.auth.login.currentUser)
+    const idUserInfo = user?.userInfo._id
+    const accessToken = user?.accessToken
     const [userM, setUserM] = useState([])
     const [idMess, setIdMess] = useState<any>()
     const [loading, setLoading] = useState(false)
@@ -34,8 +36,8 @@ const MessengerLayout = () => {
         const getMessage = async () => {
             try {
                 setLoading(true)
-                const res = await axiosJWT.get(`/message/getmessage/${user.userInfo._id}`, {
-                    headers: { token: `Bearer ${user.accessToken}` },
+                const res = await axiosJWT.get(`/message/getmessage/${idUserInfo}`, {
+                    headers: { token: `Bearer ${accessToken}` },
                 })
                 setLoading(false)
                 setUserM(res.data)
@@ -44,7 +46,7 @@ const MessengerLayout = () => {
             }
         }
         getMessage()
-    }, [user])
+    }, [idUserInfo, accessToken])
     return (
         <>
             {loading ? (

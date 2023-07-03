@@ -18,16 +18,29 @@ const cx = classNames.bind(styles)
 
 const Home = () => {
     const navigate = useNavigate()
+    const user = useSelector((state: any) => state.auth.login.currentUser)
+    const accessToken = user?.accessToken
+    const userRegister = user?.user?._id
+
     const [listStatus, setListStatus] = useState<any>([])
     const [newsFeed, setNewsFeed] = useState(false)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false)
-    const user = useSelector((state: any) => state.auth.login.currentUser)
     const axiosJWT = useJWT()
+
+    useEffect(() => {
+        if (!user) {
+            navigate('/login')
+        }
+        if (userRegister) {
+            navigate('/registerN')
+        }
+    }, [navigate, user, userRegister])
+
     const getStatusLast = async () => {
         try {
             const res = await axiosJWT.get('/status/getstatus', {
-                headers: { token: `Bearer ${user.accessToken}` },
+                headers: { token: `Bearer ${accessToken}` },
             })
 
             setListStatus((prev: any) => {
@@ -52,23 +65,12 @@ const Home = () => {
         if (node) observer.current.observe(node)
     }, [])
 
-    const userRegister = user?.user?._id
-
-    useEffect(() => {
-        if (!user) {
-            navigate('/login')
-        }
-        if (userRegister) {
-            navigate('/registerN')
-        }
-    }, [navigate, user, userRegister])
-
     useEffect(() => {
         const getStatus = async () => {
             try {
                 setLoading(true)
                 const res = await axiosJWT.get('/status/getstatus', {
-                    headers: { token: `Bearer ${user?.accessToken}` },
+                    headers: { token: `Bearer ${accessToken}` },
                 })
                 setListStatus(res.data)
                 setLoading(false)
@@ -76,8 +78,8 @@ const Home = () => {
                 console.log(err)
             }
         }
-        getStatus()
-    }, [user])
+        if (accessToken) getStatus()
+    }, [accessToken])
 
     return (
         <>

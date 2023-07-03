@@ -22,6 +22,9 @@ interface Props {
 const Messenger = (props: Props) => {
     const { className, idMess, id } = props
     const user = useSelector((state: any) => state.auth.login.currentUser)
+    const idUserInfo = user?.userInfo._id
+    const accessToken = user?.accessToken
+
     const [currentChat, setCurrentChat] = useState<any>()
     const [userChat, setUserChat] = useState<any>()
     const [text, setText] = useState('')
@@ -39,7 +42,7 @@ const Messenger = (props: Props) => {
 
     // useEffect(() => {
     //     //emit: gửi lên server
-    //     socket.current.emit('addUser', user?.userInfo._id)
+    //     socket.current.emit('addUser', idUserInfo)
     //     socket.current.on('getUsers', (users: any) => {})
     // }, [user])
 
@@ -47,15 +50,15 @@ const Messenger = (props: Props) => {
         const getMess = async () => {
             try {
                 const res = await axiosJWT.get('/message/getmess/' + idMess, {
-                    headers: { token: `Bearer ${user.accessToken}` },
+                    headers: { token: `Bearer ${accessToken}` },
                 })
                 setCurrentChat(res.data)
             } catch (err) {
                 console.log(err)
             }
         }
-        if (idMess) getMess()
-    }, [idMess])
+        if (idMess && accessToken) getMess()
+    }, [idMess, accessToken])
 
     useEffect(() => {
         const getUser = async () => {
@@ -77,18 +80,18 @@ const Messenger = (props: Props) => {
         try {
             const newChat = {
                 conversationId: idMess,
-                sender: user?.userInfo._id,
+                sender: idUserInfo,
                 text: text,
             }
 
             // socket.current.emit('sendMessage', {
-            //     senderId: user?.userInfo._id,
+            //     senderId: idUserInfo,
             //     receiverId: id,
             //     text: newChat,
             // })
 
             const res = await axiosJWT.post('/message/mess', newChat, {
-                headers: { token: `Bearer ${user.accessToken}` },
+                headers: { token: `Bearer ${accessToken}` },
             })
             setCurrentChat((pre: any) => [...pre, res.data])
             setText('')

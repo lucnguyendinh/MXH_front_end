@@ -2,30 +2,36 @@ import classNames from 'classnames/bind'
 
 import styles from './Watch.module.scss'
 import { useEffect, useState } from 'react'
-import axios from 'axios'
 import Status from '../../Item/Status'
 import config from '../../../config'
 import Video from '../../Item/Video'
-import Skeleton from 'react-loading-skeleton'
-import 'react-loading-skeleton/dist/skeleton.css'
 import StatusSkeleton from '../../skeleton/Status'
+import useJWT from '../../../config/useJWT'
+import { useSelector } from 'react-redux'
 
 const cx = classNames.bind(styles)
 
 const Watch = () => {
+    const user = useSelector((state: any) => state.auth.login.currentUser)
+    const accessToken = user?.accessToken
     const [video, setVideo] = useState<any>(null)
     const [loading, setLoading] = useState<any>(false)
+    const axiosJWT = useJWT()
     useEffect(() => {
-        try {
-            const getVideo = async () => {
+        const getVideo = async () => {
+            try {
                 setLoading(true)
-                const res = await axios.get('/status/getstatusbyvideo')
+                const res = await axiosJWT.get('/status/getstatusbyvideo', {
+                    headers: { token: `Bearer ${accessToken}` },
+                })
                 setVideo(res.data)
                 setLoading(false)
+            } catch (err) {
+                console.log(err)
             }
-            getVideo()
-        } catch (err) {}
-    }, [])
+        }
+        if (accessToken) getVideo()
+    }, [accessToken])
     return (
         <>
             {loading ? (

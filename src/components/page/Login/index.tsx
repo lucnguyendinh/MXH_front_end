@@ -20,15 +20,6 @@ const Login = () => {
     const userRegister = user?.user
     const userLogin = user?.userInfo
 
-    const handleSubmit = (e: any) => {
-        e.preventDefault()
-        const newUser = {
-            sdt,
-            password,
-        }
-        loginUser(newUser, dispatch, navigate)
-    }
-
     useEffect(() => {
         if (userRegister) {
             navigate('/registerN')
@@ -37,6 +28,15 @@ const Login = () => {
             navigate('/')
         }
     }, [navigate, userLogin, userRegister])
+
+    const handleSubmit = (e: any) => {
+        e.preventDefault()
+        const newUser = {
+            sdt,
+            password,
+        }
+        loginUser(newUser, dispatch, navigate)
+    }
 
     return (
         <div className={cx('wrapper')}>

@@ -24,7 +24,7 @@ const Register = () => {
         if (userLogin) {
             navigate('/')
         }
-    }, [])
+    }, [navigate, userRegister, userLogin])
 
     const [email, setEmail] = useState<String>()
     const [sdt, setSdt] = useState<String>()

@@ -5,8 +5,6 @@ import { useNavigate } from 'react-router-dom'
 
 import { logOutUser, registerN } from '../../../redux/Api/apiRequest'
 import styles from './RegisterN.module.scss'
-import config from '../../../config'
-import { logOutSuccess } from '../../../redux/Slice/authSlice'
 
 const cx = classNames.bind(styles)
 
@@ -16,7 +14,7 @@ const RegisterN = () => {
 
     const user = useSelector((state: any) => state.auth.login.currentUser)
 
-    const idUser = user?.user?._id
+    const idUserInfo = user?.user?._id
     const accessToken = user?.accessToken
 
     const [name, setName] = useState<String>()
@@ -32,16 +30,16 @@ const RegisterN = () => {
             favorites,
             otherOf: other,
             sex: gt,
-            idUser,
+            idUser: idUserInfo,
         }
         registerN(infoUser, dispatch, navigate)
     }
     const handleClick = () => {
-        logOutUser(dispatch, navigate, idUser, accessToken)
+        logOutUser(dispatch, navigate, idUserInfo, accessToken)
     }
 
     useEffect(() => {
-        if (!idUser) {
+        if (!idUserInfo) {
             navigate('/register')
         }
     }, [])

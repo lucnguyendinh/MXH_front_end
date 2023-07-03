@@ -6,8 +6,6 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import ButtonHome from '../../Item/ButtonAction'
 import styles from './Header.module.scss'
 import { logOutUser } from '../../../redux/Api/apiRequest'
-import config from '../../../config'
-import { logOutSuccess } from '../../../redux/Slice/authSlice'
 import noAvt from '../../../public/img/person/non-avt.jpg'
 
 interface Icons {
@@ -24,9 +22,9 @@ const Header = () => {
 
     const user = useSelector((state: any) => state.auth.login.currentUser)
     const location = useLocation()
-    const id = user?.userInfo?._id
+    const idUserInfo = user?.userInfo?._id
 
-    const accessToken = useSelector((state: any) => state.auth.login.currentUser?.accessToken)
+    const accessToken = user?.accessToken
 
     const icons: Icons[] = [
         {
@@ -47,7 +45,7 @@ const Header = () => {
     ]
 
     const handleClick = () => {
-        logOutUser(dispatch, navigate, id, accessToken)
+        logOutUser(dispatch, navigate, idUserInfo, accessToken)
     }
 
     return (

@@ -14,21 +14,22 @@ const cx = classNames.bind(styles)
 const OnlyStatus = () => {
     const { id } = useParams()
     const user = useSelector((state: any) => state.auth.login.currentUser)
+    const accessToken = user?.accessToken
     const axiosJWT = useJWT()
     const [status, setStatus] = useState<any>(null)
     useEffect(() => {
         const getStatus = async () => {
             try {
                 const res = await axiosJWT.get(`/status/getstatusbyid/${id}`, {
-                    headers: { token: `Bearer ${user.accessToken}` },
+                    headers: { token: `Bearer ${accessToken}` },
                 })
                 setStatus(res.data)
             } catch (err) {
                 console.log(err)
             }
         }
-        getStatus()
-    }, [id, user])
+        if (accessToken) getStatus()
+    }, [id, accessToken])
     const timeSinceCreation = (Date.now() - Date.parse(status?.createdAt)) / 1000
 
     const displayTime = config.timeDefault(timeSinceCreation)

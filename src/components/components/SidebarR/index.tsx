@@ -10,20 +10,20 @@ import { useSelector } from 'react-redux'
 const cx = classNames.bind(styles)
 
 const Sidebar = () => {
-    const userId = useSelector((state: any) => state.auth.login.currentUser?.userInfo._id)
+    const idUserInfo = useSelector((state: any) => state.auth.login.currentUser?.userInfo._id)
     const [users, setUsers] = useState<any>(null)
 
     useEffect(() => {
         const getAllUser = async () => {
             try {
-                const res = await axios.get(`/auth?userId=${userId}`)
+                const res = await axios.get(`/auth?userId=${idUserInfo}`)
                 setUsers(res.data.follow.following)
             } catch (err) {
                 console.log(err)
             }
         }
-        getAllUser()
-    }, [])
+        if (idUserInfo) getAllUser()
+    }, [idUserInfo])
 
     return (
         <div className={cx('wrapper')}>

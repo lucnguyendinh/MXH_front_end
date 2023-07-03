@@ -25,6 +25,9 @@ const Status = (props: Props) => {
     const { children, timed, status, className } = props
 
     const user = useSelector((state: any) => state.auth.login.currentUser)
+    const accessToken = user?.accessToken
+    const idUserInfo = user?.userInfo._id
+
     const [like, setLike] = useState<any[]>([])
     const [comment, setComment] = useState<any[]>([])
     const [checkShare, setCheckShare] = useState(false)
@@ -40,7 +43,7 @@ const Status = (props: Props) => {
         e.preventDefault()
         const newComment = {
             status: status._id,
-            user: user?.userInfo._id,
+            user: idUserInfo,
             content,
         }
         const Notifi = {
@@ -50,11 +53,11 @@ const Status = (props: Props) => {
         }
         try {
             const res = await axiosJWT.post('/status/comment', newComment, {
-                headers: { token: `Bearer ${user.accessToken}` },
+                headers: { token: `Bearer ${accessToken}` },
             })
             setComment((pre) => [...pre, res.data])
             await axiosJWT.post('/notification/comment', Notifi, {
-                headers: { token: `Bearer ${user.accessToken}` },
+                headers: { token: `Bearer ${accessToken}` },
             })
         } catch (err) {
             console.log(err)
@@ -63,7 +66,7 @@ const Status = (props: Props) => {
     }
 
     like.forEach((like: any) => {
-        if (user?.userInfo._id === like?.user._id || user?.userInfo._id === like?.user) {
+        if (idUserInfo === like?.user._id || idUserInfo === like?.user) {
             checkLiked = true
             idLike = like._id
         }
@@ -76,14 +79,14 @@ const Status = (props: Props) => {
         }
         try {
             await axiosJWT.delete('/status/comment/' + id, {
-                headers: { token: `Bearer ${user.accessToken}` },
+                headers: { token: `Bearer ${accessToken}` },
             })
             const newComment = comment.filter((c) => {
                 return c._id !== id
             })
             setComment(newComment)
             await axiosJWT.put('/notification/uncomment', Notifi, {
-                headers: { token: `Bearer ${user.accessToken}` },
+                headers: { token: `Bearer ${accessToken}` },
             })
             setCheckDelete(false)
         } catch (err) {
@@ -95,11 +98,11 @@ const Status = (props: Props) => {
         try {
             const likeComment = {
                 id: id,
-                user: user?.userInfo._id,
+                user: idUserInfo,
                 status: status._id,
             }
             const res = await axiosJWT.put('/status/likecomment', likeComment, {
-                headers: { token: `Bearer ${user.accessToken}` },
+                headers: { token: `Bearer ${accessToken}` },
             })
             console.log(res.data)
 
@@ -113,11 +116,11 @@ const Status = (props: Props) => {
         try {
             const likeComment = {
                 id: id,
-                user: user?.userInfo._id,
+                user: idUserInfo,
                 status: status._id,
             }
             const res = await axiosJWT.put('/status/unlikecomment', likeComment, {
-                headers: { token: `Bearer ${user.accessToken}` },
+                headers: { token: `Bearer ${accessToken}` },
             })
             setComment(res.data)
 
@@ -139,11 +142,11 @@ const Status = (props: Props) => {
         }
         try {
             const res = await axiosJWT.post('/status/like', newLike, {
-                headers: { token: `Bearer ${user.accessToken}` },
+                headers: { token: `Bearer ${accessToken}` },
             })
             setLike((pre) => [...pre, res.data])
             await axiosJWT.post('/notification/like', Notifi, {
-                headers: { token: `Bearer ${user.accessToken}` },
+                headers: { token: `Bearer ${accessToken}` },
             })
         } catch (err) {
             console.log(err)
@@ -156,12 +159,12 @@ const Status = (props: Props) => {
         }
         try {
             await axiosJWT.delete('/status/unlike/' + idLike, {
-                headers: { token: `Bearer ${user.accessToken}` },
+                headers: { token: `Bearer ${accessToken}` },
             })
             const newLike = like.filter((l) => idLike !== l._id)
             setLike(newLike)
             await axiosJWT.put('/notification/unlike', Notifi, {
-                headers: { token: `Bearer ${user.accessToken}` },
+                headers: { token: `Bearer ${accessToken}` },
             })
         } catch (err) {
             console.log(err)
@@ -184,20 +187,30 @@ const Status = (props: Props) => {
 
     useEffect(() => {
         const getLike = async () => {
-            const res = await axiosJWT.get(`/status/getlike/${status?._id}`, {
-                headers: { token: `Bearer ${user.accessToken}` },
-            })
-            setLike(res.data)
+            try {
+                const res = await axiosJWT.get(`/status/getlike/${status?._id}`, {
+                    headers: { token: `Bearer ${accessToken}` },
+                })
+                setLike(res.data)
+            } catch (err) {
+                console.log(err)
+            }
         }
         const getComment = async () => {
-            const res = await axiosJWT.get(`/status/getcomment/${status?._id}`, {
-                headers: { token: `Bearer ${user.accessToken}` },
-            })
-            setComment(res.data)
+            try {
+                const res = await axiosJWT.get(`/status/getcomment/${status?._id}`, {
+                    headers: { token: `Bearer ${accessToken}` },
+                })
+                setComment(res.data)
+            } catch (err) {
+                console.log(err)
+            }
         }
-        getLike()
-        getComment()
-    }, [user, status])
+        if (accessToken) {
+            getLike()
+            getComment()
+        }
+    }, [accessToken, status])
     useEffect(() => {
         const timeSinceCreation = (Date.now() - Date.parse(status?.idStatus?.createdAt)) / 1000
         setDisplayTime(config.timeDefault(timeSinceCreation))
@@ -225,7 +238,7 @@ const Status = (props: Props) => {
                     </div>
                     <div className={cx('option')}>
                         <Icon icon="iwwa:option-horizontal" style={{ cursor: 'pointer' }} />
-                        {user?.userInfo._id !== status?.user._id && (
+                        {idUserInfo !== status?.user._id && (
                             <Icon icon="material-symbols:close" style={{ cursor: 'pointer' }} />
                         )}
                     </div>
@@ -319,7 +332,7 @@ const Status = (props: Props) => {
                         {comment?.map((cmt: any, i: any) => {
                             const timeSinceCreation = (Date.now() - Date.parse(cmt.createdAt)) / 1000
                             const displayTime = config.timeDefault(timeSinceCreation)
-                            const checkCmt = cmt.numberLike.user.includes(user?.userInfo._id)
+                            const checkCmt = cmt.numberLike.user.includes(idUserInfo)
 
                             return (
                                 <div key={i}>
@@ -355,7 +368,7 @@ const Status = (props: Props) => {
                                             </div>
                                         )}
 
-                                        {cmt?.user?._id === user?.userInfo._id && (
+                                        {cmt?.user?._id === idUserInfo && (
                                             <div className={cx('feedback')}>
                                                 <p
                                                     onClick={() => {

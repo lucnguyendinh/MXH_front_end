@@ -8,7 +8,6 @@ import RegisterN from '../components/page/RegisterN'
 import Personal from '../components/page/Personal'
 import OnlyStatus from '../components/page/OnlyStatus'
 import Friends from '../components/page/Friends'
-import MessengerSkeleton from '../components/skeleton/Messenger'
 import Watch from '../components/page/Watch'
 import NewFeed from '../components/page/NewFeed'
 
@@ -23,7 +22,6 @@ const publicRoutes: Public[] = [
     { path: '/', component: Home },
     { path: '/messenger/:id', component: Messenger, layout: 'msg' },
     { path: '/messenger', component: Messenger, layout: 'msg' },
-    { path: '/test', component: MessengerSkeleton, layout: null },
     { path: '/notifications', component: Notifications, layout: 'header' },
     { path: '/login', component: Login, layout: null },
     { path: '/register', component: Register, layout: null },

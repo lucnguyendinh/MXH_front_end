@@ -11,14 +11,15 @@ import { useSelector } from 'react-redux'
 const cx = classNames.bind(styles)
 
 const Friends = () => {
-    const user = useSelector((state: any) => state.auth.login.currentUser?.userInfo)
-    const following = user.follow.following
+    const user = useSelector((state: any) => state.auth.login.currentUser)
+    const idUserInfo = user?.userInfo._id
+    const following = user?.userInfo.follow.following
     const [users, setUsers] = useState<any>([])
     const [loading, setLoading] = useState(false)
     useEffect(() => {
         const getAllUser = async () => {
             try {
-                const idUser = [...following, user._id]
+                const idUser = [...following, idUserInfo]
                 setLoading(true)
                 const res = await axios.get(`/auth/alluser`)
                 const rcmFriend = res.data.filter((itemA: any) => !idUser.some((itemB) => itemB === itemA._id))
@@ -29,7 +30,7 @@ const Friends = () => {
             }
         }
         getAllUser()
-    }, [following, user])
+    }, [following, idUserInfo])
     return (
         <>
             {loading ? (

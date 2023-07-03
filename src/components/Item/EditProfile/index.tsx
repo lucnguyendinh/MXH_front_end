@@ -48,12 +48,12 @@ const EditProfile = (props: Props) => {
         }
     }
 
-    const handleImageAvt = async (e: any) => {
+    const handleImageAvt = (e: any) => {
         const file = e.target.files[0]
         config.setFileToBase(file, setLinkAvt)
     }
 
-    const handleImageCover = async (e: any) => {
+    const handleImageCover = (e: any) => {
         const file = e.target.files[0]
         config.setFileToBase(file, setLinkCover)
     }
