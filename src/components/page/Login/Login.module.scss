@@ -1,11 +1,15 @@
 .wrapper {
     height: 100vh;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     background-image: url('../../../public//img/background/Untitled-1.jpg');
     background-repeat: no-repeat;
     background-size: 100%;
+    h1 {
+        color: #fff;
+    }
 }
 
 .container {

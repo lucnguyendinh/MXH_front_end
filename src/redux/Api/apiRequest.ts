@@ -13,7 +13,7 @@ import {
     registerStart,
     registerSuccess,
 } from '../Slice/authSlice'
-export const loginUser = async (user: any, dispatch: any, navigate: any) => {
+export const loginUser = async (user: any, dispatch: any, navigate: any, setErr: any) => {
     dispatch(loginStart())
     try {
         const res = await axios.post('/auth/login', user)
@@ -21,7 +21,8 @@ export const loginUser = async (user: any, dispatch: any, navigate: any) => {
         dispatch(loginSuccess(res.data))
         !checked ? navigate('/registerN') : navigate('/')
     } catch (err: any) {
-        dispatch(loginFailed(err.response.data))
+        setErr(err.response.data)
+        dispatch(loginFailed())
     }
 }
 

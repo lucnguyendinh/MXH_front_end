@@ -16,6 +16,7 @@ const Login = () => {
 
     const [sdt, setSdt] = useState<String>()
     const [password, setPassword] = useState<String>()
+    const [err, setErr] = useState<any>('')
 
     const userRegister = user?.user
     const userLogin = user?.userInfo
@@ -35,8 +36,12 @@ const Login = () => {
             sdt,
             password,
         }
-        loginUser(newUser, dispatch, navigate)
+        loginUser(newUser, dispatch, navigate, setErr)
     }
+
+    useEffect(() => {
+        console.log(err)
+    }, [err])
 
     return (
         <div className={cx('wrapper')}>
@@ -60,6 +65,7 @@ const Login = () => {
                     </Link>
                 </form>
             </div>
+            {err && <h1>{err}</h1>}
         </div>
     )
 }

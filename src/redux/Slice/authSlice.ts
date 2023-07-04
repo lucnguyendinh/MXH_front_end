@@ -8,7 +8,6 @@ export const authSlice = createSlice({
         success: false,
         login: {
             currentUser: null,
-            msg: '',
         },
         register: {
             idUser: '',
@@ -23,10 +22,9 @@ export const authSlice = createSlice({
             state.login.currentUser = action.payload
             state.error = false
         },
-        loginFailed: (state, action) => {
+        loginFailed: (state) => {
             state.isFetching = false
             state.error = true
-            state.login.msg = action.payload
         },
         registerStart: (state) => {
             state.isFetching = true
@@ -61,7 +59,6 @@ export const authSlice = createSlice({
         },
         logOutSuccess: (state) => {
             state.login.currentUser = null
-            state.login.msg = ''
             state.register.idUser = ''
             state.isFetching = false
             state.success = true

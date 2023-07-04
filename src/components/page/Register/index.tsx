@@ -58,7 +58,7 @@ const Register = () => {
                     <input
                         onChange={(e) => setPassword(e.target.value)}
                         className={cx('input')}
-                        type="text"
+                        type="password"
                         placeholder="Mật khẩu"
                     />
                     <button className={cx('register')}>Đăng kí</button>
