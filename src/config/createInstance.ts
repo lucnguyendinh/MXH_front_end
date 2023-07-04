@@ -16,13 +16,13 @@ const createAxios = (user: any, dispatch: any, stateSuccess: any) => {
     newInstance.interceptors.request.use(
         async (config) => {
             const date = new Date()
-            const decodeToken: any = jwtDecode(user?.accessToken)
+            const decodeToken: any = jwtDecode(user.accessToken)
             if (decodeToken.exp < date.getTime() / 1000) {
                 const data = await refreshToken({ user: user?.userInfo?.idUser._id, refreshToken: user?.refreshToken })
                 const refreshUser = {
                     ...user,
-                    accessToken: data.accessToken,
-                    refreshToken: data.refreshToken,
+                    accessToken: data?.accessToken,
+                    refreshToken: data?.refreshToken,
                 }
                 dispatch(stateSuccess(refreshUser))
                 config.headers['token'] = 'Bearer ' + data.accessToken

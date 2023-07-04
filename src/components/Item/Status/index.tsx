@@ -48,7 +48,7 @@ const Status = (props: Props) => {
         }
         const Notifi = {
             idUser: status.user._id,
-            idOther: user.userInfo._id,
+            idOther: idUserInfo,
             idStatus: status._id,
         }
         try {
@@ -74,7 +74,7 @@ const Status = (props: Props) => {
 
     const deleteComment = async (id: any) => {
         const Notifi = {
-            idOther: user.userInfo._id,
+            idOther: idUserInfo,
             idStatus: status._id,
         }
         try {
@@ -133,11 +133,11 @@ const Status = (props: Props) => {
     const handleLike = async () => {
         const newLike = {
             status: status._id,
-            user: user.userInfo._id,
+            user: idUserInfo,
         }
         const Notifi = {
             idUser: status.user._id,
-            idOther: user.userInfo._id,
+            idOther: idUserInfo,
             idStatus: status._id,
         }
         try {
@@ -154,7 +154,7 @@ const Status = (props: Props) => {
     }
     const handleUnlike = async () => {
         const Notifi = {
-            idOther: user.userInfo._id,
+            idOther: idUserInfo,
             idStatus: status._id,
         }
         try {

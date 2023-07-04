@@ -45,7 +45,7 @@ const MessengerLayout = () => {
                 console.log(err)
             }
         }
-        getMessage()
+        if (accessToken) getMessage()
     }, [idUserInfo, accessToken])
     return (
         <>

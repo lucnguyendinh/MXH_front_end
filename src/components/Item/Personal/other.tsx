@@ -19,6 +19,8 @@ const cx = classNames.bind(styles)
 const Other = () => {
     const navigate = useNavigate()
     const user = useSelector((state: any) => state.auth.login.currentUser)
+    const idUserInfo = user?.userInfo._id
+    const accessToken = user?.accessToken
 
     const [listStatus, setListStatus] = useState<any>(null)
     const [userInfo, setUserInfo] = useState<any>(null)
@@ -48,7 +50,7 @@ const Other = () => {
         const getStatus = async () => {
             try {
                 const res = await axiosJWT.get(`/status/getstatus/${id}`, {
-                    headers: { token: `Bearer ${user.accessToken}` },
+                    headers: { token: `Bearer ${accessToken}` },
                 })
                 setListStatus(res.data)
             } catch (err) {
@@ -61,10 +63,10 @@ const Other = () => {
         try {
             const newFollow = {
                 id,
-                user: user.userInfo._id,
+                user: idUserInfo,
             }
             const res = await axiosJWT.put('/profile/follow', newFollow, {
-                headers: { token: `Bearer ${user.accessToken}` },
+                headers: { token: `Bearer ${accessToken}` },
             })
             setUserInfo(res.data)
         } catch (err) {
@@ -75,10 +77,10 @@ const Other = () => {
         try {
             const newFollow = {
                 id,
-                user: user.userInfo._id,
+                user: idUserInfo,
             }
             const res = await axiosJWT.put('/profile/unfollow', newFollow, {
-                headers: { token: `Bearer ${user.accessToken}` },
+                headers: { token: `Bearer ${accessToken}` },
             })
             setUserInfo(res.data)
         } catch (err) {
@@ -89,11 +91,11 @@ const Other = () => {
     const handleCreateMsg = async () => {
         try {
             const newMsg = {
-                senderId: user.userInfo._id,
+                senderId: idUserInfo,
                 receiverId: id,
             }
             await axiosJWT.post('/message/createconversation', newMsg, {
-                headers: { token: `Bearer ${user.accessToken}` },
+                headers: { token: `Bearer ${accessToken}` },
             })
             navigate('/messenger/' + id)
         } catch (err) {
@@ -128,7 +130,7 @@ const Other = () => {
                             </div>
                             <div className={cx('option')}>
                                 {userInfo?.follow.followers.some((f: any) => {
-                                    return f._id === user.userInfo._id
+                                    return f._id === idUserInfo
                                 }) ? (
                                     <div onClick={handleUnFollow} className={cx('following')}>
                                         Following

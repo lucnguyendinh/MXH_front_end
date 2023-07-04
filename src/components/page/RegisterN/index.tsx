@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 
 import { logOutUser, registerN } from '../../../redux/Api/apiRequest'
 import styles from './RegisterN.module.scss'
+import validateForm from '../../../config/validateForm'
 
 const cx = classNames.bind(styles)
 
@@ -17,14 +18,35 @@ const RegisterN = () => {
     const idUserInfo = user?.user?._id
     const accessToken = user?.accessToken
 
-    const [name, setName] = useState<String>()
-    const [favorites, setFavorites] = useState<String>()
-    const [other, setOther] = useState<String>()
-    const [gt, setGt] = useState<String>()
+    const [name, setName] = useState<String>('')
+    const [favorites, setFavorites] = useState<String>('')
+    const [other, setOther] = useState<String>('')
+    const [gt, setGt] = useState<String>('')
+    const [validate, setValidate] = useState<any>(null)
     const sexs = ['nam', 'nữ']
+
+    useEffect(() => {
+        if (!idUserInfo) {
+            navigate('/register')
+        }
+    }, [idUserInfo])
 
     const handleSubmit = (e: any) => {
         e.preventDefault()
+        const validateName = validateForm.other(name)
+        const validateFavorites = validateForm.other(favorites)
+        const validateOther = validateForm.other(other)
+        const validateGt = validateForm.other(gt)
+
+        if (validateName || validateFavorites || validateOther || validateGt) {
+            setValidate({
+                name: validateName,
+                favorites: validateFavorites,
+                other: validateOther,
+                gt: validateGt,
+            })
+            return
+        }
         const infoUser = {
             fullName: name,
             favorites,
@@ -38,34 +60,34 @@ const RegisterN = () => {
         logOutUser(dispatch, navigate, idUserInfo, accessToken)
     }
 
-    useEffect(() => {
-        if (!idUserInfo) {
-            navigate('/register')
-        }
-    }, [])
-
     return (
         <div className={cx('wrapper')}>
             <div className={cx('container')}>
                 <form onSubmit={handleSubmit}>
+                    {validate?.name && <p style={{ color: 'red' }}>{validate.name}</p>}
                     <input
                         onChange={(e) => setName(e.target.value)}
                         className={cx('input')}
                         type="text"
                         placeholder="Họ và tên"
                     />
+                    {validate?.favorites && <p style={{ color: 'red' }}>{validate.favorites}</p>}
+
                     <input
                         onChange={(e) => setFavorites(e.target.value)}
                         className={cx('input')}
                         type="text"
                         placeholder="Sở thích"
                     />
+                    {validate?.other && <p style={{ color: 'red' }}>{validate.other}</p>}
                     <input
                         onChange={(e) => setOther(e.target.value)}
                         className={cx('input')}
                         type="text"
                         placeholder="Khác"
                     />
+                    {validate?.gt && <p style={{ color: 'red' }}>{validate.gt}</p>}
+
                     <div className={cx('sex')}>
                         {sexs.map((sex) => {
                             return (

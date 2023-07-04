@@ -26,7 +26,7 @@ export const loginUser = async (user: any, dispatch: any, navigate: any, setErr:
     }
 }
 
-export const registeUser = async (user: any, dispatch: any, navigate: any) => {
+export const registeUser = async (user: any, dispatch: any, navigate: any, setErr: any) => {
     dispatch(registerStart())
     try {
         const res = await axios.post('/auth/register', user)
@@ -34,7 +34,8 @@ export const registeUser = async (user: any, dispatch: any, navigate: any) => {
         const login = await axios.post('/auth/login', user)
         dispatch(loginSuccess(login.data))
         navigate('/registerN')
-    } catch (err) {
+    } catch (err: any) {
+        setErr(err.response.data)
         dispatch(registerFailed())
     }
 }

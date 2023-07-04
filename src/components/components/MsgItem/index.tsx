@@ -17,10 +17,11 @@ interface Props {
 const MsgItem = (props: Props) => {
     const { item, onClick, currentChat } = props
     const user = useSelector((state: any) => state.auth.login.currentUser)
+    const idUserInfo = user?.userInfo._id
     const [infoUser, setInfoUser] = useState<any>()
 
     useEffect(() => {
-        const friendId = item.find((m: any) => m !== user?.userInfo._id)
+        const friendId = item.find((m: any) => m !== idUserInfo)
         const getUser = async () => {
             try {
                 const res = await axios.get('/auth?userId=' + friendId)

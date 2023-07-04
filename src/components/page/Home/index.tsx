@@ -55,15 +55,18 @@ const Home = () => {
 
     const observer = useRef<any>()
 
-    const lastStatusElementRef = useCallback((node: any) => {
-        if (observer.current) observer.current.disconnect()
-        observer.current = new IntersectionObserver((entries) => {
-            if (entries[0].isIntersecting) {
-                getStatusLast()
-            }
-        })
-        if (node) observer.current.observe(node)
-    }, [])
+    const lastStatusElementRef = useCallback(
+        (node: any) => {
+            if (observer.current) observer.current.disconnect()
+            observer.current = new IntersectionObserver((entries) => {
+                if (entries[0].isIntersecting) {
+                    if (accessToken) getStatusLast()
+                }
+            })
+            if (node) observer.current.observe(node)
+        },
+        [accessToken],
+    )
 
     useEffect(() => {
         const getStatus = async () => {

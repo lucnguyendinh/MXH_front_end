@@ -32,7 +32,7 @@ const Notifications = () => {
                 console.log(err)
             }
         }
-        getNotifi()
+        if (accessToken) getNotifi()
     }, [accessToken, idUserInfo])
     return (
         <>
