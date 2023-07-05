@@ -1,5 +1,7 @@
 import classNames from 'classnames/bind'
 import { Icon } from '@iconify/react'
+import data from '@emoji-mart/data'
+import Picker from '@emoji-mart/react'
 //import { io } from 'socket.io-client'
 
 import styles from './Messenger.module.scss'
@@ -28,6 +30,7 @@ const Messenger = (props: Props) => {
     const [currentChat, setCurrentChat] = useState<any>()
     const [userChat, setUserChat] = useState<any>()
     const [text, setText] = useState('')
+    const [isEmoji, setEmoji] = useState<any>(false)
     const scrollRef = useRef<HTMLDivElement>(null)
     let axiosJWT = useJWT()
     //const socket = useRef<any>()
@@ -141,9 +144,20 @@ const Messenger = (props: Props) => {
                                     }}
                                     value={text}
                                 ></textarea>
-                                <button>
-                                    <Icon icon="bxs:smile" width="30" height="30" style={{ color: '#1685fc' }} />
-                                </button>
+                                <div className={cx('emoji')}>
+                                    {isEmoji && (
+                                        <div onBlur={() => setEmoji(!isEmoji)} className={cx('table-emoji')}>
+                                            <Picker data={data} onEmojiSelect={(e: any) => setText(text + e.native)} />
+                                        </div>
+                                    )}
+                                    <Icon
+                                        onClick={() => setEmoji(!isEmoji)}
+                                        icon="bxs:smile"
+                                        width="30"
+                                        height="30"
+                                        style={{ color: '#1685fc', cursor: 'pointer' }}
+                                    />
+                                </div>
                             </div>
                             <Icon
                                 style={{ cursor: 'pointer' }}

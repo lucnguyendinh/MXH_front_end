@@ -1,7 +1,7 @@
 import classNames from 'classnames/bind'
 import { Icon } from '@iconify/react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation, Link } from 'react-router-dom'
 
 import ButtonHome from '../../Item/ButtonAction'
 import styles from './Header.module.scss'
@@ -50,9 +50,11 @@ const Header = () => {
 
     return (
         <div className={cx('wrapper')}>
-            <div className={cx('logo')}>
-                <Icon className={cx('icon')} icon="emojione-monotone:letter-l" />
-            </div>
+            <Link to="/">
+                <div className={cx('logo')}>
+                    <Icon className={cx('icon')} icon="emojione-monotone:letter-l" />
+                </div>
+            </Link>
             <div className={cx('action')}>
                 {icons.map((icon: Icons) => {
                     let stt: Number

@@ -24,7 +24,7 @@ const validateForm = {
     },
     other: (other: any) => {
         let err: String
-        if (other === '') return (err = 'reqired!!!')
+        if (other === '') return (err = 'Không để trống ô này!')
     },
 }
 

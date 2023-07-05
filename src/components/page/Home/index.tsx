@@ -9,7 +9,7 @@ import Status from '../../Item/Status'
 import config from '../../../config'
 import NewsFeed from '../../Item/NewsFeed'
 import CreateStatus from '../../Item/CreateStatus'
-import HomeSkeleton from '../../skeleton/Home'
+import StatusSkeleton from '../../skeleton/Status'
 import Error from '../../components/Error'
 import useJWT from '../../../config/useJWT'
 import Video from '../../Item/Video'
@@ -87,7 +87,7 @@ const Home = () => {
     return (
         <>
             {loading ? (
-                <HomeSkeleton />
+                <StatusSkeleton />
             ) : (
                 <div className="wrapper">
                     <NewsFeed setNewsFeed={setNewsFeed} />
