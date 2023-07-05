@@ -34,19 +34,19 @@ const Login = () => {
 
     const handleSubmit = (e: any) => {
         e.preventDefault()
-        // const validatePhoneNumber = validateForm.phoneNumber(sdt)
-        // const validatePassword = validateForm.password(password)
-        // if (validatePhoneNumber || validatePassword) {
-        //     setValidate({
-        //         phoneNumber: validatePhoneNumber,
-        //         password: validatePassword,
-        //     })
-        //     return
-        // }
-        // setValidate({
-        //     phoneNumber: validatePhoneNumber,
-        //     password: validatePassword,
-        // })
+        const validatePhoneNumber = validateForm.phoneNumber(sdt)
+        const validatePassword = validateForm.password(password)
+        if (validatePhoneNumber || validatePassword) {
+            setValidate({
+                phoneNumber: validatePhoneNumber,
+                password: validatePassword,
+            })
+            return
+        }
+        setValidate({
+            phoneNumber: validatePhoneNumber,
+            password: validatePassword,
+        })
         const newUser = {
             sdt,
             password,
