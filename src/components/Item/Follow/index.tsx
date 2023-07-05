@@ -34,7 +34,7 @@ const Follow = (props: Props) => {
                             <div key={i}>
                                 <ButtonItem
                                     className={cx('item-user')}
-                                    img={f.avtImg.url}
+                                    img={f.avtImg?.url}
                                     width={'100%'}
                                     height={'55px'}
                                     //to={f._id}
