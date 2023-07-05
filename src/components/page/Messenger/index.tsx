@@ -75,8 +75,7 @@ const Messenger = (props: Props) => {
         scrollRef.current?.scrollIntoView()
     }, [currentChat])
 
-    const handleSubmit = async (e: any) => {
-        e.preventDefault()
+    const handleSubmit = async () => {
         try {
             const newChat = {
                 conversationId: idMess,
@@ -129,11 +128,17 @@ const Messenger = (props: Props) => {
                         <Icon icon="mdi:images" width="30" height="30" className={cx('icon-f')} />
                         <Icon icon="fluent:sticker-24-filled" width="30" height="30" className={cx('icon-f')} />
                         <Icon icon="ic:round-gif-box" width="30" height="30" className={cx('icon-f')} />
-                        <form onSubmit={handleSubmit} className={cx('form')}>
+                        <form className={cx('form')}>
                             <div className={cx('input')}>
                                 <textarea
                                     placeholder="Aa"
                                     onChange={(e: any) => setText(e.target.value)}
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter' && !e.shiftKey) {
+                                            e.preventDefault()
+                                            handleSubmit()
+                                        }
+                                    }}
                                     value={text}
                                 ></textarea>
                                 <button>
