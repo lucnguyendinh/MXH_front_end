@@ -82,7 +82,7 @@ const Header = () => {
             </div>
             <div className={cx('end')}>
                 <div className={cx('element-user')} onClick={handleClick}>
-                    <img src={user?.userInfo?.avtImg?.url || noAvt} alt="" />
+                    <h4>Đăng xuất</h4>
                 </div>
             </div>
         </div>
