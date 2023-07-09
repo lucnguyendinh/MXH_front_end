@@ -51,7 +51,6 @@ const Friends = () => {
                                     <Link to={`/profile/${u?._id}`}>
                                         <p className={cx('name')}>{u?.fullName}</p>
                                     </Link>
-                                    <div className={cx('btn-follow')}>Follow</div>
                                 </div>
                             </ButtonItem>
                         )

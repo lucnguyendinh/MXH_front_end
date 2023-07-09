@@ -36,6 +36,9 @@
         align-items: center;
         margin: 0 8px;
     }
+    .option {
+        display: none;
+    }
     .active {
         position: relative;
         .home-ic {
@@ -82,11 +85,26 @@
 }
 
 @media (max-width: 480px) {
+    .wrapper {
+        padding: 0;
+    }
     .logo {
         display: none;
     }
-    .element {
-        padding: 0;
-        margin: 0 !important;
+    .action {
+        .option {
+            display: block;
+        }
+        .element {
+            padding: 0;
+            margin: 0;
+            width: 75px;
+        }
+        .active {
+            &::before {
+                content: '';
+                width: 75px;
+            }
+        }
     }
 }

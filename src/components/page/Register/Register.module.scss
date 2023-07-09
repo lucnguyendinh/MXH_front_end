@@ -68,3 +68,9 @@
     justify-content: center;
     cursor: pointer;
 }
+
+@media (max-width: 480px) {
+    .container {
+        width: 80%;
+    }
+}

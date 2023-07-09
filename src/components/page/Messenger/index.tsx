@@ -102,7 +102,12 @@ const Messenger = (props: Props) => {
         }
     }
     return (
-        <div className={cx('wrapper', className)}>
+        <div
+            onClick={() => {
+                if (isEmoji) setEmoji(!isEmoji)
+            }}
+            className={cx('wrapper', className)}
+        >
             <div className={cx('header')}>
                 <Link to={`/profile/${userChat?._id}`}>
                     <div className={cx('img')}>
@@ -144,10 +149,14 @@ const Messenger = (props: Props) => {
                                     }}
                                     value={text}
                                 ></textarea>
-                                <div className={cx('emoji')}>
+                                <div className={cx('emoji')} onClick={(e) => e.stopPropagation()}>
                                     {isEmoji && (
-                                        <div onBlur={() => setEmoji(!isEmoji)} className={cx('table-emoji')}>
-                                            <Picker data={data} onEmojiSelect={(e: any) => setText(text + e.native)} />
+                                        <div className={cx('table-emoji')}>
+                                            <Picker
+                                                style={{ width: '100%' }}
+                                                data={data}
+                                                onEmojiSelect={(e: any) => setText(text + e.native)}
+                                            />
                                         </div>
                                     )}
                                     <Icon

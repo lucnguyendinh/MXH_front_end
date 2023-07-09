@@ -272,6 +272,8 @@
 @media (max-width: 480px) {
     .container {
         width: 95%;
+        max-height: 80%;
+        overflow-y: auto;
     }
     .more {
         h4 {

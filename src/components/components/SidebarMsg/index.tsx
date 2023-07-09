@@ -12,10 +12,11 @@ interface Props {
     className?: any
     item?: any
     id?: any
+    onClick?: any
 }
 
 const SidebarMsg = (props: Props) => {
-    const { className, item, id } = props
+    const { className, item, id, onClick } = props
     const navigate = useNavigate()
     const user = useSelector((state: any) => state.auth.login.currentUser)
 
@@ -25,7 +26,7 @@ const SidebarMsg = (props: Props) => {
     }
 
     return (
-        <div className={cx('wrapper', className)}>
+        <div onClick={onClick} className={cx('wrapper', className)}>
             <div className={cx('header')}>
                 <h1>Chat</h1>
                 <div className={cx('h-option')}>

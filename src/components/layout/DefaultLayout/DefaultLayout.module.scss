@@ -34,6 +34,22 @@
     .side-bar-l {
         display: none;
     }
+    .open-side {
+        display: block;
+        position: fixed;
+        width: 80%;
+        background-color: aliceblue;
+        z-index: 10;
+        animation: slideRight 1s ease-in-out;
+    }
+    @keyframes slideRight {
+        from {
+            transform: translateX(-100%);
+        }
+        to {
+            transform: translateX(0);
+        }
+    }
     .side-bar-r {
         display: none;
     }

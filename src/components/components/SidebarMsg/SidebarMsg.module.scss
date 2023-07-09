@@ -1,6 +1,5 @@
 .wrapper {
     margin-top: 8px;
-    margin-left: 8px;
 }
 
 .header {
@@ -26,22 +25,32 @@
     }
     &::after {
         content: '';
-        background-color: black;
-        width: 98%;
+        background-color: #d4d4d4;
+        width: 100%;
         height: 1px;
         position: absolute;
         top: 50px;
+        right: 0;
     }
 }
 
 .container {
     margin-top: 8px;
+    margin-left: 8px;
     height: 80vh;
     overflow-y: auto;
 }
 
 @media (max-width: 480px) {
-    .h-option {
-        display: none !important;
+    .wrapper {
+        margin-top: 0;
+    }
+    .header {
+        .h-option {
+            display: none;
+        }
+    }
+    .container {
+        height: 100vh;
     }
 }

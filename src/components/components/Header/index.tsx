@@ -6,8 +6,11 @@ import { useNavigate, useLocation, Link } from 'react-router-dom'
 import ButtonHome from '../../Item/ButtonAction'
 import styles from './Header.module.scss'
 import { logOutUser } from '../../../redux/Api/apiRequest'
-import noAvt from '../../../public/img/person/non-avt.jpg'
 
+interface Props {
+    setOption?: any
+    option?: Boolean
+}
 interface Icons {
     icon: any
     stt: number
@@ -16,7 +19,8 @@ interface Icons {
 
 const cx = classNames.bind(styles)
 
-const Header = () => {
+const Header = (props: Props) => {
+    const { setOption, option } = props
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
@@ -50,12 +54,20 @@ const Header = () => {
 
     return (
         <div className={cx('wrapper')}>
-            <Link to="/">
-                <div className={cx('logo')}>
-                    <Icon className={cx('icon')} icon="emojione-monotone:letter-l" />
-                </div>
+            <Link className={cx('logo')} to="/">
+                <Icon className={cx('icon')} icon="emojione-monotone:letter-l" />
             </Link>
             <div className={cx('action')}>
+                <div
+                    onClick={() => {
+                        if (setOption) setOption(!option)
+                    }}
+                    className={cx('option')}
+                >
+                    <ButtonHome className={cx('element')}>
+                        {<Icon icon="mdi:hamburger-menu" width="35" height="35" />}
+                    </ButtonHome>
+                </div>
                 {icons.map((icon: Icons) => {
                     let stt: Number
                     if (location.pathname.startsWith('/notifications')) {

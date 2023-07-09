@@ -23,4 +23,23 @@
     .msg {
         width: 100px;
     }
+    .side-bar {
+        display: none;
+    }
+    .open-side {
+        display: block;
+        position: fixed;
+        background-color: aliceblue;
+        width: 35%;
+        z-index: 10;
+        animation: slideRight 1s ease-in-out;
+    }
+    @keyframes slideRight {
+        from {
+            transform: translateX(-100%);
+        }
+        to {
+            transform: translateX(0);
+        }
+    }
 }

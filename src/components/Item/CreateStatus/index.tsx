@@ -21,6 +21,8 @@ interface Props {
 const CreateStatus = (props: Props) => {
     const { setNewsFeed, share, idStatus, idUser } = props
     const user = useSelector((state: any) => state.auth.login.currentUser)
+    const idUserInfo = user?.userInfo._id
+    const accessToken = user?.accessToken
     const [optionCheck, setOptionCheck] = useState(1)
     const [checkOption, setCheckOption] = useState(false)
     const [content, setContent] = useState('')
@@ -39,21 +41,21 @@ const CreateStatus = (props: Props) => {
     const handleShare = async () => {
         const status = {
             content,
-            user: user?.userInfo._id,
+            user: idUserInfo,
             shareW: optionCheck,
             idStatus,
         }
         const Notifi = {
             idUser,
-            idOther: user?.userInfo._id,
+            idOther: idUserInfo,
             idStatus: idStatus,
         }
         try {
             await axiosJWT.post('/status/share', status, {
-                headers: { token: `Bearer ${user.accessToken}` },
+                headers: { token: `Bearer ${accessToken}` },
             })
             await axiosJWT.post('/notification/share', Notifi, {
-                headers: { token: `Bearer ${user.accessToken}` },
+                headers: { token: `Bearer ${accessToken}` },
             })
             setNewsFeed(false)
         } catch (err) {
@@ -65,12 +67,12 @@ const CreateStatus = (props: Props) => {
         try {
             const status = {
                 content,
-                user: user?.userInfo._id,
+                user: idUserInfo,
                 shareW: optionCheck,
                 media,
             }
             await axiosJWT.post('/status/upstatus', status, {
-                headers: { token: `Bearer ${user.accessToken}` },
+                headers: { token: `Bearer ${accessToken}` },
             })
             setNewsFeed(false)
         } catch (err) {
@@ -81,7 +83,7 @@ const CreateStatus = (props: Props) => {
         const getStatus = async () => {
             try {
                 const res = await axiosJWT.get('/status/getstatusbyid/' + idStatus, {
-                    headers: { token: `Bearer ${user.accessToken}` },
+                    headers: { token: `Bearer ${accessToken}` },
                 })
                 setStatus(res.data)
             } catch (err) {
@@ -229,9 +231,11 @@ const CreateStatus = (props: Props) => {
                             </div>
                         ) : (
                             <div
-                                onClick={handleUp}
+                                onClick={() => {
+                                    if (content || media) handleUp()
+                                }}
                                 className={cx('up', {
-                                    done: content,
+                                    done: content || media,
                                 })}
                             >
                                 Đăng

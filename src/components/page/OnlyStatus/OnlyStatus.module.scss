@@ -9,3 +9,13 @@
 .status {
     min-width: 1056px;
 }
+
+@media (max-width: 480px) {
+    .wrapper {
+        align-items: flex-start;
+    }
+    .status {
+        min-width: 0;
+        width: 100%;
+    }
+}

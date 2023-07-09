@@ -48,6 +48,7 @@
             font-size: 16px;
             background-color: transparent;
             padding-right: 16px;
+            height: 24px;
         }
         .emoji {
             position: relative;
@@ -62,4 +63,16 @@
 .form {
     display: flex;
     flex: 1;
+}
+
+@media (max-width: 480px) {
+    .table-emoji {
+        width: 315px;
+    }
+    .footer {
+        .icon-f {
+            margin: 0;
+            width: 30px;
+        }
+    }
 }

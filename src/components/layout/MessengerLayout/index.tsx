@@ -21,6 +21,8 @@ const MessengerLayout = () => {
     const [userM, setUserM] = useState([])
     const [idMess, setIdMess] = useState<any>()
     const [loading, setLoading] = useState(false)
+    const [option, setOption] = useState(false)
+
     const axiosJWT = useJWT()
     const { id } = useParams()
 
@@ -52,10 +54,22 @@ const MessengerLayout = () => {
             {loading ? (
                 <MessengerSkeleton />
             ) : (
-                <div className={cx('wrapper')}>
-                    <Header />
+                <div
+                    onClick={() => {
+                        if (option) setOption(!option)
+                    }}
+                    className={cx('wrapper')}
+                >
+                    <Header setOption={setOption} option={option} />
                     <div className={cx('container')}>
-                        <SidebarMsg className={cx('side-bar')} item={userM} id={id} />
+                        <SidebarMsg
+                            onClick={(e: any) => e.stopPropagation()}
+                            className={cx('side-bar', {
+                                'open-side': option,
+                            })}
+                            item={userM}
+                            id={id}
+                        />
                         <Messenger className={cx('msg')} idMess={idMess} id={id} />
                         <InfoMsg className={cx('info')} id={id} />
                     </div>
