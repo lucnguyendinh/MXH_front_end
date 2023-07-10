@@ -195,8 +195,15 @@
     .cover-img {
         height: 150px;
     }
+    .h-content {
+        flex-direction: column;
+        &::after {
+            bottom: 42px;
+        }
+    }
     .option {
-        display: none;
+        padding: 0;
+        justify-content: flex-end;
     }
     .h-footer {
         display: none;

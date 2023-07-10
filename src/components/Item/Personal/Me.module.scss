@@ -250,8 +250,15 @@
     .cover-img {
         height: 150px;
     }
+    .h-content {
+        flex-direction: column;
+        &::after {
+            bottom: 42px;
+        }
+    }
     .option {
-        display: none;
+        padding: 0;
+        justify-content: space-between;
     }
     .h-footer {
         display: none;

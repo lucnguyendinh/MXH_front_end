@@ -41,14 +41,16 @@ const Follow = (props: Props) => {
                                     toChildren={f._id}
                                     closeTab={closeTab}
                                 >
-                                    <Link to={`/profile/${f._id}`} onClick={closeTab}>
-                                        <p className={cx('name')}>{f.fullName}</p>
-                                    </Link>
-                                    {option && (
-                                        <div onClick={() => option.handle(f._id)} className={cx('btn-delete')}>
-                                            {option.title}
-                                        </div>
-                                    )}
+                                    <div className={cx('children')}>
+                                        <Link className={cx('name')} to={`/profile/${f._id}`} onClick={closeTab}>
+                                            <p>{f.fullName}</p>
+                                        </Link>
+                                        {option && (
+                                            <div onClick={() => option.handle(f._id)} className={cx('btn-delete')}>
+                                                {option.title}
+                                            </div>
+                                        )}
+                                    </div>
                                 </ButtonItem>
                             </div>
                         )

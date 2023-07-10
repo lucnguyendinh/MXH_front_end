@@ -117,3 +117,9 @@
     cursor: pointer;
     margin-bottom: 16px;
 }
+
+@media (max-width: 480px) {
+    .wrapper {
+        width: 95%;
+    }
+}
