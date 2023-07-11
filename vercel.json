@@ -1,0 +1,24 @@
+{
+    "rewrites": [
+        {
+            "source": "/auth/:match*",
+            "destination": "https://mxh-back-end.vercel.app/auth/:match*"
+        },
+        {
+            "source": "/status/:match*",
+            "destination": "https://mxh-back-end.vercel.app/status/:match*"
+        },
+        {
+            "source": "/message/:match*",
+            "destination": "https://mxh-back-end.vercel.app/message/:match*"
+        },
+        {
+            "source": "/profile/:match*",
+            "destination": "https://mxh-back-end.vercel.app/profile/:match*"
+        },
+        {
+            "source": "/notification/:match*",
+            "destination": "https://mxh-back-end.vercel.app/notification/:match*"
+        }
+    ]
+}
