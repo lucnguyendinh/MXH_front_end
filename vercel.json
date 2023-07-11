@@ -1,8 +1,8 @@
-{
-    "rewrites": [
-        {
-            "source": "/:match*",
-            "destination": "https://mxh-back-end.vercel.app/:match*"
-        }
-    ]
-}
+// {
+//     "rewrites": [
+//         {
+//             "source": "/:match*",
+//             "destination": "https://mxh-back-end.vercel.app/:match*"
+//         }
+//     ]
+// }
