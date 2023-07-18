@@ -14,13 +14,14 @@ const Register = () => {
     const navigate = useNavigate()
 
     const user = useSelector((state: any) => state.auth.login.currentUser)
+    const userRegister = user?.user
+    const userLogin = user?.userInfo
+
     const [email, setEmail] = useState<String>()
     const [sdt, setSdt] = useState<String>()
     const [password, setPassword] = useState<String>()
     const [validate, setValidate] = useState<any>(null)
     const [err, setErr] = useState<any>('')
-    const userRegister = user?.user
-    const userLogin = user?.userInfo
 
     useEffect(() => {
         if (userRegister) {
@@ -55,6 +56,9 @@ const Register = () => {
             password,
         }
         registeUser(newUser, dispatch, navigate, setErr)
+    }
+    if (userLogin || userRegister) {
+        return <div></div>
     }
     return (
         <div className={cx('wrapper')}>

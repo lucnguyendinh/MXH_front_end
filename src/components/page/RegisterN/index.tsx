@@ -14,8 +14,8 @@ const RegisterN = () => {
     const navigate = useNavigate()
 
     const user = useSelector((state: any) => state.auth.login.currentUser)
-
-    const idUserInfo = user?.user?._id
+    const userLogin = user?.userInfo
+    const idUser = user?.user?._id
     const accessToken = user?.accessToken
 
     const [name, setName] = useState<String>('')
@@ -26,10 +26,13 @@ const RegisterN = () => {
     const sexs = ['nam', 'nữ']
 
     useEffect(() => {
-        if (!idUserInfo) {
+        if (userLogin) {
+            navigate('/')
+        }
+        if (!idUser) {
             navigate('/register')
         }
-    }, [idUserInfo])
+    }, [idUser, userLogin])
 
     const handleSubmit = (e: any) => {
         e.preventDefault()
@@ -52,14 +55,16 @@ const RegisterN = () => {
             favorites,
             otherOf: other,
             sex: gt,
-            idUser: idUserInfo,
+            idUser,
         }
         registerN(infoUser, dispatch, navigate)
     }
     const handleClick = () => {
-        logOutUser(dispatch, navigate, idUserInfo, accessToken)
+        logOutUser(dispatch, navigate, idUser, accessToken)
     }
-
+    if (userLogin || !idUser) {
+        return <div></div>
+    }
     return (
         <div className={cx('wrapper')}>
             <div className={cx('container')}>

@@ -20,7 +20,8 @@ const Home = () => {
     const navigate = useNavigate()
     const user = useSelector((state: any) => state.auth.login.currentUser)
     const accessToken = user?.accessToken
-    const userRegister = user?.user?._id
+    const userInfo = user?.userInfo
+    const userRegister = user?.user
 
     const [listStatus, setListStatus] = useState<any>([])
     const [newsFeed, setNewsFeed] = useState(false)
@@ -29,13 +30,13 @@ const Home = () => {
     const axiosJWT = useJWT()
 
     useEffect(() => {
-        if (!user) {
+        if (!userInfo) {
             navigate('/login')
         }
         if (userRegister) {
             navigate('/registerN')
         }
-    }, [navigate, user, userRegister])
+    }, [userInfo, userRegister])
 
     const getStatusLast = async () => {
         try {
@@ -83,6 +84,10 @@ const Home = () => {
         }
         if (accessToken) getStatus()
     }, [accessToken])
+
+    if (!userInfo || userRegister) {
+        return <div></div>
+    }
 
     return (
         <>

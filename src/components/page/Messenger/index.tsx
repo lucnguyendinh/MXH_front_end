@@ -10,7 +10,7 @@ import { useEffect, useRef, useState } from 'react'
 import axios from 'axios'
 import { useSelector } from 'react-redux'
 import noAvt from '../../../public/img/person/non-avt.jpg'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import useJWT from '../../../config/useJWT'
 
 const cx = classNames.bind(styles)
@@ -23,9 +23,11 @@ interface Props {
 
 const Messenger = (props: Props) => {
     const { className, idMess, id } = props
+    const navigate = useNavigate()
     const user = useSelector((state: any) => state.auth.login.currentUser)
-    const idUserInfo = user?.userInfo._id
+    const idUserInfo = user?.userInfo?._id
     const accessToken = user?.accessToken
+    const userRegister = user?.user
 
     const [currentChat, setCurrentChat] = useState<any>()
     const [userChat, setUserChat] = useState<any>()
@@ -48,7 +50,14 @@ const Messenger = (props: Props) => {
     //     socket.current.emit('addUser', idUserInfo)
     //     socket.current.on('getUsers', (users: any) => {})
     // }, [user])
-
+    useEffect(() => {
+        if (!idUserInfo) {
+            navigate('/login')
+        }
+        if (userRegister) {
+            navigate('/registerN')
+        }
+    }, [idUserInfo, userRegister])
     useEffect(() => {
         const getMess = async () => {
             try {
@@ -101,6 +110,11 @@ const Messenger = (props: Props) => {
             console.log(err)
         }
     }
+
+    if (!idUserInfo || userRegister) {
+        return <div></div>
+    }
+
     return (
         <div
             onClick={() => {

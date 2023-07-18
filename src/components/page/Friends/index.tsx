@@ -2,7 +2,7 @@ import classNames from 'classnames/bind'
 
 import styles from './Friends.module.scss'
 import ButtonItem from '../../Item/ButtonItem'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import FriendsSkeleton from '../../skeleton/Friends'
@@ -11,11 +11,21 @@ import { useSelector } from 'react-redux'
 const cx = classNames.bind(styles)
 
 const Friends = () => {
+    const navigate = useNavigate()
     const user = useSelector((state: any) => state.auth.login.currentUser)
-    const idUserInfo = user?.userInfo._id
-    const following = user?.userInfo.follow.following
+    const userRegister = user?.user
+    const idUserInfo = user?.userInfo?._id
+    const following = user?.userInfo?.follow?.following
     const [users, setUsers] = useState<any>([])
     const [loading, setLoading] = useState(false)
+    useEffect(() => {
+        if (!idUserInfo) {
+            navigate('/login')
+        }
+        if (userRegister) {
+            navigate('/registerN')
+        }
+    }, [idUserInfo, userRegister])
     useEffect(() => {
         const getAllUser = async () => {
             try {
@@ -31,6 +41,9 @@ const Friends = () => {
         }
         getAllUser()
     }, [following, idUserInfo])
+    if (!idUserInfo || userRegister) {
+        return <div></div>
+    }
     return (
         <>
             {loading ? (

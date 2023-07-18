@@ -8,15 +8,28 @@ import Video from '../../Item/Video'
 import StatusSkeleton from '../../skeleton/Status'
 import useJWT from '../../../config/useJWT'
 import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 const cx = classNames.bind(styles)
 
 const NewFeed = () => {
+    const navigate = useNavigate()
     const user = useSelector((state: any) => state.auth.login.currentUser)
+    const userInfo = user?.userInfo
+    const userRegister = user?.user
     const accessToken = user?.accessToken
     const [status, setStatus] = useState<any>(null)
     const [loading, setLoading] = useState<any>(false)
     const axiosJWT = useJWT()
+    useEffect(() => {
+        if (!userInfo) {
+            navigate('/login')
+        }
+        if (userRegister) {
+            navigate('/registerN')
+        }
+    }, [user, userRegister])
+
     useEffect(() => {
         const getStatus = async () => {
             try {
@@ -30,8 +43,11 @@ const NewFeed = () => {
                 console.log(err)
             }
         }
-        getStatus()
+        if (accessToken) getStatus()
     }, [accessToken])
+    if (!userInfo || userRegister) {
+        return <div></div>
+    }
     return (
         <>
             {loading ? (

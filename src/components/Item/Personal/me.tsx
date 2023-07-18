@@ -19,7 +19,7 @@ const cx = classNames.bind(styles)
 
 const Me = () => {
     const user = useSelector((state: any) => state.auth.login.currentUser)
-    const idUserInfo = user?.userInfo._id
+    const idUserInfo = user?.userInfo?._id
     const accessToken = user?.accessToken
 
     const [listStatus, setListStatus] = useState<any>(null)

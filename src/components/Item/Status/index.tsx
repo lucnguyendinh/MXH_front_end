@@ -26,7 +26,7 @@ const Status = (props: Props) => {
 
     const user = useSelector((state: any) => state.auth.login.currentUser)
     const accessToken = user?.accessToken
-    const idUserInfo = user?.userInfo._id
+    const idUserInfo = user?.userInfo?._id
 
     const [like, setLike] = useState<any[]>([])
     const [comment, setComment] = useState<any[]>([])
@@ -316,7 +316,7 @@ const Status = (props: Props) => {
                         <form onSubmit={handleSubmit}>
                             <div className={cx('write')}>
                                 <div className={cx('img')}>
-                                    <img src={user?.userInfo.avtImg?.url || noAvt} alt="" />
+                                    <img src={user?.userInfo?.avtImg?.url || noAvt} alt="" />
                                 </div>
 
                                 <div className={cx('input')}>

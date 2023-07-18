@@ -16,7 +16,7 @@ const cx = classNames.bind(styles)
 
 const MessengerLayout = () => {
     const user = useSelector((state: any) => state.auth.login.currentUser)
-    const idUserInfo = user?.userInfo._id
+    const idUserInfo = user?.userInfo?._id
     const accessToken = user?.accessToken
     const [userM, setUserM] = useState([])
     const [idMess, setIdMess] = useState<any>()

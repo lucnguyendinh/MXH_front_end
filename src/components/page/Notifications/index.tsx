@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import noAvt from '../../../public/img/person/non-avt.jpg'
 import config from '../../../config'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import NotificationsSkeleton from '../../skeleton/Notifications'
 import useJWT from '../../../config/useJWT'
 
@@ -13,11 +13,22 @@ const cx = classNames.bind(styles)
 
 const Notifications = () => {
     let axiosJWT = useJWT()
+    const navigate = useNavigate()
     const [listNotifi, setListNotifi] = useState<any>(null)
     const [loading, setLoading] = useState(false)
     const user = useSelector((state: any) => state.auth.login.currentUser)
-    const idUserInfo = user?.userInfo._id
+    const idUserInfo = user?.userInfo?._id
     const accessToken = user?.accessToken
+    const userRegister = user?.user
+
+    useEffect(() => {
+        if (!idUserInfo) {
+            navigate('/login')
+        }
+        if (userRegister) {
+            navigate('/registerN')
+        }
+    }, [idUserInfo, userRegister])
 
     useEffect(() => {
         const getNotifi = async () => {
@@ -34,6 +45,10 @@ const Notifications = () => {
         }
         if (accessToken) getNotifi()
     }, [accessToken, idUserInfo])
+
+    if (!idUserInfo || userRegister) {
+        return <div></div>
+    }
     return (
         <>
             {loading ? (
