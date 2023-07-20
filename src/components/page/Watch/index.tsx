@@ -20,6 +20,7 @@ const Watch = () => {
     const accessToken = user?.accessToken
     const [video, setVideo] = useState<any>(null)
     const [loading, setLoading] = useState<any>(false)
+    const [volume, setVolume] = useState<any>(0)
     const axiosJWT = useJWT()
     useEffect(() => {
         if (!userInfo) {
@@ -60,7 +61,7 @@ const Watch = () => {
                         return (
                             <Status key={i} timed={displayTime} status={v}>
                                 <h3>{v.content}</h3>
-                                <Video url={v.video} />
+                                <Video url={v.video} idVideo={v._id} volume={volume} setVolume={setVolume} />
                             </Status>
                         )
                     })}

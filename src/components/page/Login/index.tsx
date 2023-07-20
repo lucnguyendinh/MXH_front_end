@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { loginUser } from '../../../redux/Api/apiRequest'
 import styles from './Login.module.scss'
 import validateForm from '../../../config/validateForm'
+import Toast from '../../Item/Toast'
 
 const cx = classNames.bind(styles)
 
@@ -19,7 +20,7 @@ const Login = () => {
 
     const [sdt, setSdt] = useState<String>('')
     const [password, setPassword] = useState<String>('')
-    const [err, setErr] = useState<any>('')
+    const [err, setErr] = useState<String>('')
     const [validate, setValidate] = useState<any>(null)
 
     useEffect(() => {
@@ -81,7 +82,7 @@ const Login = () => {
                     </Link>
                 </form>
             </div>
-            {err && <h1>{err}</h1>}
+            {err && <Toast title={'Error'} msg={err} toggle={setErr} />}
         </div>
     )
 }

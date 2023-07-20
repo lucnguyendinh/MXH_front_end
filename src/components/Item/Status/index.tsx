@@ -34,6 +34,8 @@ const Status = (props: Props) => {
     const [checkDelete, setCheckDelete] = useState(false)
     const [displayTime, setDisplayTime] = useState('')
     const [idCmt, setIdCmt] = useState('')
+    const [volume, setVolume] = useState<any>(0)
+
     let checkLiked = false
     let idLike: any
 
@@ -278,13 +280,20 @@ const Status = (props: Props) => {
                                 {status.idStatus?.content && <h4>{status.idStatus?.content}</h4>}
                                 {status.idStatus?.img && (
                                     <img
-                                        style={{ width: '100%' }}
+                                        style={{ width: '100%', borderRadius: '8px' }}
                                         className={cx('img')}
                                         src={status.idStatus.img}
                                         alt=""
                                     />
                                 )}
-                                {status.idStatus?.video && <Video url={status.idStatus.video} />}
+                                {status.idStatus?.video && (
+                                    <Video
+                                        url={status.idStatus.video}
+                                        idVideo={status._id}
+                                        volume={volume}
+                                        setVolume={setVolume}
+                                    />
+                                )}
                             </div>
                         </div>
                     )}

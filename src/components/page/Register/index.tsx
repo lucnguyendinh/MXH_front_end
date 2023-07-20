@@ -6,6 +6,7 @@ import { registeUser } from '../../../redux/Api/apiRequest'
 
 import styles from './Register.module.scss'
 import validateForm from '../../../config/validateForm'
+import Toast from '../../Item/Toast'
 
 const cx = classNames.bind(styles)
 
@@ -91,7 +92,7 @@ const Register = () => {
                     </Link>
                 </form>
             </div>
-            {err && <h1 style={{ color: '#fff' }}>{err}</h1>}
+            {err && <Toast title={'Error'} msg={err} toggle={setErr} />}
         </div>
     )
 }

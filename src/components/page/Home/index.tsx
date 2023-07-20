@@ -10,9 +10,9 @@ import config from '../../../config'
 import NewsFeed from '../../Item/NewsFeed'
 import CreateStatus from '../../Item/CreateStatus'
 import StatusSkeleton from '../../skeleton/Status'
-import Error from '../../components/Error'
 import useJWT from '../../../config/useJWT'
 import Video from '../../Item/Video'
+import Toast from '../../Item/Toast'
 
 const cx = classNames.bind(styles)
 
@@ -27,6 +27,8 @@ const Home = () => {
     const [newsFeed, setNewsFeed] = useState(false)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false)
+    const [volume, setVolume] = useState<any>(0)
+
     const axiosJWT = useJWT()
 
     useEffect(() => {
@@ -96,7 +98,7 @@ const Home = () => {
             ) : (
                 <div className="wrapper">
                     <NewsFeed setNewsFeed={setNewsFeed} />
-                    {newsFeed && <CreateStatus setNewsFeed={setNewsFeed} />}
+                    {newsFeed && <CreateStatus setError={setError} setNewsFeed={setNewsFeed} />}
                     {listStatus?.map((status: any, i: any) => {
                         const timeSinceCreation = (Date.now() - Date.parse(status.createdAt)) / 1000
 
@@ -107,7 +109,14 @@ const Home = () => {
                                     <Status timed={displayTime} status={status}>
                                         <h3 style={{ whiteSpace: 'pre-wrap' }}>{status.content}</h3>
                                         {status.img && <img className={cx('img')} src={status.img} alt="" />}
-                                        {status.video && <Video url={status.video} />}
+                                        {status.video && (
+                                            <Video
+                                                url={status.video}
+                                                idVideo={status._id}
+                                                volume={volume}
+                                                setVolume={setVolume}
+                                            />
+                                        )}
                                     </Status>
                                 </div>
                             )
@@ -117,7 +126,14 @@ const Home = () => {
                                     <Status timed={displayTime} status={status}>
                                         <h3>{status.content}</h3>
                                         {status.img && <img className={cx('img')} src={status.img} alt="" />}
-                                        {status.video && <Video url={status.video} />}
+                                        {status.video && (
+                                            <Video
+                                                url={status.video}
+                                                idVideo={status._id}
+                                                volume={volume}
+                                                setVolume={setVolume}
+                                            />
+                                        )}
                                     </Status>
                                 </div>
                             )
@@ -125,7 +141,13 @@ const Home = () => {
                     })}
                 </div>
             )}
-            {error && <Error setError={setError} />}
+            {error && (
+                <Toast
+                    title={'Warning'}
+                    msg={'Chức năng hiện đang được cập nhật, vui lòng thử lại sau'}
+                    toggle={setError}
+                />
+            )}
         </>
     )
 }

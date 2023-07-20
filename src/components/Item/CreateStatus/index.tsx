@@ -16,10 +16,11 @@ interface Props {
     share?: any
     idStatus?: any
     idUser?: any
+    setError?: any
 }
 
 const CreateStatus = (props: Props) => {
-    const { setNewsFeed, share, idStatus, idUser } = props
+    const { setNewsFeed, share, idStatus, idUser, setError } = props
     const user = useSelector((state: any) => state.auth.login.currentUser)
     const idUserInfo = user?.userInfo._id
     const accessToken = user?.accessToken
@@ -30,6 +31,8 @@ const CreateStatus = (props: Props) => {
     const [status, setStatus] = useState<any>(null)
     const [shareW, setShareW] = useState('Công khai')
     const [displayTime, setDisplayTime] = useState('')
+    const [volume, setVolume] = useState<any>(0)
+
     const inputFileImg = useRef<any>(null)
     const axiosJWT = useJWT()
 
@@ -125,6 +128,10 @@ const CreateStatus = (props: Props) => {
         },
     ]
 
+    const handleError = () => {
+        setError(true)
+    }
+
     return (
         <div className={cx('wrapper')}>
             {!checkOption ? (
@@ -166,7 +173,7 @@ const CreateStatus = (props: Props) => {
                         )}
                         {!!media && media.startsWith('data:video/') && (
                             <div className={cx('images')}>
-                                <video src={media} controls />
+                                <Video url={media} volume={volume} setVolume={setVolume} />
                             </div>
                         )}
                         {share && (
@@ -191,7 +198,7 @@ const CreateStatus = (props: Props) => {
                                     )}
                                     {status?.video && (
                                         <div className={cx('images')}>
-                                            <Video url={status.video} />
+                                            <Video url={status.video} volume={volume} setVolume={setVolume} />
                                         </div>
                                     )}
                                 </div>
@@ -215,14 +222,19 @@ const CreateStatus = (props: Props) => {
                                     onChange={handleImage}
                                     accept="image/*,video/*"
                                 />
-                                <Icon className={cx('icon', 'blue')} icon="fluent-mdl2:add-friend" />
                                 <Icon
+                                    onClick={handleError}
+                                    className={cx('icon', 'blue')}
+                                    icon="fluent-mdl2:add-friend"
+                                />
+                                <Icon
+                                    onClick={handleError}
                                     className={cx('icon', 'orange')}
                                     icon="material-symbols:add-reaction-outline-sharp"
                                 />
-                                <Icon className={cx('icon', 'red')} icon="akar-icons:check-in" />
-                                <Icon className={cx('icon', 'light-blue')} icon="ph:flag-fill" />
-                                <Icon className={cx('icon')} icon="iwwa:option-horizontal" />
+                                <Icon onClick={handleError} className={cx('icon', 'red')} icon="akar-icons:check-in" />
+                                <Icon onClick={handleError} className={cx('icon', 'light-blue')} icon="ph:flag-fill" />
+                                <Icon onClick={handleError} className={cx('icon')} icon="iwwa:option-horizontal" />
                             </div>
                         </div>
                         {share ? (

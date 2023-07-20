@@ -1,0 +1,117 @@
+.wrapper {
+    position: relative;
+    .video {
+        width: 100%;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+    &:hover .controls {
+        display: flex;
+    }
+}
+
+.controls {
+    position: absolute;
+    bottom: 0;
+    color: #e6e6e6;
+    padding: 6px 4px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.controls {
+    display: none;
+}
+
+.toggle-off {
+    display: flex;
+}
+
+.toggle,
+.enlarge,
+.volume {
+    width: 32px;
+    .icon {
+        width: 20px;
+        height: 20px;
+        color: #e6e6e6;
+    }
+}
+
+.time-number {
+    margin: 0 5px;
+}
+
+.volume {
+    .level {
+        height: 70px;
+        width: 6px;
+        border-radius: 4px;
+        background-color: #666666;
+        position: absolute;
+        bottom: 40px;
+        transform: rotateX(180deg);
+        .level-now {
+            background-color: #4481fc;
+            width: 6px;
+            border-radius: 4px;
+            position: relative;
+        }
+        .position {
+            &::after {
+                content: '';
+                background-color: #fff;
+                width: 12px;
+                height: 12px;
+                border-radius: 50%;
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+    }
+}
+
+.time-column {
+    flex: 1;
+    height: 3px;
+    background-color: #666666;
+    margin-right: 16px;
+    cursor: pointer;
+    .time-now {
+        background-color: #4481fc;
+        height: 3px;
+        position: relative;
+        &::after {
+            content: '';
+            background-color: #fff;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            position: absolute;
+            right: -12px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: none;
+        }
+    }
+    &:hover .time-now {
+        &::after {
+            display: flex;
+        }
+    }
+}
+
+.toggle,
+.time-number,
+.enlarge,
+.volume {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 32px;
+    cursor: pointer;
+}

@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import Error from '../Error'
+import Toast from '../../Item/Toast'
 
 const cx = classNames.bind(styles)
 
@@ -62,7 +63,13 @@ const SidebarL = () => {
                     )
                 })}
             </div>
-            {error && <Error setError={setError} />}
+            {error && (
+                <Toast
+                    title={'Warning'}
+                    msg={'Chức năng hiện đang được cập nhật, vui lòng thử lại sau'}
+                    toggle={setError}
+                />
+            )}
         </>
     )
 }

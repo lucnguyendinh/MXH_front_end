@@ -20,6 +20,7 @@ const NewFeed = () => {
     const accessToken = user?.accessToken
     const [status, setStatus] = useState<any>(null)
     const [loading, setLoading] = useState<any>(false)
+    const [volume, setVolume] = useState<any>(0)
     const axiosJWT = useJWT()
     useEffect(() => {
         if (!userInfo) {
@@ -63,7 +64,9 @@ const NewFeed = () => {
                                 <h3>{s.content}</h3>
                                 {s.img && <img className={cx('img')} src={s.img} alt="" />}
 
-                                {s.video && <Video url={s.video} />}
+                                {s.video && (
+                                    <Video url={s.video} idVideo={s._id} volume={volume} setVolume={setVolume} />
+                                )}
                             </Status>
                         )
                     })}

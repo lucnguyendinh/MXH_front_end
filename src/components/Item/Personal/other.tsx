@@ -29,6 +29,8 @@ const Other = () => {
     const [followers, setFollowers] = useState<boolean>(false)
     const [following, setFollowing] = useState<boolean>(false)
     const [loading, setLoading] = useState(false)
+    const [volume, setVolume] = useState<any>(0)
+
     const axiosJWT = useJWT()
     const { id } = useParams()
     useEffect(() => {
@@ -196,7 +198,14 @@ const Other = () => {
                                             {status.img && (
                                                 <img className={cx('img')} src={status.img} alt="Thien nhien" />
                                             )}
-                                            {status.video && <Video url={status.video} />}
+                                            {status.video && (
+                                                <Video
+                                                    url={status.video}
+                                                    idVideo={status._id}
+                                                    volume={volume}
+                                                    setVolume={setVolume}
+                                                />
+                                            )}
                                         </Status>
                                     </div>
                                 )

@@ -34,6 +34,8 @@ const Me = () => {
     const [followers, setFollowers] = useState<boolean>(false)
     const [following, setFollowing] = useState<boolean>(false)
     const [loading, setLoading] = useState(false)
+    const [volume, setVolume] = useState<any>(0)
+
     const inputFile = useRef<any>(null)
     const inputFileAvt = useRef<any>(null)
     const axiosJWT = useJWT()
@@ -307,7 +309,14 @@ const Me = () => {
                                                     alt="Thien nhien"
                                                 />
                                             )}
-                                            {status.video && <Video url={status.video} />}
+                                            {status.video && (
+                                                <Video
+                                                    url={status.video}
+                                                    idVideo={status._id}
+                                                    volume={volume}
+                                                    setVolume={setVolume}
+                                                />
+                                            )}
                                         </Status>
                                     </div>
                                 )

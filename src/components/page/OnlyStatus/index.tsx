@@ -20,6 +20,7 @@ const OnlyStatus = () => {
     const accessToken = user?.accessToken
     const axiosJWT = useJWT()
     const [status, setStatus] = useState<any>(null)
+    const [volume, setVolume] = useState<any>(0)
     useEffect(() => {
         if (!UserInfo) {
             navigate('/login')
@@ -54,7 +55,7 @@ const OnlyStatus = () => {
             <Status timed={displayTime} status={status} className={cx('status')}>
                 <h3>{status?.content}</h3>
                 {status?.img && <img className={cx('img')} style={{ width: '100%' }} src={status.img} alt="" />}
-                {status?.video && <Video url={status.video} />}
+                {status?.video && <Video url={status.video} volume={volume} setVolume={setVolume} />}
             </Status>
         </div>
     )
