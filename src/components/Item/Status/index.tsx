@@ -42,6 +42,7 @@ const Status = (props: Props) => {
     const [content, setContent] = useState('')
     const axiosJWT = useJWT()
     const handleSubmit = async (e: any) => {
+        if (!content) return
         e.preventDefault()
         const newComment = {
             status: status._id,
