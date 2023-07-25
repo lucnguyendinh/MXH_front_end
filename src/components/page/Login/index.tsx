@@ -5,7 +5,6 @@ import { Link, useNavigate } from 'react-router-dom'
 
 import { loginUser } from '../../../redux/Api/apiRequest'
 import styles from './Login.module.scss'
-import validateForm from '../../../config/validateForm'
 import Toast from '../../Item/Toast'
 
 const cx = classNames.bind(styles)
@@ -34,24 +33,10 @@ const Login = () => {
 
     const handleSubmit = (e: any) => {
         e.preventDefault()
-        const validatePhoneNumber = validateForm.phoneNumber(sdt)
-        const validatePassword = validateForm.password(password)
-        if (validatePhoneNumber || validatePassword) {
-            setValidate({
-                phoneNumber: validatePhoneNumber,
-                password: validatePassword,
-            })
-            return
-        }
-        setValidate({
-            phoneNumber: validatePhoneNumber,
-            password: validatePassword,
-        })
         const newUser = {
             sdt,
             password,
         }
-
         loginUser(newUser, dispatch, navigate, setErr)
     }
 

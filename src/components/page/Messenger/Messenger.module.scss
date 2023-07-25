@@ -64,6 +64,9 @@
     display: flex;
     flex: 1;
 }
+.disable {
+    color: #f0f2f5;
+}
 
 @media (max-width: 480px) {
     .table-emoji {

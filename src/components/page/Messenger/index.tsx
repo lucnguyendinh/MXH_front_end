@@ -88,12 +88,14 @@ const Messenger = (props: Props) => {
     }, [currentChat])
 
     const handleSubmit = async () => {
+        if (!text) return
         try {
             const newChat = {
                 conversationId: idMess,
                 sender: idUserInfo,
                 text: text,
             }
+            setText('')
 
             // socket.current.emit('sendMessage', {
             //     senderId: idUserInfo,
@@ -105,7 +107,6 @@ const Messenger = (props: Props) => {
                 headers: { token: `Bearer ${accessToken}` },
             })
             setCurrentChat((pre: any) => [...pre, res.data])
-            setText('')
         } catch (err) {
             console.log(err)
         }

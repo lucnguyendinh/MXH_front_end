@@ -44,17 +44,18 @@ const Status = (props: Props) => {
     const handleSubmit = async (e: any) => {
         e.preventDefault()
         if (!content) return
-        const newComment = {
-            status: status._id,
-            user: idUserInfo,
-            content,
-        }
-        const Notifi = {
-            idUser: status.user._id,
-            idOther: idUserInfo,
-            idStatus: status._id,
-        }
         try {
+            const newComment = {
+                status: status._id,
+                user: idUserInfo,
+                content,
+            }
+            const Notifi = {
+                idUser: status.user._id,
+                idOther: idUserInfo,
+                idStatus: status._id,
+            }
+            setContent('')
             const res = await axiosJWT.post('/status/comment', newComment, {
                 headers: { token: `Bearer ${accessToken}` },
             })
@@ -65,7 +66,6 @@ const Status = (props: Props) => {
         } catch (err) {
             console.log(err)
         }
-        setContent('')
     }
 
     like.forEach((like: any) => {
