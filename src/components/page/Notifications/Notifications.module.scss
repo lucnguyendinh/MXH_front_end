@@ -9,7 +9,6 @@
     width: 680px;
     margin-top: 16px;
     border-radius: 8px;
-    height: 1000px;
     .h {
         padding: 16px;
     }
@@ -18,10 +17,10 @@
 .content {
     .item {
         display: flex;
-        cursor: pointer;
         padding: 8px;
         margin: 0 8px;
         border-radius: 8px;
+        cursor: pointer;
         &:hover {
             background-color: #f2f2f2;
         }

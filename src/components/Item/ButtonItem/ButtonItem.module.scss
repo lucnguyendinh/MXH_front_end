@@ -8,9 +8,6 @@
         height: 100%;
         width: 100%;
     }
-    &:first-child {
-        margin-top: 16px;
-    }
     &:hover {
         background-color: #cdd1d5;
     }
@@ -20,7 +17,10 @@
 .text {
     display: flex;
     align-items: center;
-    width: 100%;
+    justify-content: center;
+}
+
+.img {
 }
 
 .img {
