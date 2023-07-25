@@ -225,7 +225,7 @@ const Status = (props: Props) => {
                     <div className={cx('user')}>
                         <Link to={`/profile/${status?.user._id}`}>
                             <div className={cx('img')}>
-                                <img src={status?.user.avtImg?.url || noAvt} alt="" />
+                                <img src={status?.user?.avtImg?.url || noAvt} alt="" />
                             </div>
                         </Link>
                         <div className={cx('des')}>
@@ -255,8 +255,8 @@ const Status = (props: Props) => {
                                         <div className={cx('img')}>
                                             <img
                                                 src={
-                                                    status.idStatus.user.avtImg?.url ||
-                                                    status.idStatusUser.avtImg?.url ||
+                                                    status.idStatus.user?.avtImg?.url ||
+                                                    status.idStatusUser?.avtImg?.url ||
                                                     noAvt
                                                 }
                                                 alt=""
@@ -348,7 +348,7 @@ const Status = (props: Props) => {
                                     <div className={cx('user-comment')}>
                                         <Link to={`/profile/${cmt.user._id}`}>
                                             <div className={cx('img')}>
-                                                <img src={cmt.user.avtImg?.url || noAvt} alt="" />
+                                                <img src={cmt.user?.avtImg?.url || noAvt} alt="" />
                                             </div>
                                         </Link>
                                         <div className={cx('body-comment')}>
