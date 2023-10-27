@@ -75,33 +75,36 @@
 .option {
     display: flex;
     padding-top: 65px;
-    .following,
-    .follow {
+    .option-b {
         display: flex;
         justify-content: center;
         align-items: center;
         height: 32px;
         min-width: 65px;
-        background-color: #e4e6eb;
         border-radius: 8px;
         margin-right: 12px;
         cursor: pointer;
+    }
+    .following,
+    .follow {
+        background-color: #e4e6eb;
+
         &:hover {
             background-color: #d8dadf;
         }
     }
     .message {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 32px;
-        min-width: 65px;
         background-color: #2375e1;
         color: #fff;
-        border-radius: 8px;
-        cursor: pointer;
         &:hover {
             background-color: #216fd6;
+        }
+    }
+    .report {
+        background-color: #ec0c0c;
+        color: #fff;
+        &:hover {
+            background-color: #ca2a2a;
         }
     }
 }

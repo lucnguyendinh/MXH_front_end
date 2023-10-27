@@ -24,6 +24,7 @@ export const authSlice = createSlice({
         },
         loginFailed: (state) => {
             state.isFetching = false
+            state.login.currentUser = null
             state.error = true
         },
         registerStart: (state) => {

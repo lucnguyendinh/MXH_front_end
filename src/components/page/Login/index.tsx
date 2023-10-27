@@ -20,7 +20,6 @@ const Login = () => {
     const [sdt, setSdt] = useState<String>('')
     const [password, setPassword] = useState<String>('')
     const [err, setErr] = useState<String>('')
-    const [validate, setValidate] = useState<any>(null)
 
     useEffect(() => {
         if (userRegister) {
@@ -33,11 +32,11 @@ const Login = () => {
 
     const handleSubmit = (e: any) => {
         e.preventDefault()
-        const newUser = {
+        const user = {
             sdt,
             password,
         }
-        loginUser(newUser, dispatch, navigate, setErr)
+        loginUser(user, dispatch, navigate, setErr)
     }
 
     if (userLogin || userRegister) {
@@ -47,14 +46,12 @@ const Login = () => {
         <div className={cx('wrapper')}>
             <div className={cx('container')}>
                 <form onSubmit={handleSubmit}>
-                    {validate?.phoneNumber && <p style={{ color: 'red' }}>{validate.phoneNumber}</p>}
                     <input
                         onChange={(e) => setSdt(e.target.value)}
                         className={cx('input')}
                         type="text"
                         placeholder="Số điện thoại"
                     />
-                    {validate?.password && <p style={{ color: 'red' }}>{validate.password}</p>}
                     <input
                         onChange={(e) => setPassword(e.target.value)}
                         className={cx('input')}

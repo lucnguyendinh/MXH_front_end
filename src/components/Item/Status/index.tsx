@@ -27,6 +27,7 @@ const Status = (props: Props) => {
     const user = useSelector((state: any) => state.auth.login.currentUser)
     const accessToken = user?.accessToken
     const idUserInfo = user?.userInfo?._id
+    const id = user?.userInfo?.idUser?._id
 
     const [like, setLike] = useState<any[]>([])
     const [comment, setComment] = useState<any[]>([])
@@ -35,6 +36,7 @@ const Status = (props: Props) => {
     const [displayTime, setDisplayTime] = useState('')
     const [idCmt, setIdCmt] = useState('')
     const [volume, setVolume] = useState<any>(0)
+    const [option, setOption] = useState<Boolean>(false)
 
     let checkLiked = false
     let idLike: any
@@ -137,6 +139,7 @@ const Status = (props: Props) => {
         const newLike = {
             status: status._id,
             user: idUserInfo,
+            id,
         }
         const Notifi = {
             idUser: status.user._id,
@@ -218,6 +221,20 @@ const Status = (props: Props) => {
         const timeSinceCreation = (Date.now() - Date.parse(status?.idStatus?.createdAt)) / 1000
         setDisplayTime(config.timeDefault(timeSinceCreation))
     }, [status])
+    const report = async (option: number) => {
+        try {
+            const newReport = {
+                option,
+                idRp: status._id,
+                idU: idUserInfo,
+            }
+            await axiosJWT.post('/admin/report', newReport, {
+                headers: { token: `Bearer ${accessToken}` },
+            })
+        } catch (err) {
+            console.log(err)
+        }
+    }
 
     return (
         <>
@@ -240,7 +257,17 @@ const Status = (props: Props) => {
                         </div>
                     </div>
                     <div className={cx('option')}>
-                        <Icon icon="iwwa:option-horizontal" style={{ cursor: 'pointer' }} />
+                        <div className={cx('more')}>
+                            <Icon onClick={() => setOption(!option)} icon="iwwa:option-horizontal" />
+                            {option && (
+                                <div className={cx('togle-option')}>
+                                    <div className={cx('item-option')} onClick={() => report(2)}>
+                                        <Icon className={cx('icon-option')} icon="octicon:report-24" />
+                                        <p>Báo cáo</p>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
                         {idUserInfo !== status?.user._id && (
                             <Icon icon="material-symbols:close" style={{ cursor: 'pointer' }} />
                         )}

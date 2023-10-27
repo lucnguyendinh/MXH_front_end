@@ -105,6 +105,21 @@ const Other = () => {
         }
     }
 
+    const report = async (option: number) => {
+        try {
+            const newReport = {
+                option,
+                idRp: id,
+                idU: idUserInfo,
+            }
+            await axiosJWT.post('/admin/report', newReport, {
+                headers: { token: `Bearer ${accessToken}` },
+            })
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
     return (
         <>
             {loading ? (
@@ -134,16 +149,19 @@ const Other = () => {
                                 {userInfo?.follow.followers.some((f: any) => {
                                     return f._id === idUserInfo
                                 }) ? (
-                                    <div onClick={handleUnFollow} className={cx('following')}>
+                                    <div onClick={handleUnFollow} className={cx('following', 'option-b')}>
                                         Following
                                     </div>
                                 ) : (
-                                    <div onClick={handleFollow} className={cx('follow')}>
+                                    <div onClick={handleFollow} className={cx('follow', 'option-b')}>
                                         Follow
                                     </div>
                                 )}
-                                <div onClick={handleCreateMsg} className={cx('message')}>
+                                <div onClick={handleCreateMsg} className={cx('message', 'option-b')}>
                                     Nhắn tin
+                                </div>
+                                <div onClick={() => report(1)} className={cx('report', 'option-b')}>
+                                    Report
                                 </div>
                             </div>
                         </div>

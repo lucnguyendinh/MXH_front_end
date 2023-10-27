@@ -96,7 +96,7 @@ const CreateStatus = (props: Props) => {
         if (idStatus) {
             getStatus()
         }
-    }, [])
+    }, [accessToken, idStatus])
     useEffect(() => {
         const timeSinceCreation = (Date.now() - Date.parse(status?.createdAt)) / 1000
         setDisplayTime(config.timeDefault(timeSinceCreation))
