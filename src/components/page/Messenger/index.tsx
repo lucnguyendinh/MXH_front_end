@@ -2,7 +2,7 @@ import classNames from 'classnames/bind'
 import { Icon } from '@iconify/react'
 import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
-//import { io } from 'socket.io-client'
+import { Socket, io } from 'socket.io-client'
 
 import styles from './Messenger.module.scss'
 import Sender from '../../components/Sender'
@@ -29,27 +29,37 @@ const Messenger = (props: Props) => {
     const accessToken = user?.accessToken
     const userRegister = user?.user
 
-    const [currentChat, setCurrentChat] = useState<any>()
+    const [currentChat, setCurrentChat] = useState<any>([])
     const [userChat, setUserChat] = useState<any>()
     const [text, setText] = useState('')
     const [isEmoji, setEmoji] = useState<any>(false)
     const scrollRef = useRef<HTMLDivElement>(null)
+
     let axiosJWT = useJWT()
-    //const socket = useRef<any>()
+    const socket = useRef<Socket | null>(null)
 
-    // useEffect(() => {
-    //     socket.current = io('ws://localhost:8900')
-    //     socket.current.on('getMessage', (data: any) => {
-    //         setCurrentChat((pre: any) => [...pre, data.text])
-    //         console.log(data.text)
-    //     })
-    // }, [])
+    useEffect(() => {
+        socket.current = io('http://localhost:8900/')
+        return () => {
+            if (socket.current) {
+                socket.current.disconnect()
+            }
+        }
+    }, [])
+    useEffect(() => {
+        if (socket.current) {
+            socket.current.emit('addUser', idUserInfo)
+            socket.current.on('getUsers', (users: any) => {})
+        }
+    }, [user])
+    useEffect(() => {
+        if (socket.current) {
+            socket.current.on('getMessage', (data: any) => {
+                setCurrentChat((prev: any) => [...prev, data.text])
+            })
+        }
+    }, [])
 
-    // useEffect(() => {
-    //     //emit: gửi lên server
-    //     socket.current.emit('addUser', idUserInfo)
-    //     socket.current.on('getUsers', (users: any) => {})
-    // }, [user])
     useEffect(() => {
         if (!idUserInfo) {
             navigate('/login')
@@ -96,12 +106,13 @@ const Messenger = (props: Props) => {
                 text: text,
             }
             setText('')
-
-            // socket.current.emit('sendMessage', {
-            //     senderId: idUserInfo,
-            //     receiverId: id,
-            //     text: newChat,
-            // })
+            if (socket.current) {
+                socket.current.emit('sendMessage', {
+                    senderId: idUserInfo,
+                    receiverId: id,
+                    text: newChat,
+                })
+            }
 
             const res = await axiosJWT.post('/message/mess', newChat, {
                 headers: { token: `Bearer ${accessToken}` },
@@ -141,7 +152,7 @@ const Messenger = (props: Props) => {
                         {currentChat?.map((i: any, index: any) => {
                             return (
                                 <div ref={scrollRef} key={index}>
-                                    <Sender userChat={i.sender === id && userChat} chat={i.text} />
+                                    <Sender userChat={i?.sender === id && userChat} chat={i?.text} />
                                 </div>
                             )
                         })}

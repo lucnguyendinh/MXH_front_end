@@ -33,8 +33,11 @@ const Watch = () => {
     useEffect(() => {
         const getVideo = async () => {
             try {
+                const listUser = user.userInfo.follow.following || []
+                const query = listUser.map((id: string) => `listUser[]=${encodeURIComponent(id)}`).join('&')
+                const idUser = user.userInfo._id
                 setLoading(true)
-                const res = await axiosJWT.get('/status/getstatusbyvideo', {
+                const res = await axiosJWT.get(`/status/getstatusbyvideo?${query}&idUser=${idUser}`, {
                     headers: { token: `Bearer ${accessToken}` },
                 })
                 setVideo(res.data)

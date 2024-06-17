@@ -42,7 +42,9 @@ const Home = () => {
 
     const getStatusLast = async () => {
         try {
-            const res = await axiosJWT.get('/status/getstatus', {
+            const listUser = user.userInfo.follow.following || []
+            const query = listUser.map((id: string) => `listUser[]=${encodeURIComponent(id)}`).join('&')
+            const res = await axiosJWT.get(`/status/getstatus?${query}`, {
                 headers: { token: `Bearer ${accessToken}` },
             })
 
@@ -73,9 +75,11 @@ const Home = () => {
 
     useEffect(() => {
         const getStatus = async () => {
+            const listUser = user.userInfo.follow.following || []
+            const query = listUser.map((id: string) => `listUser[]=${encodeURIComponent(id)}`).join('&')
             try {
                 setLoading(true)
-                const res = await axiosJWT.get('/status/getstatus', {
+                const res = await axiosJWT.get(`/status/getstatus?${query}`, {
                     headers: { token: `Bearer ${accessToken}` },
                 })
                 setListStatus(res.data)

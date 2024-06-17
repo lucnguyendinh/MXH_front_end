@@ -231,6 +231,7 @@ const Status = (props: Props) => {
             await axiosJWT.post('/admin/report', newReport, {
                 headers: { token: `Bearer ${accessToken}` },
             })
+            setOption(false)
         } catch (err) {
             console.log(err)
         }

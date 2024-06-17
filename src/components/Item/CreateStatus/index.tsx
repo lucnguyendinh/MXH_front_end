@@ -32,6 +32,11 @@ const CreateStatus = (props: Props) => {
     const [shareW, setShareW] = useState('Công khai')
     const [displayTime, setDisplayTime] = useState('')
     const [volume, setVolume] = useState<any>(0)
+    const [album, setAlbum] = useState<any>(false)
+    const [actionAlbum, setActionAlbum] = useState<any>(false)
+    const [nameAlbum, setNameAlbum] = useState<any>('')
+    const [listAlbum, setListAlbum] = useState<any>([])
+    const [currentAlbum, setCurrentAlbum] = useState<any>(null)
 
     const inputFileImg = useRef<any>(null)
     const axiosJWT = useJWT()
@@ -73,6 +78,7 @@ const CreateStatus = (props: Props) => {
                 user: idUserInfo,
                 shareW: optionCheck,
                 media,
+                album: currentAlbum ? currentAlbum._id : null,
             }
             await axiosJWT.post('/status/upstatus', status, {
                 headers: { token: `Bearer ${accessToken}` },
@@ -82,6 +88,37 @@ const CreateStatus = (props: Props) => {
             console.log(err)
         }
     }
+    const getListAlbum = async () => {
+        try {
+            const res = await axiosJWT.get('/status/getAlbum/' + idUserInfo, {
+                headers: { token: `Bearer ${accessToken}` },
+            })
+            setListAlbum(res.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    const handleSubmit = async () => {
+        try {
+            if (actionAlbum) {
+                const newAlbum = {
+                    name: nameAlbum,
+                    user: idUserInfo,
+                }
+
+                await axiosJWT.post('/status/addAlbum', newAlbum, {
+                    headers: { token: `Bearer ${accessToken}` },
+                })
+                getListAlbum()
+                setActionAlbum(false)
+            } else {
+                setAlbum(false)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     useEffect(() => {
         const getStatus = async () => {
             try {
@@ -101,7 +138,9 @@ const CreateStatus = (props: Props) => {
         const timeSinceCreation = (Date.now() - Date.parse(status?.createdAt)) / 1000
         setDisplayTime(config.timeDefault(timeSinceCreation))
     }, [status?.createdAt])
-
+    useEffect(() => {
+        getListAlbum()
+    }, [])
     const option = [
         {
             title: 'Công khai',
@@ -119,12 +158,6 @@ const CreateStatus = (props: Props) => {
             title: 'Chỉ mình tôi',
             icon: <Icon icon="material-symbols:lock" />,
             id: 3,
-        },
-        {
-            title: 'Tuỳ chỉnh',
-            des: 'Bao gồm và loại trừ bạn bè, danh sách',
-            icon: <Icon icon="uiw:setting" />,
-            id: 4,
         },
     ]
 
@@ -152,8 +185,11 @@ const CreateStatus = (props: Props) => {
                             </div>
                             <div className={cx('info')}>
                                 <div className={cx('name')}>{user?.userInfo.fullName}</div>
-                                <div className={cx('option')} onClick={() => setCheckOption(true)}>
-                                    {shareW}
+                                <div className={cx('status-post')}>
+                                    <div className={cx('option')} onClick={() => setCheckOption(true)}>
+                                        {shareW}
+                                    </div>
+                                    {currentAlbum && <div className={cx('option')}>{currentAlbum.name}</div>}
                                 </div>
                             </div>
                         </div>
@@ -223,10 +259,15 @@ const CreateStatus = (props: Props) => {
                                     accept="image/*,video/*"
                                 />
                                 <Icon
+                                    icon="lets-icons:add-duotone"
+                                    onClick={() => setAlbum(!album)}
+                                    className={cx('icon', 'blue')}
+                                />
+                                {/* <Icon
                                     onClick={handleError}
                                     className={cx('icon', 'blue')}
                                     icon="fluent-mdl2:add-friend"
-                                />
+                                /> */}
                                 <Icon
                                     onClick={handleError}
                                     className={cx('icon', 'orange')}
@@ -236,6 +277,65 @@ const CreateStatus = (props: Props) => {
                                 <Icon onClick={handleError} className={cx('icon', 'light-blue')} icon="ph:flag-fill" />
                                 <Icon onClick={handleError} className={cx('icon')} icon="iwwa:option-horizontal" />
                             </div>
+                            {album && (
+                                <div className={cx('add-album')}>
+                                    <div className={cx('action')}>
+                                        <p
+                                            onClick={() => setActionAlbum(false)}
+                                            className={!actionAlbum ? cx('active') : ''}
+                                        >
+                                            Chọn album
+                                        </p>
+                                        <p
+                                            onClick={() => setActionAlbum(true)}
+                                            className={actionAlbum ? cx('active') : ''}
+                                        >
+                                            Thêm album mới
+                                        </p>
+                                    </div>
+                                    {!actionAlbum ? (
+                                        <select
+                                            className={cx('input-album')}
+                                            value={currentAlbum ? currentAlbum._id : ''}
+                                            onChange={(e) => {
+                                                const findCurrentAlbum = listAlbum.find(
+                                                    (item: any) => item._id === e.target.value,
+                                                )
+                                                if (findCurrentAlbum) {
+                                                    setCurrentAlbum(findCurrentAlbum)
+                                                } else {
+                                                    setCurrentAlbum(null)
+                                                }
+                                            }}
+                                        >
+                                            <option value="">Không</option>
+                                            {listAlbum.map((item: any, index: any) => {
+                                                return (
+                                                    <option key={index} value={item._id}>
+                                                        {item.name}
+                                                    </option>
+                                                )
+                                            })}
+                                        </select>
+                                    ) : (
+                                        <input
+                                            className={cx('input-album')}
+                                            type="text"
+                                            placeholder="Tên album"
+                                            onChange={(e) => setNameAlbum(e.target.value)}
+                                        />
+                                    )}
+
+                                    <div className={cx('btn')}>
+                                        <div className={cx('btn-add-album')} onClick={handleSubmit}>
+                                            OK
+                                        </div>
+                                        <div className={cx('btn-cencel-album')} onClick={() => setAlbum(false)}>
+                                            Huỷ
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                         {share ? (
                             <div onClick={handleShare} className={cx('btn-share')}>

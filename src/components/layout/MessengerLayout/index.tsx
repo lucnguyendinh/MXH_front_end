@@ -1,6 +1,5 @@
 import classNames from 'classnames/bind'
 import { useEffect, useState } from 'react'
-import axios from 'axios'
 import { useSelector } from 'react-redux'
 
 import Header from '../../components/Header'

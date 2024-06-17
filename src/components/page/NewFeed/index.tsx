@@ -34,8 +34,11 @@ const NewFeed = () => {
     useEffect(() => {
         const getStatus = async () => {
             try {
+                const listUser = user.userInfo.follow.following || []
+                const query = listUser.map((id: string) => `listUser[]=${encodeURIComponent(id)}`).join('&')
+                const idUser = user.userInfo._id
                 setLoading(true)
-                const res = await axiosJWT.get('/status/getnewfeed', {
+                const res = await axiosJWT.get(`/status/getnewfeed?${query}&idUser=${idUser}`, {
                     headers: { token: `Bearer ${accessToken}` },
                 })
                 setStatus(res.data)

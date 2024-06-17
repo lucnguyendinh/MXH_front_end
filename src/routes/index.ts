@@ -10,6 +10,7 @@ import OnlyStatus from '../components/page/OnlyStatus'
 import Friends from '../components/page/Friends'
 import Watch from '../components/page/Watch'
 import NewFeed from '../components/page/NewFeed'
+import StatusByAlbum from '../components/page/StatusByAlbum'
 
 interface Public {
     path: string
@@ -28,6 +29,7 @@ const publicRoutes: Public[] = [
     { path: '/registerN', component: RegisterN, layout: null },
     { path: '/profile/:id', component: Personal, layout: 'header' },
     { path: '/status/:id', component: OnlyStatus, layout: 'header' },
+    { path: '/statusByAlbum/:id', component: StatusByAlbum, layout: 'header' },
     { path: '/friends', component: Friends, layout: 'headerandsidebarl' },
     { path: '/watch', component: Watch, layout: 'headerandsidebarl' },
     { path: '/newfeed', component: NewFeed, layout: 'headerandsidebarl' },

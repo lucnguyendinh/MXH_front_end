@@ -139,7 +139,7 @@
 }
 
 .introduct {
-    height: 300px;
+    height: 500px;
     width: 490px;
     background-color: #fff;
     margin-right: 8px;
@@ -208,6 +208,24 @@
             margin-right: 4px;
             border-radius: 16px;
             border: #cfd1d5 solid 1px;
+        }
+    }
+    .album {
+        margin: 12px 0 0 8px;
+        .list-album {
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 24px;
+            gap: 8px;
+            .item {
+                padding: 8px 12px;
+                border-radius: 8px;
+                border: 1px solid #cfd1d5;
+                cursor: pointer;
+                &:hover {
+                    opacity: 0.8;
+                }
+            }
         }
     }
 }

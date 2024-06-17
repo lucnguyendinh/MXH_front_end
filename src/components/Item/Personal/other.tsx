@@ -1,7 +1,7 @@
 import axios from 'axios'
 import classNames from 'classnames/bind'
 import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import config from '../../../config'
 import Status from '../Status'
 import noAvt from '../../../public/img/person/non-avt.jpg'
@@ -30,9 +30,23 @@ const Other = () => {
     const [following, setFollowing] = useState<boolean>(false)
     const [loading, setLoading] = useState(false)
     const [volume, setVolume] = useState<any>(0)
+    const [listAlbum, setListAlbum] = useState<any>([])
 
     const axiosJWT = useJWT()
     const { id } = useParams()
+    const getListAlbum = async () => {
+        try {
+            const res = await axiosJWT.get('/status/getAlbum/' + id, {
+                headers: { token: `Bearer ${accessToken}` },
+            })
+            setListAlbum(res.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    useEffect(() => {
+        getListAlbum()
+    }, [])
     useEffect(() => {
         const getUser = async () => {
             try {
@@ -51,7 +65,10 @@ const Other = () => {
     useEffect(() => {
         const getStatus = async () => {
             try {
-                const res = await axiosJWT.get(`/status/getstatus/${id}`, {
+                const listUser = user.userInfo.follow.following || []
+                const query = listUser.map((id: string) => `listUser[]=${encodeURIComponent(id)}`).join('&')
+                const idUser = user.userInfo._id
+                const res = await axiosJWT.get(`/status/getstatus/${id}?${query}&idUser=${idUser}`, {
                     headers: { token: `Bearer ${accessToken}` },
                 })
                 setListStatus(res.data)
@@ -201,6 +218,18 @@ const Other = () => {
                                         </div>
                                     )
                                 })}
+                            </div>
+                            <div className={cx('album')}>
+                                <h2>Album</h2>
+                                <div className={cx('list-album')}>
+                                    {listAlbum?.map((album: any, i: any) => {
+                                        return (
+                                            <Link to={`/statusByAlbum/${album._id}`} className={cx('item')} key={i}>
+                                                {album.name}
+                                            </Link>
+                                        )
+                                    })}
+                                </div>
                             </div>
                         </div>
                         <div className={cx('status')}>
