@@ -19,6 +19,10 @@
         {
             "source": "/notification/:match*",
             "destination": "https://mxh-back-end.vercel.app/notification/:match*"
+        },
+        {
+            "source": "/mail/:match*",
+            "destination": "https://mxh-back-end.vercel.app/mail/:match*"
         }
     ]
 }
