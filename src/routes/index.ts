@@ -11,6 +11,7 @@ import Friends from '../components/page/Friends'
 import Watch from '../components/page/Watch'
 import NewFeed from '../components/page/NewFeed'
 import StatusByAlbum from '../components/page/StatusByAlbum'
+import SendMail from '../components/page/SendMail'
 
 interface Public {
     path: string
@@ -33,6 +34,7 @@ const publicRoutes: Public[] = [
     { path: '/friends', component: Friends, layout: 'headerandsidebarl' },
     { path: '/watch', component: Watch, layout: 'headerandsidebarl' },
     { path: '/newfeed', component: NewFeed, layout: 'headerandsidebarl' },
+    { path: '/sendMail', component: SendMail, layout: null },
 ]
 
 const privateRoutes: any[] = []
